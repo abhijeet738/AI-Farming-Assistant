@@ -1,0 +1,2390 @@
+{
+  "Rice_Blast": {
+    "crop": "Rice",
+    "disease": "Blast",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 28,
+      "humidity_min": 90,
+      "humidity_max": 100,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 3
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering"
+    ],
+    "regions": [
+      "East",
+      "South",
+      "Northeast"
+    ],
+    "treatment": {
+      "preventive": [
+        "Apply Tricyclazole 75% WP @ 0.6g/L",
+        "Avoid excess nitrogen"
+      ],
+      "organic": [
+        "Spray Pseudomonas fluorescens @ 10g/L",
+        "Neem oil 5% spray"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Rice_Brown_Plant_Hopper": {
+    "crop": "Rice",
+    "disease": "Brown Plant Hopper",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 30,
+      "humidity_min": 85,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 2
+    },
+    "growth_stages": [
+      "Tillering",
+      "Flowering"
+    ],
+    "regions": [
+      "East",
+      "South",
+      "Northeast"
+    ],
+    "treatment": {
+      "preventive": [
+        "Apply Imidacloprid 17.8% SL @ 0.5ml/L",
+        "Drain standing water"
+      ],
+      "organic": [
+        "Neem seed kernel extract 5%",
+        "Light traps at night"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Rice_Sheath_Blight": {
+    "crop": "Rice",
+    "disease": "Sheath Blight",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 28,
+      "temp_max": 32,
+      "humidity_min": 95,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 4
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Tillering"
+    ],
+    "regions": [
+      "East",
+      "South",
+      "North"
+    ],
+    "treatment": {
+      "preventive": [
+        "Apply Hexaconazole 5% EC @ 2ml/L",
+        "Reduce plant density"
+      ],
+      "organic": [
+        "Trichoderma viride @ 10g/L spray",
+        "Proper field drainage"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Rice_Bacterial_Leaf_Blight": {
+    "crop": "Rice",
+    "disease": "Bacterial Leaf Blight",
+    "type": "bacterial",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 34,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "moderate",
+      "consecutive_wet_days": 3
+    },
+    "growth_stages": [
+      "Tillering",
+      "Vegetative"
+    ],
+    "regions": [
+      "East",
+      "South",
+      "North"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Streptocycline @ 0.5g + COC @ 3g/L",
+        "Balanced NPK"
+      ],
+      "organic": [
+        "Spray neem oil 2%",
+        "Remove infected leaves"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Wheat_Yellow_Rust": {
+    "crop": "Wheat",
+    "disease": "Yellow Rust",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 10,
+      "temp_max": 15,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "light",
+      "wind": "moderate",
+      "consecutive_wet_days": 2
+    },
+    "growth_stages": [
+      "Tillering",
+      "Heading"
+    ],
+    "regions": [
+      "North",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Propiconazole 25% EC @ 1ml/L",
+        "Use resistant varieties"
+      ],
+      "organic": [
+        "Sulfur dust application",
+        "Crop rotation"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Wheat_Brown_Rust": {
+    "crop": "Wheat",
+    "disease": "Brown Rust",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 15,
+      "temp_max": 25,
+      "humidity_min": 70,
+      "humidity_max": 95,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 2
+    },
+    "growth_stages": [
+      "Heading",
+      "Maturity"
+    ],
+    "regions": [
+      "North",
+      "Central",
+      "West"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Mancozeb 75% WP @ 2.5g/L",
+        "Timely sowing"
+      ],
+      "organic": [
+        "Neem-based fungicide",
+        "Remove volunteer plants"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Wheat_Karnal_Bunt": {
+    "crop": "Wheat",
+    "disease": "Karnal Bunt",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 20,
+      "temp_max": 25,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "light",
+      "wind": "low",
+      "consecutive_wet_days": 2
+    },
+    "growth_stages": [
+      "Flowering"
+    ],
+    "regions": [
+      "North"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Propiconazole at boot stage",
+        "Certified seed"
+      ],
+      "organic": [
+        "Seed treatment with Trichoderma",
+        "Deep ploughing"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Maize_Fall_Armyworm": {
+    "crop": "Maize",
+    "disease": "Fall Armyworm",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 30,
+      "humidity_min": 60,
+      "humidity_max": 80,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 1
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Seedling"
+    ],
+    "regions": [
+      "South",
+      "West",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Emamectin Benzoate 5% SG @ 0.4g/L",
+        "Pheromone traps"
+      ],
+      "organic": [
+        "Spray Bt (Bacillus thuringiensis)",
+        "Apply sand+lime in whorl"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Maize_Stem_Borer": {
+    "crop": "Maize",
+    "disease": "Stem Borer",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 28,
+      "temp_max": 35,
+      "humidity_min": 70,
+      "humidity_max": 95,
+      "rainfall": "light",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Tasseling"
+    ],
+    "regions": [
+      "North",
+      "Central",
+      "South"
+    ],
+    "treatment": {
+      "preventive": [
+        "Carbofuran 3G in whorl @ 8-10 granules/plant",
+        "Early sowing"
+      ],
+      "organic": [
+        "Release Trichogramma parasitoids",
+        "Destroy stubbles"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Maize_Turcicum_Leaf_Blight": {
+    "crop": "Maize",
+    "disease": "Turcicum Leaf Blight",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 20,
+      "temp_max": 26,
+      "humidity_min": 90,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 3
+    },
+    "growth_stages": [
+      "Vegetative"
+    ],
+    "regions": [
+      "North",
+      "Northeast",
+      "East"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Mancozeb 75% WP @ 2.5g/L",
+        "Resistant hybrids"
+      ],
+      "organic": [
+        "Trichoderma seed treatment",
+        "Crop rotation"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Cotton_Bollworm": {
+    "crop": "Cotton",
+    "disease": "Bollworm",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 30,
+      "humidity_min": 60,
+      "humidity_max": 80,
+      "rainfall": "light",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Flowering",
+      "Boll"
+    ],
+    "regions": [
+      "Central",
+      "West",
+      "South"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Emamectin Benzoate 5% SG",
+        "Bt cotton varieties"
+      ],
+      "organic": [
+        "Pheromone traps @ 5/acre",
+        "HaNPV @ 250 LE/ha"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Cotton_Whitefly": {
+    "crop": "Cotton",
+    "disease": "Whitefly",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 32,
+      "temp_max": 42,
+      "humidity_min": 30,
+      "humidity_max": 50,
+      "rainfall": "none",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering"
+    ],
+    "regions": [
+      "North",
+      "Central",
+      "West"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Diafenthiuron 50% WP @ 1g/L",
+        "Yellow sticky traps"
+      ],
+      "organic": [
+        "Neem oil 1% spray",
+        "Spray castor as trap crop"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Chickpea_Fusarium_Wilt": {
+    "crop": "Chickpea",
+    "disease": "Fusarium Wilt",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 30,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 3
+    },
+    "growth_stages": [
+      "Flowering",
+      "Pod"
+    ],
+    "regions": [
+      "Central",
+      "North",
+      "West"
+    ],
+    "treatment": {
+      "preventive": [
+        "Seed treatment Carbendazim @ 2g/kg",
+        "Resistant varieties"
+      ],
+      "organic": [
+        "Trichoderma viride seed treatment",
+        "Crop rotation 3yr"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Chickpea_Pod_Borer": {
+    "crop": "Chickpea",
+    "disease": "Pod Borer",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 20,
+      "temp_max": 28,
+      "humidity_min": 50,
+      "humidity_max": 70,
+      "rainfall": "light",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Flowering",
+      "Pod"
+    ],
+    "regions": [
+      "Central",
+      "North",
+      "South"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Indoxacarb 14.5% SC @ 0.5ml/L",
+        "Bird perches"
+      ],
+      "organic": [
+        "HaNPV @ 250 LE/ha",
+        "Neem seed kernel extract 5%"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Potato_Late_Blight": {
+    "crop": "Potato",
+    "disease": "Late Blight",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 15,
+      "temp_max": 22,
+      "humidity_min": 90,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 5
+    },
+    "growth_stages": [
+      "Tuber formation",
+      "Vegetative"
+    ],
+    "regions": [
+      "North",
+      "Northeast",
+      "East"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Mancozeb 75% WP @ 2.5g/L preventively",
+        "Hilling up"
+      ],
+      "organic": [
+        "Bordeaux mixture 1%",
+        "Use certified seed tubers"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Potato_Early_Blight": {
+    "crop": "Potato",
+    "disease": "Early Blight",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 30,
+      "humidity_min": 80,
+      "humidity_max": 95,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 2
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Tuber formation"
+    ],
+    "regions": [
+      "North",
+      "Central",
+      "West"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Chlorothalonil 75% WP @ 2g/L",
+        "Remove lower leaves"
+      ],
+      "organic": [
+        "Neem oil spray",
+        "Adequate spacing"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Tomato_Leaf_Curl_Virus": {
+    "crop": "Tomato",
+    "disease": "Leaf Curl Virus",
+    "type": "viral",
+    "weather_triggers": {
+      "temp_min": 30,
+      "temp_max": 40,
+      "humidity_min": 30,
+      "humidity_max": 60,
+      "rainfall": "none",
+      "wind": "moderate",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Seedling",
+      "Vegetative",
+      "Flowering"
+    ],
+    "regions": [
+      "South",
+      "West",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Control whitefly vector with Imidacloprid",
+        "Resistant varieties"
+      ],
+      "organic": [
+        "Yellow sticky traps",
+        "Neem oil 2% spray"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Tomato_Bacterial_Wilt": {
+    "crop": "Tomato",
+    "disease": "Bacterial Wilt",
+    "type": "bacterial",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 35,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 4
+    },
+    "growth_stages": [
+      "Flowering",
+      "Fruiting"
+    ],
+    "regions": [
+      "South",
+      "East",
+      "Northeast"
+    ],
+    "treatment": {
+      "preventive": [
+        "Drenching with Streptocycline 1g/10L",
+        "Raised beds"
+      ],
+      "organic": [
+        "Apply Pseudomonas fluorescens",
+        "Crop rotation"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Banana_Panama_Wilt": {
+    "crop": "Banana",
+    "disease": "Panama Wilt",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 30,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 5
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering",
+      "Fruiting"
+    ],
+    "regions": [
+      "South",
+      "East",
+      "West"
+    ],
+    "treatment": {
+      "preventive": [
+        "Use tissue culture plantlets",
+        "Carbendazim drenching"
+      ],
+      "organic": [
+        "Apply Trichoderma in soil",
+        "Proper drainage"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Banana_Sigatoka_Leaf_Spot": {
+    "crop": "Banana",
+    "disease": "Sigatoka Leaf Spot",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 28,
+      "humidity_min": 90,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 4
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering"
+    ],
+    "regions": [
+      "South",
+      "East",
+      "Northeast"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Propiconazole 25% EC @ 1ml/L",
+        "Remove affected leaves"
+      ],
+      "organic": [
+        "Bordeaux mixture spray",
+        "Adequate plant spacing"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Mango_Anthracnose": {
+    "crop": "Mango",
+    "disease": "Anthracnose",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 24,
+      "temp_max": 30,
+      "humidity_min": 90,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 3
+    },
+    "growth_stages": [
+      "Flowering",
+      "Fruiting"
+    ],
+    "regions": [
+      "South",
+      "West",
+      "East"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Carbendazim 50% WP @ 1g/L",
+        "Pre-harvest spray"
+      ],
+      "organic": [
+        "Bordeaux mixture 1%",
+        "Proper canopy management"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Mango_Mango_Hopper": {
+    "crop": "Mango",
+    "disease": "Mango Hopper",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 35,
+      "humidity_min": 60,
+      "humidity_max": 80,
+      "rainfall": "light",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Flowering"
+    ],
+    "regions": [
+      "South",
+      "West",
+      "North",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Imidacloprid 17.8% SL @ 0.3ml/L at panicle stage"
+      ],
+      "organic": [
+        "Neem oil 3% spray",
+        "Smoke orchards at dusk"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Kidneybeans_Anthracnose": {
+    "crop": "Kidneybeans",
+    "disease": "Anthracnose",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 18,
+      "temp_max": 25,
+      "humidity_min": 85,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 3
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering"
+    ],
+    "regions": [
+      "North",
+      "Northeast"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Mancozeb @ 2.5g/L",
+        "Certified seed"
+      ],
+      "organic": [
+        "Trichoderma seed treatment",
+        "Crop rotation"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Kidneybeans_Rust": {
+    "crop": "Kidneybeans",
+    "disease": "Rust",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 17,
+      "temp_max": 27,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 2
+    },
+    "growth_stages": [
+      "Flowering",
+      "Pod"
+    ],
+    "regions": [
+      "North",
+      "Northeast"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Hexaconazole 5% EC @ 2ml/L",
+        "Resistant varieties"
+      ],
+      "organic": [
+        "Sulfur dusting",
+        "Destroy crop debris"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Pigeonpeas_Wilt": {
+    "crop": "Pigeonpeas",
+    "disease": "Wilt",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 28,
+      "temp_max": 33,
+      "humidity_min": 85,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 4
+    },
+    "growth_stages": [
+      "Flowering",
+      "Pod"
+    ],
+    "regions": [
+      "Central",
+      "South"
+    ],
+    "treatment": {
+      "preventive": [
+        "Seed treatment Carbendazim",
+        "Resistant varieties"
+      ],
+      "organic": [
+        "Trichoderma harzianum",
+        "Deep summer ploughing"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Mothbeans_Yellow_Mosaic_Virus": {
+    "crop": "Mothbeans",
+    "disease": "Yellow Mosaic Virus",
+    "type": "viral",
+    "weather_triggers": {
+      "temp_min": 30,
+      "temp_max": 38,
+      "humidity_min": 70,
+      "humidity_max": 90,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 1
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering"
+    ],
+    "regions": [
+      "West",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Control whitefly with Thiamethoxam",
+        "Resistant varieties"
+      ],
+      "organic": [
+        "Yellow sticky traps",
+        "Neem oil spray"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Mungbean_Yellow_Mosaic_Virus": {
+    "crop": "Mungbean",
+    "disease": "Yellow Mosaic Virus",
+    "type": "viral",
+    "weather_triggers": {
+      "temp_min": 28,
+      "temp_max": 35,
+      "humidity_min": 75,
+      "humidity_max": 95,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 1
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering"
+    ],
+    "regions": [
+      "North",
+      "Central",
+      "East"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Thiamethoxam 25% WG @ 0.3g/L",
+        "Early sowing"
+      ],
+      "organic": [
+        "Neem oil 2%",
+        "Remove infected plants early"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Blackgram_Root_Rot": {
+    "crop": "Blackgram",
+    "disease": "Root Rot",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 30,
+      "humidity_min": 90,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 5
+    },
+    "growth_stages": [
+      "Seedling",
+      "Vegetative"
+    ],
+    "regions": [
+      "Central",
+      "South",
+      "East"
+    ],
+    "treatment": {
+      "preventive": [
+        "Seed treatment Thiram @ 3g/kg",
+        "Avoid waterlogging"
+      ],
+      "organic": [
+        "Trichoderma viride",
+        "Raised bed sowing"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Lentil_Rust": {
+    "crop": "Lentil",
+    "disease": "Rust",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 15,
+      "temp_max": 25,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 3
+    },
+    "growth_stages": [
+      "Flowering",
+      "Pod"
+    ],
+    "regions": [
+      "North",
+      "Central",
+      "East"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Mancozeb @ 2.5g/L",
+        "Timely sowing"
+      ],
+      "organic": [
+        "Sulfur dusting",
+        "Resistant varieties"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Pomegranate_Bacterial_Blight": {
+    "crop": "Pomegranate",
+    "disease": "Bacterial Blight",
+    "type": "bacterial",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 35,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "moderate",
+      "consecutive_wet_days": 3
+    },
+    "growth_stages": [
+      "Fruiting",
+      "Flowering"
+    ],
+    "regions": [
+      "West",
+      "South",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Streptocycline + COC",
+        "Prune affected branches"
+      ],
+      "organic": [
+        "Bordeaux paste on cuts",
+        "Proper drainage"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Grapes_Downy_Mildew": {
+    "crop": "Grapes",
+    "disease": "Downy Mildew",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 20,
+      "temp_max": 25,
+      "humidity_min": 85,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 4
+    },
+    "growth_stages": [
+      "Flowering",
+      "Fruiting"
+    ],
+    "regions": [
+      "West",
+      "South"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Metalaxyl+Mancozeb @ 2.5g/L",
+        "Canopy management"
+      ],
+      "organic": [
+        "Bordeaux mixture 1%",
+        "Proper vineyard ventilation"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Watermelon_Fusarium_Wilt": {
+    "crop": "Watermelon",
+    "disease": "Fusarium Wilt",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 30,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 4
+    },
+    "growth_stages": [
+      "Seedling",
+      "Vegetative"
+    ],
+    "regions": [
+      "South",
+      "West",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Seed treatment Carbendazim",
+        "Grafted seedlings"
+      ],
+      "organic": [
+        "Trichoderma soil application",
+        "Long crop rotation"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Muskmelon_Downy_Mildew": {
+    "crop": "Muskmelon",
+    "disease": "Downy Mildew",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 18,
+      "temp_max": 25,
+      "humidity_min": 90,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 3
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Fruiting"
+    ],
+    "regions": [
+      "North",
+      "West",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Metalaxyl @ 2g/L",
+        "Avoid overhead irrigation"
+      ],
+      "organic": [
+        "Neem oil spray",
+        "Adequate spacing"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Apple_Apple_Scab": {
+    "crop": "Apple",
+    "disease": "Apple Scab",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 15,
+      "temp_max": 25,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 4
+    },
+    "growth_stages": [
+      "Flowering",
+      "Fruiting"
+    ],
+    "regions": [
+      "North"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Mancozeb pre-bloom + Myclobutanil post-bloom"
+      ],
+      "organic": [
+        "Bordeaux mixture",
+        "Rake and destroy fallen leaves"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Orange_Citrus_Canker": {
+    "crop": "Orange",
+    "disease": "Citrus Canker",
+    "type": "bacterial",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 35,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "high",
+      "consecutive_wet_days": 3
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering",
+      "Fruiting"
+    ],
+    "regions": [
+      "South",
+      "Central",
+      "Northeast"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray COC 50% WP @ 3g/L",
+        "Windbreaks around orchard"
+      ],
+      "organic": [
+        "Bordeaux mixture 1%",
+        "Prune infected twigs"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Papaya_Ring_Spot_Virus": {
+    "crop": "Papaya",
+    "disease": "Ring Spot Virus",
+    "type": "viral",
+    "weather_triggers": {
+      "temp_min": 28,
+      "temp_max": 38,
+      "humidity_min": 70,
+      "humidity_max": 90,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 1
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering",
+      "Fruiting"
+    ],
+    "regions": [
+      "South",
+      "West",
+      "East"
+    ],
+    "treatment": {
+      "preventive": [
+        "Control aphid vector with Dimethoate",
+        "Barrier crops"
+      ],
+      "organic": [
+        "Reflective mulch",
+        "Remove infected plants immediately"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Coconut_Bud_Rot": {
+    "crop": "Coconut",
+    "disease": "Bud Rot",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 30,
+      "humidity_min": 95,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 6
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering",
+      "Fruiting"
+    ],
+    "regions": [
+      "South",
+      "West"
+    ],
+    "treatment": {
+      "preventive": [
+        "Apply Bordeaux paste to crown",
+        "Improve drainage"
+      ],
+      "organic": [
+        "Trichoderma application in crown",
+        "Remove dead fronds"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Coffee_Leaf_Rust": {
+    "crop": "Coffee",
+    "disease": "Leaf Rust",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 20,
+      "temp_max": 25,
+      "humidity_min": 85,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 4
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering"
+    ],
+    "regions": [
+      "South"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Bordeaux mixture pre-monsoon",
+        "Shade regulation"
+      ],
+      "organic": [
+        "Trichoderma spray",
+        "Resistant variety (Catimor)"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Jute_Stem_Rot": {
+    "crop": "Jute",
+    "disease": "Stem Rot",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 30,
+      "temp_max": 35,
+      "humidity_min": 90,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 4
+    },
+    "growth_stages": [
+      "Vegetative"
+    ],
+    "regions": [
+      "East",
+      "Northeast"
+    ],
+    "treatment": {
+      "preventive": [
+        "Seed treatment Carbendazim @ 2g/kg",
+        "Proper spacing"
+      ],
+      "organic": [
+        "Trichoderma seed treatment",
+        "Avoid waterlogging"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Sugarcane_Red_Rot": {
+    "crop": "Sugarcane",
+    "disease": "Red Rot",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 30,
+      "humidity_min": 85,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 5
+    },
+    "growth_stages": [
+      "Maturity",
+      "Vegetative"
+    ],
+    "regions": [
+      "North",
+      "South",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Sett treatment in Carbendazim 0.1%",
+        "Resistant varieties"
+      ],
+      "organic": [
+        "Trichoderma harzianum sett treatment",
+        "Hot water sett treatment"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Onion_Purple_Blotch": {
+    "crop": "Onion",
+    "disease": "Purple Blotch",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 30,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 3
+    },
+    "growth_stages": [
+      "Bulb formation",
+      "Vegetative"
+    ],
+    "regions": [
+      "West",
+      "Central",
+      "South"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Mancozeb 75% WP @ 2.5g/L",
+        "Proper drainage"
+      ],
+      "organic": [
+        "Trichoderma spray",
+        "Crop rotation with non-allium"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Groundnut_Tikka_Disease": {
+    "crop": "Groundnut",
+    "disease": "Tikka Disease",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 30,
+      "humidity_min": 85,
+      "humidity_max": 100,
+      "rainfall": "heavy",
+      "wind": "low",
+      "consecutive_wet_days": 3
+    },
+    "growth_stages": [
+      "Flowering",
+      "Pegging"
+    ],
+    "regions": [
+      "West",
+      "South",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Chlorothalonil @ 2g/L at 35 DAS",
+        "Intercropping"
+      ],
+      "organic": [
+        "Neem cake application",
+        "Crop rotation"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Mustard_Aphid_Infestation": {
+    "crop": "Mustard",
+    "disease": "Aphid Infestation",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 15,
+      "temp_max": 25,
+      "humidity_min": 30,
+      "humidity_max": 60,
+      "rainfall": "none",
+      "wind": "moderate",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Flowering",
+      "Pod"
+    ],
+    "regions": [
+      "North",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Dimethoate 30% EC @ 1ml/L at ETL",
+        "Early sowing"
+      ],
+      "organic": [
+        "Neem oil 2%",
+        "Lady beetle conservation"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Mustard_White_Rust": {
+    "crop": "Mustard",
+    "disease": "White Rust",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 12,
+      "temp_max": 20,
+      "humidity_min": 85,
+      "humidity_max": 100,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 3
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering"
+    ],
+    "regions": [
+      "North",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Metalaxyl+Mancozeb @ 2.5g/L",
+        "Resistant varieties"
+      ],
+      "organic": [
+        "Bordeaux mixture 1%",
+        "Destroy infected debris"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Pigeonpeas_Pod_Fly": {
+    "crop": "Pigeonpeas",
+    "disease": "Pod Fly",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 30,
+      "humidity_min": 70,
+      "humidity_max": 90,
+      "rainfall": "light",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Pod",
+      "Flowering"
+    ],
+    "regions": [
+      "Central",
+      "South",
+      "West"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Profenophos 50% EC @ 2ml/L at 50% flowering"
+      ],
+      "organic": [
+        "Neem seed kernel extract 5%",
+        "Early maturing varieties"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Mothbeans_Whitefly": {
+    "crop": "Mothbeans",
+    "disease": "Whitefly",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 32,
+      "temp_max": 42,
+      "humidity_min": 30,
+      "humidity_max": 60,
+      "rainfall": "none",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering"
+    ],
+    "regions": [
+      "West",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Thiamethoxam 25% WG @ 0.3g/L",
+        "Yellow sticky traps"
+      ],
+      "organic": [
+        "Neem oil 2%",
+        "Intercropping with tall cereals"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Mungbean_Powdery_Mildew": {
+    "crop": "Mungbean",
+    "disease": "Powdery Mildew",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 20,
+      "temp_max": 25,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "light",
+      "wind": "low",
+      "consecutive_wet_days": 1
+    },
+    "growth_stages": [
+      "Flowering",
+      "Pod"
+    ],
+    "regions": [
+      "North",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Carbendazim 50% WP @ 1g/L",
+        "Wettable sulfur 3g/L"
+      ],
+      "organic": [
+        "Sulfur dusting",
+        "Proper plant spacing"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Blackgram_Leaf_Crinkle_Virus": {
+    "crop": "Blackgram",
+    "disease": "Leaf Crinkle Virus",
+    "type": "viral",
+    "weather_triggers": {
+      "temp_min": 30,
+      "temp_max": 38,
+      "humidity_min": 70,
+      "humidity_max": 90,
+      "rainfall": "light",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering"
+    ],
+    "regions": [
+      "Central",
+      "South"
+    ],
+    "treatment": {
+      "preventive": [
+        "Control whitefly with Imidacloprid",
+        "Resistant varieties"
+      ],
+      "organic": [
+        "Yellow sticky traps",
+        "Remove infected plants"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Lentil_Wilt": {
+    "crop": "Lentil",
+    "disease": "Wilt",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 22,
+      "temp_max": 28,
+      "humidity_min": 85,
+      "humidity_max": 100,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 3
+    },
+    "growth_stages": [
+      "Seedling",
+      "Vegetative"
+    ],
+    "regions": [
+      "North",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Seed treatment Carbendazim+Thiram",
+        "Resistant varieties"
+      ],
+      "organic": [
+        "Trichoderma viride seed treatment",
+        "Crop rotation 4yr"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Pomegranate_Fruit_Borer": {
+    "crop": "Pomegranate",
+    "disease": "Fruit Borer",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 28,
+      "temp_max": 35,
+      "humidity_min": 60,
+      "humidity_max": 80,
+      "rainfall": "light",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Fruiting"
+    ],
+    "regions": [
+      "West",
+      "South",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Emamectin Benzoate 5% SG @ 0.4g/L",
+        "Bagging fruits"
+      ],
+      "organic": [
+        "Neem oil 2%",
+        "Pheromone traps"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Grapes_Powdery_Mildew": {
+    "crop": "Grapes",
+    "disease": "Powdery Mildew",
+    "type": "fungal",
+    "weather_triggers": {
+      "temp_min": 20,
+      "temp_max": 30,
+      "humidity_min": 40,
+      "humidity_max": 70,
+      "rainfall": "none",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering",
+      "Fruiting"
+    ],
+    "regions": [
+      "West",
+      "South"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray wettable sulfur 80% WP @ 3g/L",
+        "Canopy thinning"
+      ],
+      "organic": [
+        "Sulfur dusting",
+        "Potassium bicarbonate spray"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Watermelon_Aphids": {
+    "crop": "Watermelon",
+    "disease": "Aphids",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 30,
+      "temp_max": 40,
+      "humidity_min": 30,
+      "humidity_max": 60,
+      "rainfall": "none",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering"
+    ],
+    "regions": [
+      "South",
+      "West",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Imidacloprid 17.8% SL @ 0.3ml/L",
+        "Reflective mulch"
+      ],
+      "organic": [
+        "Neem oil 2%",
+        "Ladybug conservation"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Muskmelon_Fruit_Fly": {
+    "crop": "Muskmelon",
+    "disease": "Fruit Fly",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 32,
+      "humidity_min": 60,
+      "humidity_max": 80,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 1
+    },
+    "growth_stages": [
+      "Fruiting"
+    ],
+    "regions": [
+      "North",
+      "West",
+      "Central",
+      "South"
+    ],
+    "treatment": {
+      "preventive": [
+        "Methyl eugenol traps + Malathion",
+        "Harvest at maturity"
+      ],
+      "organic": [
+        "Cue-lure traps",
+        "Neem oil spray on fruits"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Apple_Codling_Moth": {
+    "crop": "Apple",
+    "disease": "Codling Moth",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 20,
+      "temp_max": 30,
+      "humidity_min": 50,
+      "humidity_max": 70,
+      "rainfall": "light",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Fruiting"
+    ],
+    "regions": [
+      "North"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Chlorantraniliprole 18.5% SC",
+        "Pheromone traps"
+      ],
+      "organic": [
+        "Codling moth granulosis virus",
+        "Fruit bagging"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Orange_Citrus_Psylla": {
+    "crop": "Orange",
+    "disease": "Citrus Psylla",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 30,
+      "humidity_min": 60,
+      "humidity_max": 80,
+      "rainfall": "light",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Flowering",
+      "Vegetative"
+    ],
+    "regions": [
+      "South",
+      "Central",
+      "Northeast"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Imidacloprid 17.8% SL @ 0.3ml/L at new flush"
+      ],
+      "organic": [
+        "Neem oil 1%",
+        "Conserve natural enemies"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Papaya_Mealybug": {
+    "crop": "Papaya",
+    "disease": "Mealybug",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 30,
+      "temp_max": 40,
+      "humidity_min": 30,
+      "humidity_max": 60,
+      "rainfall": "none",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering",
+      "Fruiting"
+    ],
+    "regions": [
+      "South",
+      "West"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Profenophos 50% EC @ 2ml/L",
+        "Remove weeds"
+      ],
+      "organic": [
+        "Release Cryptolaemus beetle",
+        "Neem oil 2%"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Coconut_Rhinoceros_Beetle": {
+    "crop": "Coconut",
+    "disease": "Rhinoceros Beetle",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 35,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 2
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Flowering",
+      "Fruiting"
+    ],
+    "regions": [
+      "South",
+      "West"
+    ],
+    "treatment": {
+      "preventive": [
+        "Fill leaf axils with Naphthalene balls+sand",
+        "Hook out adults"
+      ],
+      "organic": [
+        "Metarhizium anisopliae in manure pits",
+        "Pheromone traps"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Coffee_Coffee_Berry_Borer": {
+    "crop": "Coffee",
+    "disease": "Coffee Berry Borer",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 20,
+      "temp_max": 28,
+      "humidity_min": 80,
+      "humidity_max": 100,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 2
+    },
+    "growth_stages": [
+      "Fruiting"
+    ],
+    "regions": [
+      "South"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Chlorpyriphos 20% EC at berry formation",
+        "Timely harvest"
+      ],
+      "organic": [
+        "Beauveria bassiana spray",
+        "Alcohol traps"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Jute_Yellow_Mite": {
+    "crop": "Jute",
+    "disease": "Yellow Mite",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 32,
+      "temp_max": 40,
+      "humidity_min": 30,
+      "humidity_max": 60,
+      "rainfall": "none",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Seedling",
+      "Vegetative"
+    ],
+    "regions": [
+      "East",
+      "Northeast"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Dicofol 18.5% EC @ 2.5ml/L",
+        "Early sowing"
+      ],
+      "organic": [
+        "Wettable sulfur spray",
+        "Remove infested leaves"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Sugarcane_Top_Borer": {
+    "crop": "Sugarcane",
+    "disease": "Top Borer",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 28,
+      "temp_max": 35,
+      "humidity_min": 60,
+      "humidity_max": 80,
+      "rainfall": "light",
+      "wind": "low",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Tillering"
+    ],
+    "regions": [
+      "North",
+      "South",
+      "Central"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Chlorantraniliprole 18.5% SC @ 0.4ml/L",
+        "Remove dead hearts"
+      ],
+      "organic": [
+        "Release Trichogramma chilonis",
+        "Light traps"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Onion_Thrips": {
+    "crop": "Onion",
+    "disease": "Thrips",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 28,
+      "temp_max": 35,
+      "humidity_min": 30,
+      "humidity_max": 60,
+      "rainfall": "none",
+      "wind": "moderate",
+      "consecutive_wet_days": 0
+    },
+    "growth_stages": [
+      "Vegetative",
+      "Bulb formation"
+    ],
+    "regions": [
+      "West",
+      "Central",
+      "South"
+    ],
+    "treatment": {
+      "preventive": [
+        "Spray Fipronil 5% SC @ 1.5ml/L",
+        "Overhead irrigation"
+      ],
+      "organic": [
+        "Neem oil 2%",
+        "Blue sticky traps"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  },
+  "Groundnut_White_Grub": {
+    "crop": "Groundnut",
+    "disease": "White Grub",
+    "type": "pest",
+    "weather_triggers": {
+      "temp_min": 25,
+      "temp_max": 32,
+      "humidity_min": 70,
+      "humidity_max": 90,
+      "rainfall": "moderate",
+      "wind": "low",
+      "consecutive_wet_days": 2
+    },
+    "growth_stages": [
+      "Seedling",
+      "Vegetative"
+    ],
+    "regions": [
+      "West",
+      "Central",
+      "South"
+    ],
+    "treatment": {
+      "preventive": [
+        "Soil application Phorate 10G @ 10kg/ha",
+        "Deep ploughing"
+      ],
+      "organic": [
+        "Metarhizium anisopliae soil treatment",
+        "Light traps for adults"
+      ],
+      "severity_action": {
+        "Low": "Monitor field daily, no action needed",
+        "Moderate": "Prepare spray, apply if symptoms appear",
+        "High": "Spray preventive treatment within 24 hours",
+        "Critical": "Immediate spray + inform local KVK officer"
+      }
+    }
+  }
+}

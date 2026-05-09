@@ -1,0 +1,415 @@
+{
+  "metadata": {
+    "description": "Comprehensive database of Indian government agricultural schemes and subsidies",
+    "last_updated": "2026-05-09",
+    "source": "Ministry of Agriculture & Farmers Welfare, Government of India",
+    "coverage": "Central and major state government schemes for farmers"
+  },
+  "central_schemes": {
+    "pm_kisan": {
+      "full_name": "Pradhan Mantri Kisan Samman Nidhi",
+      "launched": "2019",
+      "ministry": "Ministry of Agriculture & Farmers Welfare",
+      "objective": "Provide income support to small and marginal farmers",
+      "benefits": {
+        "amount": "₹6,000 per year",
+        "installments": "3 installments of ₹2,000 each",
+        "payment_schedule": "Every 4 months (April-July, August-November, December-March)"
+      },
+      "eligibility": {
+        "land_holding": "Up to 2 hectares of cultivable land",
+        "farmer_categories": ["Small farmers", "Marginal farmers"],
+        "exclusions": [
+          "Institutional landholders",
+          "Farmer families with income tax paying members",
+          "Government employees (current/retired)",
+          "Professionals like doctors, engineers, lawyers"
+        ]
+      },
+      "application_process": {
+        "method": "Online through PM-Kisan portal or Common Service Centers",
+        "documents_required": [
+          "Aadhaar card",
+          "Bank account details",
+          "Land ownership documents",
+          "Mobile number"
+        ],
+        "website": "https://pmkisan.gov.in"
+      },
+      "coverage": "All states and union territories",
+      "beneficiaries": "Over 11 crore farmers (as of 2026)"
+    },
+    "pmfby": {
+      "full_name": "Pradhan Mantri Fasal Bima Yojana",
+      "launched": "2016",
+      "ministry": "Ministry of Agriculture & Farmers Welfare",
+      "objective": "Provide crop insurance coverage against natural calamities",
+      "benefits": {
+        "coverage": "Comprehensive risk insurance for crops",
+        "premium_rates": {
+          "kharif_crops": "2% of sum insured",
+          "rabi_crops": "1.5% of sum insured",
+          "annual_commercial_horticultural_crops": "5% of sum insured"
+        },
+        "government_subsidy": "Balance premium paid by Central and State governments"
+      },
+      "eligibility": {
+        "farmers": ["All farmers including sharecroppers and tenant farmers"],
+        "crops_covered": [
+          "Food crops (cereals, millets, pulses)",
+          "Oilseeds",
+          "Annual commercial/horticultural crops"
+        ],
+        "risks_covered": [
+          "Drought, flood, hailstorm, cyclone",
+          "Fire, lightning, storm, landslide",
+          "Post-harvest losses",
+          "Localized calamities (hailstorm, landslide, inundation)"
+        ]
+      },
+      "application_process": {
+        "method": "Through banks, insurance companies, or online portal",
+        "cutoff_dates": {
+          "kharif": "31st July",
+          "rabi": "31st December"
+        },
+        "documents_required": [
+          "Aadhaar card",
+          "Bank account details", 
+          "Land records",
+          "Sowing certificate"
+        ],
+        "website": "https://pmfby.gov.in"
+      },
+      "claim_settlement": "Technology-based assessment using satellite imagery and weather data"
+    },
+    "pm_kusum": {
+      "full_name": "Pradhan Mantri Kisan Urja Suraksha evam Utthaan Mahabhiyan",
+      "launched": "2019",
+      "ministry": "Ministry of New and Renewable Energy",
+      "objective": "Promote solar energy in agriculture sector",
+      "components": {
+        "component_a": {
+          "description": "Solar water pumps for irrigation",
+          "capacity": "7.5 HP standalone solar pumps",
+          "subsidy": "60% (30% Central + 30% State government)",
+          "farmer_contribution": "40% (can avail bank loan)"
+        },
+        "component_b": {
+          "description": "Grid-connected solar power plants on agricultural land",
+          "capacity": "500 kW to 2 MW individual plants",
+          "subsidy": "30% by Central government",
+          "benefits": "Additional income from selling power to grid"
+        },
+        "component_c": {
+          "description": "Solarization of existing grid-connected agriculture pumps",
+          "capacity": "Up to 7.5 HP pumps",
+          "subsidy": "60% (30% Central + 30% State government)"
+        }
+      },
+      "eligibility": {
+        "farmers": "Individual farmers, FPOs, cooperatives",
+        "land_requirement": "Cultivable land for solar installations",
+        "pump_age": "Existing pumps should be functional"
+      },
+      "application_process": {
+        "method": "Through state nodal agencies or online portal",
+        "documents_required": [
+          "Land ownership documents",
+          "Electricity connection details",
+          "Bank account details",
+          "Aadhaar card"
+        ]
+      },
+      "target": "25.75 lakh solar pumps by 2026"
+    },
+    "soil_health_card": {
+      "full_name": "Soil Health Card Scheme",
+      "launched": "2015",
+      "ministry": "Ministry of Agriculture & Farmers Welfare",
+      "objective": "Provide soil nutrient status to farmers for appropriate fertilizer use",
+      "benefits": {
+        "soil_testing": "Free soil testing for farmers",
+        "recommendations": "Crop-wise fertilizer recommendations",
+        "frequency": "Once every 2 years",
+        "parameters_tested": [
+          "Soil pH and electrical conductivity",
+          "Organic carbon content",
+          "Available nitrogen, phosphorus, potassium",
+          "Secondary nutrients (sulfur, calcium, magnesium)",
+          "Micronutrients (zinc, iron, copper, manganese, boron)"
+        ]
+      },
+      "process": {
+        "sample_collection": "Farmers collect soil samples from their fields",
+        "testing": "Samples tested at government laboratories",
+        "card_distribution": "Soil Health Cards distributed with recommendations"
+      },
+      "impact": {
+        "fertilizer_savings": "10-25% reduction in fertilizer use",
+        "yield_improvement": "5-10% increase in crop yields",
+        "cost_reduction": "Reduced input costs for farmers"
+      }
+    },
+    "pkvy": {
+      "full_name": "Paramparagat Krishi Vikas Yojana",
+      "launched": "2015",
+      "ministry": "Ministry of Agriculture & Farmers Welfare",
+      "objective": "Promote organic farming and reduce chemical fertilizer use",
+      "benefits": {
+        "financial_assistance": "₹50,000 per hectare over 3 years",
+        "cluster_approach": "Groups of 50 farmers with 50 hectares",
+        "certification": "Organic certification support",
+        "market_linkage": "Direct marketing support"
+      },
+      "components": {
+        "cluster_formation": "Formation of farmer groups for organic farming",
+        "capacity_building": "Training on organic farming practices",
+        "input_support": "Organic inputs like bio-fertilizers, bio-pesticides",
+        "certification_support": "Third-party certification for organic produce"
+      },
+      "eligibility": {
+        "farmers": "Individual farmers willing to adopt organic farming",
+        "land_requirement": "Minimum 50 hectares per cluster",
+        "commitment": "3-year commitment to organic practices"
+      },
+      "financial_pattern": {
+        "year_1": "₹20,000 per hectare",
+        "year_2": "₹15,000 per hectare", 
+        "year_3": "₹15,000 per hectare"
+      }
+    },
+    "kisan_credit_card": {
+      "full_name": "Kisan Credit Card Scheme",
+      "launched": "1998 (Modified in 2019)",
+      "ministry": "Ministry of Agriculture & Farmers Welfare",
+      "objective": "Provide adequate and timely credit to farmers",
+      "benefits": {
+        "credit_limit": "Based on cropping pattern and scale of finance",
+        "interest_rate": "7% per annum (with 3% subvention)",
+        "repayment": "Flexible repayment based on harvesting and marketing periods",
+        "insurance_coverage": "Personal accident insurance up to ₹50,000"
+      },
+      "eligibility": {
+        "farmers": [
+          "Individual farmers (owner cultivators)",
+          "Tenant farmers and sharecroppers",
+          "Self-help group members",
+          "Joint liability group members"
+        ],
+        "activities_covered": [
+          "Short-term credit for crop production",
+          "Medium-term credit for agriculture equipment",
+          "Long-term credit for agriculture infrastructure",
+          "Consumption needs of farmer households"
+        ]
+      },
+      "application_process": {
+        "method": "Through banks (commercial, cooperative, regional rural banks)",
+        "documents_required": [
+          "Application form with photograph",
+          "Identity proof (Aadhaar card)",
+          "Address proof",
+          "Land ownership documents"
+        ]
+      },
+      "special_features": {
+        "atm_facility": "Withdrawal through ATMs and PoS machines",
+        "digitization": "Digital KCC for faster processing",
+        "saturation_drive": "Coverage of all eligible farmers"
+      }
+    }
+  },
+  "state_schemes": {
+    "maharashtra": {
+      "namo_shetkari_yojana": {
+        "full_name": "Namo Shetkari Mahasanman Nidhi Yojana",
+        "launched": "2023",
+        "objective": "Additional income support to farmers",
+        "benefits": {
+          "amount": "₹6,000 per year (in addition to PM-Kisan)",
+          "total_benefit": "₹12,000 per year (PM-Kisan + State scheme)"
+        },
+        "eligibility": "Same as PM-Kisan scheme"
+      },
+      "baliraja_solar_pump": {
+        "full_name": "Mukhyamantri Saur Krishi Pump Yojana",
+        "objective": "Provide solar pumps to farmers",
+        "benefits": {
+          "subsidy": "95% subsidy for 3 HP and 5 HP pumps",
+          "farmer_contribution": "5% of pump cost"
+        },
+        "target": "1 lakh solar pumps"
+      }
+    },
+    "punjab": {
+      "crop_diversification": {
+        "full_name": "Crop Diversification Programme",
+        "objective": "Reduce paddy area and promote alternative crops",
+        "benefits": {
+          "incentive": "₹17,500 per hectare for shifting from paddy",
+          "crops_promoted": ["Maize", "Cotton", "Sugarcane", "Basmati rice"]
+        }
+      },
+      "smart_village_campaign": {
+        "objective": "Comprehensive village development",
+        "components": [
+          "Infrastructure development",
+          "Digital services",
+          "Skill development",
+          "Health and education facilities"
+        ]
+      }
+    },
+    "karnataka": {
+      "raitha_bandhu": {
+        "full_name": "Raitha Bandhu Scheme",
+        "launched": "2019",
+        "objective": "Investment support for farmers",
+        "benefits": {
+          "amount": "₹10,000 per hectare per year",
+          "seasons": "₹5,000 each for Kharif and Rabi seasons"
+        },
+        "eligibility": "All farmers irrespective of land holding size"
+      },
+      "krishi_bhagya": {
+        "objective": "Provide irrigation facilities",
+        "components": [
+          "Borewell drilling subsidy",
+          "Drip irrigation subsidy",
+          "Sprinkler irrigation support"
+        ]
+      }
+    },
+    "telangana": {
+      "rythu_bandhu": {
+        "full_name": "Rythu Bandhu Scheme",
+        "launched": "2018",
+        "objective": "Investment support for agriculture",
+        "benefits": {
+          "amount": "₹10,000 per hectare per year",
+          "payment": "₹5,000 each for Kharif and Rabi seasons"
+        }
+      },
+      "rythu_bima": {
+        "objective": "Life insurance for farmers",
+        "benefits": {
+          "coverage": "₹5 lakh life insurance",
+          "premium": "Paid by state government"
+        }
+      }
+    }
+  },
+  "subsidy_schemes": {
+    "agriculture_mechanization": {
+      "scheme_name": "Sub-Mission on Agricultural Mechanization (SMAM)",
+      "objective": "Promote farm mechanization",
+      "subsidies": {
+        "tractors": "25-40% subsidy on cost",
+        "harvesters": "40-50% subsidy on cost",
+        "implements": "50% subsidy on cost",
+        "custom_hiring_centers": "40% subsidy for establishment"
+      },
+      "eligibility": {
+        "individual_farmers": "All categories of farmers",
+        "fpos_shgs": "Farmer Producer Organizations and Self Help Groups",
+        "entrepreneurs": "For custom hiring centers"
+      }
+    },
+    "horticulture_development": {
+      "scheme_name": "Mission for Integrated Development of Horticulture (MIDH)",
+      "objective": "Holistic development of horticulture sector",
+      "subsidies": {
+        "plantation": "50% of cost for general farmers, 75% for SC/ST",
+        "protected_cultivation": "50% subsidy for polyhouses and shade nets",
+        "post_harvest_management": "35% subsidy for pack houses and cold storages",
+        "organic_farming": "50% subsidy for organic inputs"
+      },
+      "components": [
+        "Area expansion and productivity enhancement",
+        "Technology promotion and extension",
+        "Post-harvest management and processing",
+        "Marketing and export promotion"
+      ]
+    },
+    "micro_irrigation": {
+      "scheme_name": "Pradhan Mantri Krishi Sinchayee Yojana (PMKSY)",
+      "objective": "Enhance water use efficiency in agriculture",
+      "subsidies": {
+        "drip_irrigation": "55% subsidy for general farmers, 75% for SC/ST/women",
+        "sprinkler_irrigation": "55% subsidy for general farmers, 75% for SC/ST/women",
+        "micro_sprinklers": "50% subsidy on cost"
+      },
+      "benefits": [
+        "Water saving of 30-50%",
+        "Fertilizer saving of 20-30%",
+        "Yield increase of 20-40%",
+        "Energy saving in pumping"
+      ]
+    }
+  },
+  "application_procedures": {
+    "common_documents": [
+      "Aadhaar card (mandatory for most schemes)",
+      "Bank account details with IFSC code",
+      "Land ownership documents (Khata/Pahani)",
+      "Caste certificate (if applicable)",
+      "Income certificate (if required)",
+      "Mobile number for SMS alerts"
+    ],
+    "application_channels": [
+      "Online portals (scheme-specific websites)",
+      "Common Service Centers (CSCs)",
+      "Bank branches",
+      "Agriculture department offices",
+      "Krishi Vigyan Kendras (KVKs)"
+    ],
+    "general_process": [
+      "Check eligibility criteria for the scheme",
+      "Gather required documents",
+      "Fill application form (online or offline)",
+      "Submit application with documents",
+      "Track application status",
+      "Receive benefits through Direct Benefit Transfer (DBT)"
+    ]
+  },
+  "digital_initiatives": {
+    "pm_kisan_mobile_app": {
+      "features": [
+        "Check payment status",
+        "Update bank details",
+        "Aadhaar linking",
+        "Beneficiary status verification"
+      ]
+    },
+    "kisan_suvidha_app": {
+      "features": [
+        "Weather information",
+        "Market prices",
+        "Plant protection measures",
+        "Fertilizer dealers and pesticide dealers"
+      ]
+    },
+    "crop_insurance_app": {
+      "features": [
+        "Crop insurance enrollment",
+        "Claim status tracking",
+        "Yield data submission",
+        "Premium calculation"
+      ]
+    }
+  },
+  "helpline_numbers": {
+    "pm_kisan": "155261 or 011-24300606",
+    "pmfby": "14447 (Toll-free)",
+    "kisan_call_center": "1800-180-1551",
+    "soil_health_card": "011-23382012"
+  },
+  "important_websites": {
+    "farmer_welfare": "https://agricoop.nic.in",
+    "pm_kisan": "https://pmkisan.gov.in",
+    "crop_insurance": "https://pmfby.gov.in",
+    "soil_health": "https://soilhealth.dac.gov.in",
+    "kisan_portal": "https://farmer.gov.in"
+  }
+}

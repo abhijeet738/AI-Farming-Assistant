@@ -1,0 +1,301 @@
+{
+  "metadata": {
+    "description": "Crop calendar for major Indian crops by region and season",
+    "last_updated": "2026-05-09",
+    "source": "Indian Council of Agricultural Research (ICAR) and Ministry of Agriculture",
+    "coverage": "Major crops across Indian states and seasons"
+  },
+  "seasons": {
+    "kharif": {
+      "description": "Monsoon season crops (June-October)",
+      "sowing_period": "June-July",
+      "harvesting_period": "September-October"
+    },
+    "rabi": {
+      "description": "Winter season crops (November-April)",
+      "sowing_period": "November-December", 
+      "harvesting_period": "March-April"
+    },
+    "zaid": {
+      "description": "Summer season crops (April-June)",
+      "sowing_period": "March-April",
+      "harvesting_period": "May-June"
+    }
+  },
+  "crops": {
+    "rice": {
+      "scientific_name": "Oryza sativa",
+      "seasons": ["kharif"],
+      "regions": {
+        "west_bengal": {
+          "sowing": "June 15 - July 15",
+          "transplanting": "July 15 - August 15", 
+          "harvesting": "November 15 - December 15",
+          "varieties": ["IET-4786", "Swarna", "MTU-7029"],
+          "yield_potential": "4-6 tonnes/hectare"
+        },
+        "punjab": {
+          "sowing": "May 15 - June 15",
+          "transplanting": "June 15 - July 15",
+          "harvesting": "October 15 - November 15", 
+          "varieties": ["PR-126", "Pusa-44", "PR-121"],
+          "yield_potential": "6-8 tonnes/hectare"
+        },
+        "tamil_nadu": {
+          "sowing": "June 1 - July 31",
+          "transplanting": "July 1 - August 31",
+          "harvesting": "October 15 - December 15",
+          "varieties": ["ADT-43", "CO-51", "TKM-13"],
+          "yield_potential": "5-7 tonnes/hectare"
+        },
+        "andhra_pradesh": {
+          "sowing": "June 15 - July 31",
+          "transplanting": "July 15 - August 31", 
+          "harvesting": "November 1 - December 31",
+          "varieties": ["MTU-1010", "BPT-5204", "RNR-15048"],
+          "yield_potential": "5-6 tonnes/hectare"
+        }
+      },
+      "water_requirement": "1200-1500 mm",
+      "soil_type": "Clay loam, well-drained",
+      "temperature_range": "20-35°C"
+    },
+    "wheat": {
+      "scientific_name": "Triticum aestivum",
+      "seasons": ["rabi"],
+      "regions": {
+        "punjab": {
+          "sowing": "November 1 - November 30",
+          "harvesting": "April 10 - April 30",
+          "varieties": ["PBW-725", "HD-3086", "PBW-677"],
+          "yield_potential": "4-5 tonnes/hectare"
+        },
+        "haryana": {
+          "sowing": "November 5 - December 5",
+          "harvesting": "April 15 - May 5", 
+          "varieties": ["WH-1105", "HD-2967", "DBW-88"],
+          "yield_potential": "4-5 tonnes/hectare"
+        },
+        "uttar_pradesh": {
+          "sowing": "November 15 - December 15",
+          "harvesting": "March 25 - April 25",
+          "varieties": ["HD-2733", "PBW-502", "UP-2628"],
+          "yield_potential": "3-4 tonnes/hectare"
+        },
+        "madhya_pradesh": {
+          "sowing": "November 20 - December 20",
+          "harvesting": "March 20 - April 20",
+          "varieties": ["GW-366", "HI-1544", "MP-3288"],
+          "yield_potential": "2.5-3.5 tonnes/hectare"
+        }
+      },
+      "water_requirement": "450-650 mm",
+      "soil_type": "Well-drained loamy soil",
+      "temperature_range": "15-25°C"
+    },
+    "cotton": {
+      "scientific_name": "Gossypium hirsutum",
+      "seasons": ["kharif"],
+      "regions": {
+        "gujarat": {
+          "sowing": "May 15 - June 30",
+          "harvesting": "October 15 - January 31",
+          "varieties": ["Bt-cotton hybrids", "GJHV-497", "GCH-7"],
+          "yield_potential": "500-700 kg/hectare"
+        },
+        "maharashtra": {
+          "sowing": "June 1 - July 15", 
+          "harvesting": "November 1 - February 28",
+          "varieties": ["PKV-081", "PKBH-1", "NH-615"],
+          "yield_potential": "400-600 kg/hectare"
+        },
+        "andhra_pradesh": {
+          "sowing": "June 15 - July 31",
+          "harvesting": "December 1 - March 31",
+          "varieties": ["NCS-207", "Mallika", "Suraj"],
+          "yield_potential": "450-650 kg/hectare"
+        }
+      },
+      "water_requirement": "700-1200 mm",
+      "soil_type": "Black cotton soil, well-drained",
+      "temperature_range": "21-30°C"
+    },
+    "sugarcane": {
+      "scientific_name": "Saccharum officinarum",
+      "seasons": ["kharif", "rabi"],
+      "regions": {
+        "uttar_pradesh": {
+          "sowing": "February-March, October-November",
+          "harvesting": "December-March (next year)",
+          "varieties": ["CoS-767", "CoS-8436", "UP-0097"],
+          "yield_potential": "70-90 tonnes/hectare"
+        },
+        "maharashtra": {
+          "sowing": "January-March, July-August",
+          "harvesting": "November-March (next year)", 
+          "varieties": ["Co-86032", "CoM-265", "CoS-8432"],
+          "yield_potential": "80-120 tonnes/hectare"
+        },
+        "karnataka": {
+          "sowing": "February-April, August-October",
+          "harvesting": "December-April (next year)",
+          "varieties": ["Co-62175", "CoC-671", "Co-94012"],
+          "yield_potential": "100-140 tonnes/hectare"
+        }
+      },
+      "water_requirement": "1500-2500 mm",
+      "soil_type": "Deep, well-drained loamy soil",
+      "temperature_range": "26-32°C"
+    },
+    "maize": {
+      "scientific_name": "Zea mays",
+      "seasons": ["kharif", "rabi", "zaid"],
+      "regions": {
+        "karnataka": {
+          "sowing": "June-July (Kharif), December-January (Rabi)",
+          "harvesting": "September-October (Kharif), April-May (Rabi)",
+          "varieties": ["NAC-6002", "GH-0727", "CP-808"],
+          "yield_potential": "6-8 tonnes/hectare"
+        },
+        "andhra_pradesh": {
+          "sowing": "June-July (Kharif), November-December (Rabi)",
+          "harvesting": "September-October (Kharif), March-April (Rabi)",
+          "varieties": ["DHM-117", "Surya", "Ganga-5"],
+          "yield_potential": "5-7 tonnes/hectare"
+        },
+        "bihar": {
+          "sowing": "June-July (Kharif), November-December (Rabi)",
+          "harvesting": "September-October (Kharif), March-April (Rabi)",
+          "varieties": ["Suwan", "Ganga-11", "Shaktiman-1"],
+          "yield_potential": "4-6 tonnes/hectare"
+        }
+      },
+      "water_requirement": "500-800 mm",
+      "soil_type": "Well-drained fertile soil",
+      "temperature_range": "21-27°C"
+    },
+    "soybean": {
+      "scientific_name": "Glycine max",
+      "seasons": ["kharif"],
+      "regions": {
+        "madhya_pradesh": {
+          "sowing": "June 15 - July 15",
+          "harvesting": "September 15 - October 15",
+          "varieties": ["JS-335", "JS-9305", "NRC-7"],
+          "yield_potential": "1.2-1.8 tonnes/hectare"
+        },
+        "maharashtra": {
+          "sowing": "June 15 - July 31",
+          "harvesting": "October 1 - November 15",
+          "varieties": ["MACS-450", "JS-335", "MAUS-71"],
+          "yield_potential": "1.0-1.5 tonnes/hectare"
+        },
+        "rajasthan": {
+          "sowing": "July 1 - July 31",
+          "harvesting": "October 15 - November 30",
+          "varieties": ["SL-525", "PK-1024", "Bragg"],
+          "yield_potential": "1.0-1.4 tonnes/hectare"
+        }
+      },
+      "water_requirement": "450-700 mm",
+      "soil_type": "Well-drained loamy soil",
+      "temperature_range": "20-30°C"
+    },
+    "groundnut": {
+      "scientific_name": "Arachis hypogaea",
+      "seasons": ["kharif", "rabi"],
+      "regions": {
+        "gujarat": {
+          "sowing": "June 15 - July 15 (Kharif), November 15 - December 15 (Rabi)",
+          "harvesting": "October 15 - November 15 (Kharif), March 15 - April 15 (Rabi)",
+          "varieties": ["GG-20", "TG-37A", "Gujarat-11"],
+          "yield_potential": "2.0-2.5 tonnes/hectare"
+        },
+        "andhra_pradesh": {
+          "sowing": "June 1 - July 15 (Kharif), December 1 - January 15 (Rabi)",
+          "harvesting": "September 15 - October 31 (Kharif), April 1 - May 15 (Rabi)",
+          "varieties": ["Kadiri-6", "Narayani", "K-134"],
+          "yield_potential": "1.5-2.2 tonnes/hectare"
+        },
+        "tamil_nadu": {
+          "sowing": "June 15 - July 31 (Kharif), December 15 - January 31 (Rabi)",
+          "harvesting": "September 30 - November 15 (Kharif), April 15 - May 31 (Rabi)",
+          "varieties": ["TMV-7", "VRI-2", "CO-6"],
+          "yield_potential": "1.8-2.4 tonnes/hectare"
+        }
+      },
+      "water_requirement": "500-750 mm",
+      "soil_type": "Well-drained sandy loam",
+      "temperature_range": "20-30°C"
+    },
+    "pulses": {
+      "scientific_name": "Various legumes",
+      "seasons": ["kharif", "rabi"],
+      "types": {
+        "chickpea": {
+          "seasons": ["rabi"],
+          "regions": {
+            "madhya_pradesh": {
+              "sowing": "October 15 - November 15",
+              "harvesting": "February 15 - March 31",
+              "varieties": ["JG-11", "JG-130", "Vijay"],
+              "yield_potential": "1.5-2.0 tonnes/hectare"
+            },
+            "rajasthan": {
+              "sowing": "October 20 - November 20",
+              "harvesting": "March 1 - April 15",
+              "varieties": ["RSG-888", "GNG-469", "Dahod Yellow"],
+              "yield_potential": "1.2-1.8 tonnes/hectare"
+            }
+          }
+        },
+        "pigeon_pea": {
+          "seasons": ["kharif"],
+          "regions": {
+            "maharashtra": {
+              "sowing": "June 15 - July 15",
+              "harvesting": "December 15 - January 31",
+              "varieties": ["BSMR-736", "Vipula", "Maruti"],
+              "yield_potential": "1.0-1.5 tonnes/hectare"
+            },
+            "karnataka": {
+              "sowing": "June 1 - July 15",
+              "harvesting": "December 1 - January 15",
+              "varieties": ["BRG-1", "TS-3R", "Maruti"],
+              "yield_potential": "1.2-1.6 tonnes/hectare"
+            }
+          }
+        }
+      },
+      "water_requirement": "300-400 mm",
+      "soil_type": "Well-drained loamy soil",
+      "temperature_range": "20-30°C"
+    }
+  },
+  "regional_climate_zones": {
+    "northern_plains": {
+      "states": ["Punjab", "Haryana", "Uttar Pradesh", "Bihar"],
+      "climate": "Semi-arid to sub-humid",
+      "major_crops": ["wheat", "rice", "sugarcane", "maize"],
+      "rainfall": "400-1200 mm annually"
+    },
+    "western_region": {
+      "states": ["Rajasthan", "Gujarat", "Maharashtra"],
+      "climate": "Arid to semi-arid",
+      "major_crops": ["cotton", "groundnut", "soybean", "sugarcane"],
+      "rainfall": "200-800 mm annually"
+    },
+    "southern_peninsula": {
+      "states": ["Karnataka", "Andhra Pradesh", "Tamil Nadu", "Kerala"],
+      "climate": "Tropical to sub-tropical",
+      "major_crops": ["rice", "cotton", "groundnut", "maize"],
+      "rainfall": "600-1500 mm annually"
+    },
+    "eastern_region": {
+      "states": ["West Bengal", "Odisha", "Jharkhand", "Assam"],
+      "climate": "Humid to sub-humid",
+      "major_crops": ["rice", "jute", "tea", "maize"],
+      "rainfall": "1000-2500 mm annually"
+    }
+  }
+}

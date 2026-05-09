@@ -1,0 +1,75 @@
+{
+  "feature_columns": [
+    "Temperature",
+    "Humidity",
+    "Moisture",
+    "Nitrogen",
+    "Potassium",
+    "Phosphorus",
+    "soil_encoded",
+    "crop_encoded",
+    "NPK_total",
+    "N_P_ratio",
+    "N_K_ratio",
+    "P_K_ratio",
+    "N_dominant",
+    "P_dominant",
+    "K_dominant",
+    "temp_humidity_index",
+    "moisture_ratio"
+  ],
+  "target": "Fertilizer Name",
+  "num_features": 17,
+  "num_classes": 7,
+  "classes": [
+    "10-26-26",
+    "14-35-14",
+    "17-17-17",
+    "20-20",
+    "28-28",
+    "DAP",
+    "Urea"
+  ],
+  "soil_types": [
+    "Black",
+    "Clayey",
+    "Loamy",
+    "Red",
+    "Sandy"
+  ],
+  "crop_types": [
+    "Barley",
+    "Cotton",
+    "Ground Nuts",
+    "Maize",
+    "Millets",
+    "Oil seeds",
+    "Paddy",
+    "Pulses",
+    "Sugarcane",
+    "Tobacco",
+    "Wheat"
+  ],
+  "model_metrics": {
+    "random_forest": {
+      "accuracy": 0.9792,
+      "f1": 0.9792
+    },
+    "xgboost": {
+      "accuracy": 0.9911,
+      "f1": 0.9911
+    },
+    "lightgbm": {
+      "accuracy": 0.9901,
+      "f1": 0.9901
+    },
+    "ensemble": {
+      "accuracy": 0.9901,
+      "f1": 0.9901
+    }
+  },
+  "augmentation": {
+    "original_samples": 99,
+    "augmented_samples": 5049
+  }
+}

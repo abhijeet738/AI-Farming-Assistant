@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: farming-assistant-backend:latest
+    container_name: farming-assistant-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - WORKERS_PER_CORE=1
+      - MAX_WORKERS=4
+    volumes:
+      - ./ml_models:/app/ml_models
+      - ./app/data:/app/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # In production, you would run behind a reverse proxy like Nginx or Traefik
+    networks:
+      - farming_network
+
+networks:
+  farming_network:
+    driver: bridge

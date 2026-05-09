@@ -1,0 +1,408 @@
+{
+  "metadata": {
+    "description": "Carbon emission factors for agricultural activities based on IPCC guidelines",
+    "last_updated": "2026-05-09",
+    "source": "IPCC 2019 Refinement, Indian Network for Climate Change Assessment (INCCA)",
+    "units": "kg CO2 equivalent per unit",
+    "scope": "Agricultural carbon footprint calculation for Indian farming systems"
+  },
+  "emission_categories": {
+    "fertilizer_production": {
+      "description": "Emissions from manufacturing of synthetic fertilizers",
+      "unit": "kg CO2-eq per kg fertilizer"
+    },
+    "fertilizer_application": {
+      "description": "Direct and indirect N2O emissions from fertilizer use",
+      "unit": "kg CO2-eq per kg N applied"
+    },
+    "fuel_combustion": {
+      "description": "CO2 emissions from diesel/petrol use in farm machinery",
+      "unit": "kg CO2-eq per liter fuel"
+    },
+    "electricity_use": {
+      "description": "CO2 emissions from electricity consumption",
+      "unit": "kg CO2-eq per kWh"
+    },
+    "crop_residue_burning": {
+      "description": "Emissions from burning of crop residues",
+      "unit": "kg CO2-eq per kg dry matter burned"
+    },
+    "livestock": {
+      "description": "Methane emissions from livestock digestion",
+      "unit": "kg CO2-eq per animal per year"
+    }
+  },
+  "fertilizer_emission_factors": {
+    "production_emissions": {
+      "urea": {
+        "factor": 1.57,
+        "description": "Manufacturing emissions for urea production",
+        "source": "IPCC 2019, Indian fertilizer industry data"
+      },
+      "dap": {
+        "factor": 1.15,
+        "description": "Manufacturing emissions for DAP production",
+        "source": "IPCC 2019, Fertilizer Association of India"
+      },
+      "mop": {
+        "factor": 0.65,
+        "description": "Manufacturing emissions for MOP production",
+        "source": "IPCC 2019"
+      },
+      "ssp": {
+        "factor": 0.45,
+        "description": "Manufacturing emissions for SSP production",
+        "source": "IPCC 2019"
+      },
+      "npk_complex": {
+        "factor": 1.25,
+        "description": "Average emissions for NPK complex fertilizers",
+        "source": "IPCC 2019"
+      }
+    },
+    "application_emissions": {
+      "direct_n2o": {
+        "factor": 1.325,
+        "description": "Direct N2O emissions from nitrogen fertilizer application",
+        "calculation": "EF1 = 0.01 kg N2O-N/kg N applied × 44/28 × 298 GWP",
+        "source": "IPCC 2019 default factor"
+      },
+      "indirect_n2o_volatilization": {
+        "factor": 0.583,
+        "description": "Indirect N2O from NH3 and NOx volatilization",
+        "calculation": "FracGASF = 0.11 × EF4 = 0.01 × 44/28 × 298",
+        "source": "IPCC 2019"
+      },
+      "indirect_n2o_leaching": {
+        "factor": 0.742,
+        "description": "Indirect N2O from nitrate leaching and runoff",
+        "calculation": "FracLEACH = 0.24 × EF5 = 0.0075 × 44/28 × 298",
+        "source": "IPCC 2019"
+      }
+    }
+  },
+  "fuel_emission_factors": {
+    "diesel": {
+      "factor": 2.68,
+      "description": "CO2 emissions from diesel combustion in tractors and pumps",
+      "source": "IPCC 2006, Bureau of Energy Efficiency India"
+    },
+    "petrol": {
+      "factor": 2.31,
+      "description": "CO2 emissions from petrol combustion in small engines",
+      "source": "IPCC 2006"
+    },
+    "cng": {
+      "factor": 1.94,
+      "description": "CO2 emissions from compressed natural gas",
+      "source": "IPCC 2006"
+    },
+    "lpg": {
+      "factor": 1.51,
+      "description": "CO2 emissions from liquefied petroleum gas",
+      "source": "IPCC 2006"
+    }
+  },
+  "electricity_emission_factors": {
+    "india_grid_average": {
+      "factor": 0.82,
+      "description": "Average CO2 emissions from Indian electricity grid",
+      "source": "Central Electricity Authority of India 2024",
+      "regional_variation": "Varies from 0.65 (hydro-rich states) to 1.2 (coal-dependent states)"
+    },
+    "state_specific": {
+      "kerala": {
+        "factor": 0.45,
+        "description": "Low emissions due to high hydro and renewable energy"
+      },
+      "himachal_pradesh": {
+        "factor": 0.35,
+        "description": "Predominantly hydroelectric power"
+      },
+      "jharkhand": {
+        "factor": 1.15,
+        "description": "High coal dependency"
+      },
+      "chhattisgarh": {
+        "factor": 1.25,
+        "description": "Coal-based thermal power dominance"
+      },
+      "gujarat": {
+        "factor": 0.75,
+        "description": "Mix of thermal, gas, and renewable energy"
+      },
+      "rajasthan": {
+        "factor": 0.85,
+        "description": "Increasing solar and wind energy share"
+      }
+    }
+  },
+  "crop_residue_burning": {
+    "rice_straw": {
+      "factor": 1.515,
+      "description": "Emissions from burning rice straw in fields",
+      "components": {
+        "co2": 1.515,
+        "ch4": 0.0092,
+        "n2o": 0.00014
+      },
+      "source": "IPCC 2019, INCCA India studies"
+    },
+    "wheat_straw": {
+      "factor": 1.482,
+      "description": "Emissions from burning wheat straw in fields",
+      "components": {
+        "co2": 1.482,
+        "ch4": 0.0069,
+        "n2o": 0.00012
+      },
+      "source": "IPCC 2019"
+    },
+    "sugarcane_trash": {
+      "factor": 1.395,
+      "description": "Emissions from burning sugarcane leaves and tops",
+      "components": {
+        "co2": 1.395,
+        "ch4": 0.0065,
+        "n2o": 0.00009
+      },
+      "source": "IPCC 2019"
+    },
+    "cotton_stalks": {
+      "factor": 1.625,
+      "description": "Emissions from burning cotton plant residues",
+      "components": {
+        "co2": 1.625,
+        "ch4": 0.0095,
+        "n2o": 0.00015
+      },
+      "source": "IPCC 2019"
+    }
+  },
+  "livestock_emission_factors": {
+    "cattle_dairy": {
+      "factor": 2145,
+      "description": "Annual methane emissions from dairy cattle",
+      "source": "IPCC 2019, Indian livestock studies",
+      "regional_factors": {
+        "crossbred_high_yielding": 2145,
+        "indigenous_low_yielding": 1650,
+        "buffalo": 1950
+      }
+    },
+    "cattle_non_dairy": {
+      "factor": 1456,
+      "description": "Annual methane emissions from non-dairy cattle",
+      "source": "IPCC 2019"
+    },
+    "buffalo": {
+      "factor": 1950,
+      "description": "Annual methane emissions from buffalo",
+      "source": "IPCC 2019, Indian studies"
+    },
+    "goat": {
+      "factor": 146,
+      "description": "Annual methane emissions from goats",
+      "source": "IPCC 2019"
+    },
+    "sheep": {
+      "factor": 146,
+      "description": "Annual methane emissions from sheep",
+      "source": "IPCC 2019"
+    },
+    "poultry": {
+      "factor": 0.73,
+      "description": "Annual methane emissions from poultry (per bird)",
+      "source": "IPCC 2019"
+    }
+  },
+  "soil_carbon_factors": {
+    "organic_matter_decomposition": {
+      "fym_application": {
+        "factor": -0.45,
+        "description": "Carbon sequestration from farmyard manure application",
+        "unit": "kg CO2-eq per kg FYM applied",
+        "note": "Negative value indicates carbon sequestration"
+      },
+      "compost_application": {
+        "factor": -0.35,
+        "description": "Carbon sequestration from compost application",
+        "unit": "kg CO2-eq per kg compost applied"
+      },
+      "vermicompost_application": {
+        "factor": -0.55,
+        "description": "Carbon sequestration from vermicompost application",
+        "unit": "kg CO2-eq per kg vermicompost applied"
+      },
+      "crop_residue_incorporation": {
+        "factor": -0.25,
+        "description": "Carbon sequestration from crop residue incorporation",
+        "unit": "kg CO2-eq per kg dry residue incorporated"
+      }
+    },
+    "tillage_practices": {
+      "conventional_tillage": {
+        "factor": 0.15,
+        "description": "Carbon loss from intensive tillage operations",
+        "unit": "kg CO2-eq per hectare per operation"
+      },
+      "reduced_tillage": {
+        "factor": 0.08,
+        "description": "Reduced carbon loss from minimal tillage",
+        "unit": "kg CO2-eq per hectare per operation"
+      },
+      "no_tillage": {
+        "factor": -0.05,
+        "description": "Carbon sequestration from no-till practices",
+        "unit": "kg CO2-eq per hectare per year"
+      }
+    }
+  },
+  "water_management_factors": {
+    "irrigation_methods": {
+      "flood_irrigation": {
+        "factor": 0.25,
+        "description": "Energy-related emissions from flood irrigation",
+        "unit": "kg CO2-eq per hectare-cm water applied"
+      },
+      "sprinkler_irrigation": {
+        "factor": 0.35,
+        "description": "Higher energy use but better water efficiency",
+        "unit": "kg CO2-eq per hectare-cm water applied"
+      },
+      "drip_irrigation": {
+        "factor": 0.45,
+        "description": "Highest energy use but maximum water efficiency",
+        "unit": "kg CO2-eq per hectare-cm water applied"
+      }
+    },
+    "water_source": {
+      "groundwater_pumping": {
+        "factor": 0.82,
+        "description": "Electricity emissions from groundwater extraction",
+        "unit": "kg CO2-eq per kWh electricity used"
+      },
+      "canal_water": {
+        "factor": 0.05,
+        "description": "Minimal emissions from gravity-fed canal irrigation",
+        "unit": "kg CO2-eq per hectare-cm water applied"
+      }
+    }
+  },
+  "crop_specific_factors": {
+    "rice": {
+      "methane_emissions": {
+        "continuously_flooded": {
+          "factor": 1.30,
+          "description": "CH4 emissions from continuously flooded rice fields",
+          "unit": "kg CH4 per hectare per day",
+          "gwp_factor": 28,
+          "co2_equivalent": 36.4
+        },
+        "intermittently_flooded": {
+          "factor": 0.65,
+          "description": "Reduced CH4 emissions with alternate wetting and drying",
+          "unit": "kg CH4 per hectare per day",
+          "co2_equivalent": 18.2
+        },
+        "upland_rice": {
+          "factor": 0.05,
+          "description": "Minimal CH4 emissions from upland rice cultivation",
+          "unit": "kg CH4 per hectare per day",
+          "co2_equivalent": 1.4
+        }
+      }
+    },
+    "sugarcane": {
+      "burning_emissions": {
+        "pre_harvest_burning": {
+          "factor": 2.85,
+          "description": "Emissions from pre-harvest burning of sugarcane",
+          "unit": "kg CO2-eq per tonne cane burned"
+        }
+      }
+    }
+  },
+  "carbon_sequestration_potential": {
+    "agroforestry": {
+      "trees_on_farmland": {
+        "factor": -12.5,
+        "description": "Annual carbon sequestration from farm trees",
+        "unit": "kg CO2-eq per tree per year",
+        "species_variation": {
+          "neem": -15.2,
+          "eucalyptus": -18.5,
+          "mango": -8.5,
+          "coconut": -6.2
+        }
+      },
+      "boundary_plantation": {
+        "factor": -2.5,
+        "description": "Carbon sequestration from boundary tree plantation",
+        "unit": "kg CO2-eq per meter of boundary per year"
+      }
+    },
+    "cover_crops": {
+      "legume_cover_crops": {
+        "factor": -1.2,
+        "description": "Carbon sequestration from legume cover crops",
+        "unit": "kg CO2-eq per hectare per year"
+      },
+      "grass_cover_crops": {
+        "factor": -0.8,
+        "description": "Carbon sequestration from grass cover crops",
+        "unit": "kg CO2-eq per hectare per year"
+      }
+    }
+  },
+  "calculation_methodology": {
+    "system_boundaries": [
+      "On-farm activities (cultivation, irrigation, harvesting)",
+      "Input production (fertilizers, pesticides, seeds)",
+      "Fuel and electricity consumption",
+      "Livestock-related emissions (if integrated farming)",
+      "Soil carbon changes",
+      "Crop residue management"
+    ],
+    "exclusions": [
+      "Transportation of produce to markets",
+      "Processing and packaging",
+      "Consumer use and disposal",
+      "Infrastructure construction emissions"
+    ],
+    "calculation_steps": [
+      "Identify all emission sources on the farm",
+      "Collect activity data (fertilizer use, fuel consumption, etc.)",
+      "Apply appropriate emission factors",
+      "Calculate total emissions in CO2 equivalents",
+      "Account for carbon sequestration activities",
+      "Calculate net carbon footprint"
+    ]
+  },
+  "mitigation_strategies": {
+    "fertilizer_management": [
+      "Use of slow-release fertilizers",
+      "Precision application based on soil testing",
+      "Integration of organic and inorganic sources",
+      "Use of nitrification inhibitors"
+    ],
+    "energy_efficiency": [
+      "Solar-powered irrigation pumps",
+      "Energy-efficient farm equipment",
+      "Optimal irrigation scheduling",
+      "Use of renewable energy sources"
+    ],
+    "soil_health": [
+      "Crop residue incorporation instead of burning",
+      "Cover cropping and green manuring",
+      "Reduced tillage practices",
+      "Organic matter addition"
+    ],
+    "water_management": [
+      "Drip and sprinkler irrigation adoption",
+      "Rainwater harvesting",
+      "Alternate wetting and drying in rice",
+      "Mulching to reduce evaporation"
+    ]
+  }
+}

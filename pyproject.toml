@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "farming-assistant"
+version = "1.0.0"
+description = "AI-powered backend for smart farming analytics"
+authors = [
+    {name = "Abhijeet Raj", email = "abhijeet@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+python_classes = "Test*"
+asyncio_mode = "auto"
+addopts = "-v --cov=app --cov-report=term-missing"
+env = [
+    "DEBUG=true",
+    "DATABASE_URL=sqlite:///./test_farming_assistant.db",
+    "SUPABASE_URL=https://mock.supabase.co",
+    "SUPABASE_KEY=mock-key",
+    "SUPABASE_SERVICE_KEY=mock-service-key",
+    "SUPABASE_JWT_SECRET=mock-jwt-secret",
+    "OPENWEATHER_API_KEY=mock-weather-key",
+    "GOOGLE_API_KEY=mock-google-key"
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = [
+    ".git",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "ml_models"
+]
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "UP", # pyupgrade
+]
+ignore = [
+    "E501", # line too long (handled by formatting)
+    "B008", # do not perform function calls in argument defaults (common in FastAPI Depends)
+    "B904", # raise exception within except clause without from err
+    "F401", # imported but unused
+    "F841", # local variable is assigned to but never used
+    "E712", # comparison to true/false should be 'if cond is true'
+]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true

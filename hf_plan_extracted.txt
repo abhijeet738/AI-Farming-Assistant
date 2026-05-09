@@ -1,0 +1,25 @@
+Great question. Let me think through the deployment options for your ML models and give you a clear recommendation.
+
+## Your Current Architecture
+
+Right now, all 6 ML models load **locally in-process** via `model_registry.py`:
+
+```
+Backend Process (one monolith)
+├── Crop Model (~50MB, sklearn/xgb)     ← loaded in RAM
+├── Disease Model (~200MB, PyTorch)     ← loaded in RAM  
+├── Yield Model (~50MB, xgb/catboost)   ← loaded in RAM
+├── Market Model (~20MB, xgb)           ← loaded in RAM
+├── Fertilizer Model (~20MB, sklearn)   ← loaded in RAM
+└── Pest Model (~20MB, xgb)            ← loaded in RAM
+     Total: ~360MB in memory
+```
+
+## 3 Deployment Options
+
+### Option A: Monolith on HF Spaces (One Docker Space)
+```
+┌─── HF Space (Docker) ────────────────────┐
+│  FastAPI + LangGraph + ALL 6 ML Models   │
+│  + Weather API + Agent                    │
+<truncated 4359 bytes>

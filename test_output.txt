@@ -1,0 +1,295 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.3, pytest-9.0.3, pluggy-1.6.0 -- /Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/bin/python3.12
+cachedir: .pytest_cache
+rootdir: /Users/abhijeetraj/Desktop/Farming/farming-assistant/backend
+configfile: pytest.ini
+plugins: langsmith-0.8.0, cov-7.1.0, env-1.6.0, asyncio-0.21.1, anyio-4.13.0
+asyncio: mode=Mode.AUTO
+collecting ... collected 24 items
+
+tests/test_auth.py::test_protected_route_without_token PASSED            [  4%]
+tests/test_auth.py::test_login_endpoint PASSED                           [  8%]
+tests/test_chat.py::test_chat_invoke_valid PASSED                        [ 12%]
+tests/test_chat.py::test_chat_invoke_invalid PASSED                      [ 16%]
+tests/test_crop_recommend.py::test_get_supported_crops PASSED            [ 20%]
+tests/test_crop_recommend.py::test_recommend_crops_valid PASSED          [ 25%]
+tests/test_crop_recommend.py::test_recommend_crops_invalid_data PASSED   [ 29%]
+tests/test_disease_detect.py::test_analyze_disease_valid_image PASSED    [ 33%]
+tests/test_disease_detect.py::test_analyze_disease_invalid_file_type FAILED [ 37%]
+tests/test_fertilizer.py::test_get_fertilizer_products PASSED            [ 41%]
+tests/test_fertilizer.py::test_recommend_fertilizer_valid PASSED         [ 45%]
+tests/test_fertilizer.py::test_recommend_fertilizer_invalid_data PASSED  [ 50%]
+tests/test_health.py::test_root PASSED                                   [ 54%]
+tests/test_health.py::test_ping PASSED                                   [ 58%]
+tests/test_health.py::test_health_check PASSED                           [ 62%]
+tests/test_market_price.py::test_get_supported_crops_market PASSED       [ 66%]
+tests/test_market_price.py::test_get_market_price_valid PASSED           [ 70%]
+tests/test_market_price.py::test_get_market_price_invalid_crop PASSED    [ 75%]
+tests/test_pest_risk.py::test_get_supported_crops_pest PASSED            [ 79%]
+tests/test_pest_risk.py::test_assess_pest_risk_valid PASSED              [ 83%]
+tests/test_pest_risk.py::test_assess_pest_risk_invalid PASSED            [ 87%]
+tests/test_yield_predict.py::test_get_supported_crops_for_yield PASSED   [ 91%]
+tests/test_yield_predict.py::test_predict_yield_valid PASSED             [ 95%]
+tests/test_yield_predict.py::test_predict_yield_invalid_data PASSED      [100%]
+
+=================================== FAILURES ===================================
+____________________ test_analyze_disease_invalid_file_type ____________________
+tests/test_disease_detect.py:30: in test_analyze_disease_invalid_file_type
+    assert "must be an image" in response.json()["detail"]
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'detail'
+---------------------------- Captured stdout setup -----------------------------
+Using selector: KqueueSelector
+------------------------------ Captured log setup ------------------------------
+DEBUG    asyncio:selector_events.py:64 Using selector: KqueueSelector
+----------------------------- Captured stdout call -----------------------------
+Calling on_part_begin with no data
+Calling on_header_field with data[36:55]
+Calling on_header_value with data[57:100]
+Calling on_header_end with no data
+Calling on_header_field with data[102:114]
+Calling on_header_value with data[116:126]
+Calling on_header_end with no data
+Calling on_headers_finished with no data
+Calling on_part_data with data[130:149]
+Calling on_part_end with no data
+Calling on_end with no data
+{"status_code": 400, "detail": "File must be an image (jpg/png)", "request_id": "8915bf0a-cd72-4b1b-999d-bab6f7442702", "event": "HTTP exception", "logger": "app.core.exceptions", "level": "error", "timestamp": "2026-05-08T20:00:24.604955Z"}
+{"request_id": "8915bf0a-cd72-4b1b-999d-bab6f7442702", "method": "POST", "url": "http://testserver/api/v1/disease/analyze", "status_code": 400, "process_time": 0.007425069808959961, "event": "Request processed", "logger": "app.core.middleware", "level": "info", "timestamp": "2026-05-08T20:00:24.605216Z"}
+HTTP Request: POST http://testserver/api/v1/disease/analyze "HTTP/1.1 400 Bad Request"
+------------------------------ Captured log call -------------------------------
+DEBUG    multipart.multipart:multipart.py:586 Calling on_part_begin with no data
+DEBUG    multipart.multipart:multipart.py:583 Calling on_header_field with data[36:55]
+DEBUG    multipart.multipart:multipart.py:583 Calling on_header_value with data[57:100]
+DEBUG    multipart.multipart:multipart.py:586 Calling on_header_end with no data
+DEBUG    multipart.multipart:multipart.py:583 Calling on_header_field with data[102:114]
+DEBUG    multipart.multipart:multipart.py:583 Calling on_header_value with data[116:126]
+DEBUG    multipart.multipart:multipart.py:586 Calling on_header_end with no data
+DEBUG    multipart.multipart:multipart.py:586 Calling on_headers_finished with no data
+DEBUG    multipart.multipart:multipart.py:583 Calling on_part_data with data[130:149]
+DEBUG    multipart.multipart:multipart.py:586 Calling on_part_end with no data
+DEBUG    multipart.multipart:multipart.py:586 Calling on_end with no data
+ERROR    app.core.exceptions:exceptions.py:55 {"status_code": 400, "detail": "File must be an image (jpg/png)", "request_id": "8915bf0a-cd72-4b1b-999d-bab6f7442702", "event": "HTTP exception", "logger": "app.core.exceptions", "level": "error", "timestamp": "2026-05-08T20:00:24.604955Z"}
+INFO     app.core.middleware:middleware.py:34 {"request_id": "8915bf0a-cd72-4b1b-999d-bab6f7442702", "method": "POST", "url": "http://testserver/api/v1/disease/analyze", "status_code": 400, "process_time": 0.007425069808959961, "event": "Request processed", "logger": "app.core.middleware", "level": "info", "timestamp": "2026-05-08T20:00:24.605216Z"}
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/api/v1/disease/analyze "HTTP/1.1 400 Bad Request"
+--------------------------- Captured stdout teardown ---------------------------
+Using selector: KqueueSelector
+{"event": "\ud83d\udd34 Shutting down Farming Assistant API...", "logger": "app.main", "level": "info", "timestamp": "2026-05-08T20:00:24.811392Z"}
+---------------------------- Captured log teardown -----------------------------
+DEBUG    asyncio:selector_events.py:64 Using selector: KqueueSelector
+INFO     app.main:main.py:68 {"event": "\ud83d\udd34 Shutting down Farming Assistant API...", "logger": "app.main", "level": "info", "timestamp": "2026-05-08T20:00:24.811392Z"}
+=============================== warnings summary ===============================
+app/config.py:6
+  /Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/app/config.py:6: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class Settings(BaseSettings):
+
+app/api/v1/auth.py:55
+  /Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/app/api/v1/auth.py:55: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/
+    class FarmProfileResponse(BaseModel):
+
+tests/test_auth.py: 1 warning
+tests/test_chat.py: 1 warning
+tests/test_crop_recommend.py: 3 warnings
+tests/test_disease_detect.py: 1 warning
+tests/test_fertilizer.py: 3 warnings
+tests/test_health.py: 1 warning
+tests/test_market_price.py: 1 warning
+tests/test_pest_risk.py: 3 warnings
+tests/test_yield_predict.py: 1 warning
+  /Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+  https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+    warnings.warn(
+
+tests/test_auth.py: 1 warning
+tests/test_chat.py: 1 warning
+tests/test_crop_recommend.py: 3 warnings
+tests/test_disease_detect.py: 1 warning
+tests/test_fertilizer.py: 3 warnings
+tests/test_health.py: 1 warning
+tests/test_market_price.py: 1 warning
+tests/test_pest_risk.py: 3 warnings
+tests/test_yield_predict.py: 1 warning
+  /Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator LabelEncoder from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+  https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+    warnings.warn(
+
+tests/test_auth.py::test_protected_route_without_token
+tests/test_chat.py::test_chat_invoke_valid
+tests/test_crop_recommend.py::test_get_supported_crops
+tests/test_disease_detect.py::test_analyze_disease_valid_image
+tests/test_fertilizer.py::test_get_fertilizer_products
+tests/test_health.py::test_root
+tests/test_market_price.py::test_get_supported_crops_market
+tests/test_pest_risk.py::test_get_supported_crops_pest
+tests/test_yield_predict.py::test_get_supported_crops_for_yield
+  /Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/sklearn/base.py:463: InconsistentVersionWarning: Trying to unpickle estimator Ridge from version 1.6.1 when using version 1.8.0. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+  https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+    warnings.warn(
+
+tests/test_yield_predict.py::test_predict_yield_valid
+  /Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/sklearn/utils/validation.py:2691: UserWarning: X does not have valid feature names, but StandardScaler was fitted with feature names
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.12.3-final-0 _______________
+
+Name                                 Stmts   Miss  Cover   Missing
+------------------------------------------------------------------
+app/__init__.py                          0      0   100%
+app/agent/__init__.py                    0      0   100%
+app/agent/graph.py                      46      6    87%   37-38, 41, 79-84
+app/agent/knowledge.py                  13      1    92%   176
+app/agent/memory.py                     42     27    36%   26-43, 55-64, 80-83
+app/agent/nodes.py                      68     39    43%   38-41, 69-71, 93-99, 111-141, 153-176, 184-189
+app/agent/prompts.py                     7      2    71%   35, 42
+app/agent/state.py                       7      0   100%
+app/agent/tools.py                      77     57    26%   27-34, 62-75, 98-111, 125-133, 159-172, 194-206, 225
+app/agent/voice.py                       0      0   100%
+app/api/__init__.py                      0      0   100%
+app/api/v1/__init__.py                   0      0   100%
+app/api/v1/auth.py                     106     44    58%   74-117, 126-157, 166, 178-183, 192-193, 204-212, 222-225
+app/api/v1/chat.py                     124     84    32%   74-98, 117-167, 187-223, 236-256, 268-295
+app/api/v1/crop_recommend.py            33      5    85%   36-38, 50-51
+app/api/v1/disease_detect.py            32      5    84%   44-46, 58-59
+app/api/v1/fertilizer.py                33      5    85%   32-34, 46-47
+app/api/v1/health.py                    26      5    81%   37, 39, 65-66, 77
+app/api/v1/market_price.py              40      6    85%   33-35, 59-61
+app/api/v1/pest_risk.py                 34      5    85%   36-38, 50-51
+app/api/v1/router.py                    16      1    94%   74
+app/api/v1/weather.py                   46     31    33%   20-26, 36-47, 59-69, 78-85, 94-98
+app/api/v1/yield_predict.py             40      6    85%   36-38, 50-51, 68
+app/config.py                           27      0   100%
+app/core/__init__.py                     0      0   100%
+app/core/exceptions.py                  27      7    74%   10-12, 18-25, 73-79
+app/core/logging.py                      8      0   100%
+app/core/middleware.py                  20      0   100%
+app/core/rate_limit.py                   3      0   100%
+app/core/security.py                    40     24    40%   39-51, 69-89, 104-112
+app/core/supabase_client.py             28     13    54%   28-32, 40-42, 50-59
+app/db/__init__.py                       0      0   100%
+app/db/crud.py                         107     78    27%   28-33, 38-39, 44-47, 52-60, 65-70, 79-83, 88-94, 99-100, 105-109, 125-135, 140-146, 179-191, 207-228, 233-236, 241-248, 253-258
+app/db/database.py                      31      6    81%   43-50, 61-65
+app/db/models.py                        76      5    93%   57, 80, 101, 120, 146
+app/dependencies.py                     12      4    67%   19, 25, 31-32
+app/external/__init__.py                 0      0   100%
+app/external/weather_clients.py         91     73    20%   12-15, 19-47, 51-75, 79-107, 111-133, 139-140, 145-146, 152-153, 158-159
+app/main.py                             57     10    82%   40-41, 49-50, 59-61, 91, 115-116
+app/ml/__init__.py                       0      0   100%
+app/ml/crop_model.py                     0      0   100%
+app/ml/disease_model.py                  0      0   100%
+app/ml/fertilizer_model.py               0      0   100%
+app/ml/market_model.py                   0      0   100%
+app/ml/model_registry.py               115      9    92%   25, 44, 52-56, 79, 93, 139
+app/ml/pest_model.py                     0      0   100%
+app/ml/preprocessing.py                  0      0   100%
+app/ml/yield_model.py                    0      0   100%
+app/models/__init__.py                   0      0   100%
+app/models/chat.py                      26     26     0%   1-30
+app/models/crop_recommend.py            34      0   100%
+app/models/disease_detect.py            16      0   100%
+app/models/fertilizer.py                38      0   100%
+app/models/market_price.py              35      0   100%
+app/models/pest_risk.py                 36      0   100%
+app/models/weather.py                   42      0   100%
+app/models/yield_predict.py             28      0   100%
+app/services/__init__.py                 0      0   100%
+app/services/chat_service.py             0      0   100%
+app/services/crop_service.py            76     54    29%   26-76, 84-139
+app/services/disease_service.py         97     44    55%   49-53, 76-77, 87, 95-97, 102-120, 129, 134-178
+app/services/fertilizer_service.py      82     59    28%   38-45, 52-189
+app/services/market_service.py         113     23    80%   13, 24-28, 40, 129-166
+app/services/pest_service.py           111     85    23%   40-46, 49, 53-75, 79-99, 106-211
+app/services/weather_cache.py          101     86    15%   11-13, 23-24, 28-52, 56-74, 78-102, 106-125, 129-132, 144-152, 156-180
+app/services/weather_processor.py      119    103    13%   13-44, 49-110, 115-169, 181-205, 210-254
+app/services/weather_service.py        174    151    13%   17-31, 37-107, 111-114, 118-141, 145-223, 228-291, 295-354, 358-373, 400-414, 418-440, 454-457, 461-465
+app/services/yield_service.py           64     15    77%   12, 23, 26-28, 33-34, 83-112
+app/utils/__init__.py                    0      0   100%
+app/utils/location_resolver.py          56     43    23%   78-105, 111-135, 140-157, 162-166
+------------------------------------------------------------------
+TOTAL                                 2680   1247    53%
+=========================== short test summary info ============================
+FAILED tests/test_disease_detect.py::test_analyze_disease_invalid_file_type
+================== 1 failed, 23 passed, 42 warnings in 12.86s ==================
+--- Logging error ---
+Traceback (most recent call last):
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/langchain_google_genai/chat_models.py", line 2471, in __del__
+    loop = asyncio.get_running_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: no running event loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/logging/__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+ValueError: I/O operation on closed file.
+Call stack:
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/langchain_google_genai/chat_models.py", line 2485, in __del__
+    loop = asyncio.new_event_loop()
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/events.py", line 823, in new_event_loop
+    return get_event_loop_policy().new_event_loop()
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/events.py", line 720, in new_event_loop
+    return self._loop_factory()
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/unix_events.py", line 64, in __init__
+    super().__init__(selector)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/selector_events.py", line 64, in __init__
+    logger.debug('Using selector: %s', selector.__class__.__name__)
+Message: 'Using selector: %s'
+Arguments: ('KqueueSelector',)
+--- Logging error ---
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/logging/__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+ValueError: I/O operation on closed file.
+Call stack:
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/google/genai/client.py", line 662, in __del__
+    self.close()
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/google/genai/client.py", line 648, in close
+    self._api_client.close()
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/google/genai/_api_client.py", line 2138, in close
+    self._httpx_client.close()
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/httpx/_client.py", line 1270, in close
+    self._transport.close()
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 262, in close
+    self._pool.close()
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py", line 353, in close
+    self._close_connections(closing_connections)
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py", line 345, in _close_connections
+    connection.close()
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/httpcore/_sync/connection.py", line 172, in close
+    with Trace("close", logger, None, {}):
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/httpcore/_trace.py", line 52, in __enter__
+    self.trace(f"{self.name}.started", info)
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/httpcore/_trace.py", line 47, in trace
+    self.logger.debug(message)
+Message: 'close.started'
+Arguments: ()
+--- Logging error ---
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/logging/__init__.py", line 1163, in emit
+    stream.write(msg + self.terminator)
+ValueError: I/O operation on closed file.
+Call stack:
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/google/genai/client.py", line 662, in __del__
+    self.close()
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/google/genai/client.py", line 648, in close
+    self._api_client.close()
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/google/genai/_api_client.py", line 2138, in close
+    self._httpx_client.close()
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/httpx/_client.py", line 1270, in close
+    self._transport.close()
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 262, in close
+    self._pool.close()
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py", line 353, in close
+    self._close_connections(closing_connections)
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py", line 345, in _close_connections
+    connection.close()
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/httpcore/_sync/connection.py", line 172, in close
+    with Trace("close", logger, None, {}):
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/httpcore/_trace.py", line 64, in __exit__
+    self.trace(f"{self.name}.complete", info)
+  File "/Users/abhijeetraj/Desktop/Farming/farming-assistant/backend/venv/lib/python3.12/site-packages/httpcore/_trace.py", line 47, in trace
+    self.logger.debug(message)
+Message: 'close.complete'
+Arguments: ()

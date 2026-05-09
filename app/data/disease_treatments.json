@@ -1,0 +1,434 @@
+{
+  "metadata": {
+    "description": "Comprehensive disease treatment protocols for major crop diseases in India",
+    "last_updated": "2026-05-09",
+    "source": "ICAR, Plant Pathology Research Institutes, and Agricultural Universities",
+    "coverage": "Major fungal, bacterial, viral, and pest-related diseases"
+  },
+  "disease_categories": {
+    "fungal": {
+      "description": "Diseases caused by fungi",
+      "common_conditions": "High humidity, moderate temperature, poor air circulation",
+      "prevention": "Proper spacing, fungicide sprays, resistant varieties"
+    },
+    "bacterial": {
+      "description": "Diseases caused by bacteria",
+      "common_conditions": "Warm, humid weather, wounds, contaminated tools",
+      "prevention": "Copper-based sprays, sanitation, resistant varieties"
+    },
+    "viral": {
+      "description": "Diseases caused by viruses",
+      "common_conditions": "Vector insects, contaminated tools, infected seeds",
+      "prevention": "Vector control, virus-free seeds, roguing infected plants"
+    },
+    "pest": {
+      "description": "Damage caused by insects and pests",
+      "common_conditions": "Favorable weather, monoculture, lack of natural enemies",
+      "prevention": "IPM practices, biological control, resistant varieties"
+    }
+  },
+  "diseases": {
+    "rice_blast": {
+      "scientific_name": "Pyricularia oryzae",
+      "category": "fungal",
+      "affected_crops": ["rice"],
+      "symptoms": [
+        "Diamond-shaped lesions on leaves with gray centers and brown margins",
+        "Neck rot causing panicle breakage",
+        "Node blast causing stem breakage"
+      ],
+      "favorable_conditions": {
+        "temperature": "25-28°C",
+        "humidity": ">90%",
+        "weather": "Cloudy, humid conditions with intermittent rain"
+      },
+      "treatment": {
+        "immediate_action": [
+          "Remove and destroy infected plant debris",
+          "Improve field drainage to reduce humidity",
+          "Apply fungicide spray immediately"
+        ],
+        "chemical_control": {
+          "fungicides": [
+            {
+              "name": "Tricyclazole 75% WP",
+              "dosage": "0.6 g/L water",
+              "application": "Spray at tillering and panicle initiation stage",
+              "frequency": "2-3 applications at 15-day intervals"
+            },
+            {
+              "name": "Carbendazim 50% WP",
+              "dosage": "1 g/L water", 
+              "application": "Preventive spray before disease onset",
+              "frequency": "2 applications at 20-day intervals"
+            },
+            {
+              "name": "Propiconazole 25% EC",
+              "dosage": "1 ml/L water",
+              "application": "Curative spray after disease appearance",
+              "frequency": "2 applications at 15-day intervals"
+            }
+          ]
+        },
+        "biological_control": [
+          "Pseudomonas fluorescens (10 g/L water)",
+          "Trichoderma viride (5 g/L water)",
+          "Bacillus subtilis foliar spray"
+        ],
+        "cultural_practices": [
+          "Use resistant varieties like Pusa Basmati-1121, PR-126",
+          "Maintain proper plant spacing (20x15 cm)",
+          "Avoid excessive nitrogen fertilization",
+          "Ensure proper field sanitation"
+        ]
+      },
+      "prevention": {
+        "seed_treatment": "Carbendazim 2 g/kg seed or hot water treatment at 52°C for 10 minutes",
+        "field_preparation": "Deep plowing and removal of crop residues",
+        "water_management": "Avoid water stagnation, maintain 2-3 cm water level"
+      },
+      "economic_threshold": "5% leaf area affected or 1-2 lesions per leaf"
+    },
+    "bacterial_leaf_blight": {
+      "scientific_name": "Xanthomonas oryzae pv. oryzae",
+      "category": "bacterial",
+      "affected_crops": ["rice"],
+      "symptoms": [
+        "Water-soaked lesions starting from leaf tips or margins",
+        "Yellow to straw-colored stripes with wavy margins",
+        "Bacterial ooze visible in early morning",
+        "Kresek symptom in severe cases (wilting of entire plant)"
+      ],
+      "favorable_conditions": {
+        "temperature": "25-34°C",
+        "humidity": "High humidity >80%",
+        "weather": "Heavy rains, flooding, strong winds"
+      },
+      "treatment": {
+        "immediate_action": [
+          "Remove infected plants and burn them",
+          "Avoid working in wet fields",
+          "Disinfect tools with 10% bleach solution"
+        ],
+        "chemical_control": {
+          "bactericides": [
+            {
+              "name": "Streptocycline + Copper oxychloride",
+              "dosage": "0.5 g + 2.5 g per L water",
+              "application": "Spray at disease appearance",
+              "frequency": "3 applications at 10-day intervals"
+            },
+            {
+              "name": "Copper hydroxide 77% WP",
+              "dosage": "2 g/L water",
+              "application": "Preventive spray before monsoon",
+              "frequency": "2-3 applications at 15-day intervals"
+            }
+          ]
+        },
+        "biological_control": [
+          "Pseudomonas fluorescens seed treatment (10 g/kg seed)",
+          "Bacillus subtilis foliar spray (5 g/L water)"
+        ],
+        "cultural_practices": [
+          "Use resistant varieties like Improved Samba Mahsuri, DRR Dhan 42",
+          "Balanced fertilization (avoid excess nitrogen)",
+          "Proper water management (avoid flooding)",
+          "Crop rotation with non-host crops"
+        ]
+      },
+      "prevention": {
+        "seed_treatment": "Hot water treatment at 52-54°C for 30 minutes",
+        "field_sanitation": "Remove crop residues and volunteer plants",
+        "water_management": "Avoid overflow irrigation from infected fields"
+      },
+      "economic_threshold": "10% leaf area affected"
+    },
+    "late_blight": {
+      "scientific_name": "Phytophthora infestans",
+      "category": "fungal",
+      "affected_crops": ["potato", "tomato"],
+      "symptoms": [
+        "Water-soaked dark green to brown lesions on leaves",
+        "White fungal growth on undersurface of leaves",
+        "Rapid spread during cool, humid weather",
+        "Tuber rot with reddish-brown discoloration"
+      ],
+      "favorable_conditions": {
+        "temperature": "15-20°C",
+        "humidity": ">90%",
+        "weather": "Cool, wet conditions with fog or dew"
+      },
+      "treatment": {
+        "immediate_action": [
+          "Remove infected plants immediately",
+          "Improve air circulation between plants",
+          "Apply protective fungicide spray"
+        ],
+        "chemical_control": {
+          "fungicides": [
+            {
+              "name": "Metalaxyl + Mancozeb 72% WP",
+              "dosage": "2.5 g/L water",
+              "application": "Preventive spray before disease onset",
+              "frequency": "3-4 applications at 10-day intervals"
+            },
+            {
+              "name": "Cymoxanil + Mancozeb 72% WP",
+              "dosage": "2 g/L water",
+              "application": "Curative and preventive action",
+              "frequency": "2-3 applications at 7-10 day intervals"
+            },
+            {
+              "name": "Copper oxychloride 50% WP",
+              "dosage": "3 g/L water",
+              "application": "Organic-approved treatment",
+              "frequency": "Weekly applications during favorable weather"
+            }
+          ]
+        },
+        "biological_control": [
+          "Trichoderma harzianum soil application",
+          "Bacillus subtilis foliar spray"
+        ],
+        "cultural_practices": [
+          "Use certified disease-free seed tubers",
+          "Proper spacing for air circulation",
+          "Avoid overhead irrigation",
+          "Hill up soil around plants to protect tubers"
+        ]
+      },
+      "prevention": {
+        "seed_treatment": "Treat seed tubers with Mancozeb 3 g/L water",
+        "field_preparation": "Ensure good drainage and avoid waterlogging",
+        "monitoring": "Regular field inspection during cool, humid weather"
+      },
+      "economic_threshold": "1% plants affected or first appearance of symptoms"
+    },
+    "cotton_bollworm": {
+      "scientific_name": "Helicoverpa armigera",
+      "category": "pest",
+      "affected_crops": ["cotton", "tomato", "chickpea", "pigeon_pea"],
+      "symptoms": [
+        "Circular holes in leaves and bolls",
+        "Caterpillars feeding inside bolls",
+        "Frass (insect excrement) near feeding sites",
+        "Damaged squares and flowers dropping"
+      ],
+      "favorable_conditions": {
+        "temperature": "25-30°C",
+        "humidity": "60-70%",
+        "weather": "Warm, dry conditions during flowering stage"
+      },
+      "treatment": {
+        "immediate_action": [
+          "Hand-pick and destroy egg masses and young larvae",
+          "Install pheromone traps for monitoring",
+          "Release natural enemies if available"
+        ],
+        "chemical_control": {
+          "insecticides": [
+            {
+              "name": "Chlorantraniliprole 18.5% SC",
+              "dosage": "0.4 ml/L water",
+              "application": "Spray at early larval stage",
+              "frequency": "2 applications at 15-day intervals"
+            },
+            {
+              "name": "Spinosad 45% SC",
+              "dosage": "0.3 ml/L water",
+              "application": "Evening spray for better efficacy",
+              "frequency": "2-3 applications at 10-day intervals"
+            },
+            {
+              "name": "Emamectin benzoate 5% SG",
+              "dosage": "0.5 g/L water",
+              "application": "Target young larvae",
+              "frequency": "2 applications at 12-day intervals"
+            }
+          ]
+        },
+        "biological_control": [
+          "Release Trichogramma chilonis @ 50,000/ha weekly",
+          "Chrysoperla carnea @ 50,000/ha",
+          "NPV (Nuclear Polyhedrosis Virus) 250 LE/ha",
+          "Bacillus thuringiensis 1-2 g/L water"
+        ],
+        "cultural_practices": [
+          "Intercropping with marigold or coriander",
+          "Destroy crop residues after harvest",
+          "Deep summer plowing to expose pupae",
+          "Synchronous planting in the area"
+        ]
+      },
+      "prevention": {
+        "monitoring": "Install pheromone traps @ 5/ha from 45 days after sowing",
+        "economic_threshold": "2 larvae per plant or 10% damaged bolls",
+        "resistant_varieties": "Use Bt cotton varieties where approved"
+      },
+      "natural_enemies": [
+        "Chrysoperla carnea (lacewing)",
+        "Trichogramma spp. (egg parasitoid)",
+        "Campoletis chlorideae (larval parasitoid)",
+        "Spiders and predatory bugs"
+      ]
+    },
+    "wheat_rust": {
+      "scientific_name": "Puccinia triticina (leaf rust), Puccinia graminis (stem rust)",
+      "category": "fungal",
+      "affected_crops": ["wheat"],
+      "symptoms": [
+        "Orange to reddish-brown pustules on leaves (leaf rust)",
+        "Dark reddish-brown pustules on stems (stem rust)",
+        "Yellow to orange pustules on leaves (stripe rust)",
+        "Premature leaf senescence and reduced grain filling"
+      ],
+      "favorable_conditions": {
+        "temperature": "15-25°C (leaf rust), 20-30°C (stem rust)",
+        "humidity": "High humidity with dew formation",
+        "weather": "Moderate temperature with high humidity"
+      },
+      "treatment": {
+        "immediate_action": [
+          "Apply fungicide spray at first appearance",
+          "Remove alternate hosts (barberry for stem rust)",
+          "Monitor weather conditions for disease development"
+        ],
+        "chemical_control": {
+          "fungicides": [
+            {
+              "name": "Propiconazole 25% EC",
+              "dosage": "1 ml/L water",
+              "application": "Spray at flag leaf stage",
+              "frequency": "2 applications at 15-day intervals"
+            },
+            {
+              "name": "Tebuconazole 25.9% EC",
+              "dosage": "1 ml/L water",
+              "application": "Preventive and curative spray",
+              "frequency": "2-3 applications at 12-15 day intervals"
+            }
+          ]
+        },
+        "cultural_practices": [
+          "Use resistant varieties like HD-2967, WH-542, DBW-88",
+          "Avoid late sowing to escape disease pressure",
+          "Balanced fertilization (avoid excess nitrogen)",
+          "Proper crop rotation"
+        ]
+      },
+      "prevention": {
+        "seed_treatment": "Tebuconazole 2 ml/kg seed",
+        "variety_selection": "Grow rust-resistant varieties",
+        "field_sanitation": "Remove volunteer plants and crop residues"
+      },
+      "economic_threshold": "5-10% leaf area affected at flag leaf stage"
+    },
+    "downy_mildew": {
+      "scientific_name": "Various Peronospora spp.",
+      "category": "fungal",
+      "affected_crops": ["grape", "onion", "cucumber", "lettuce"],
+      "symptoms": [
+        "Yellow patches on upper leaf surface",
+        "Grayish-white fuzzy growth on undersurface",
+        "Leaf curling and distortion",
+        "Premature leaf drop and stunted growth"
+      ],
+      "favorable_conditions": {
+        "temperature": "15-20°C",
+        "humidity": ">85%",
+        "weather": "Cool, wet conditions with poor air circulation"
+      },
+      "treatment": {
+        "immediate_action": [
+          "Remove infected leaves and destroy them",
+          "Improve air circulation around plants",
+          "Reduce humidity through proper spacing"
+        ],
+        "chemical_control": {
+          "fungicides": [
+            {
+              "name": "Metalaxyl + Mancozeb 72% WP",
+              "dosage": "2.5 g/L water",
+              "application": "Preventive spray before disease onset",
+              "frequency": "3 applications at 10-day intervals"
+            },
+            {
+              "name": "Fosetyl-Al 80% WP",
+              "dosage": "2.5 g/L water",
+              "application": "Systemic action against downy mildew",
+              "frequency": "2-3 applications at 15-day intervals"
+            }
+          ]
+        },
+        "biological_control": [
+          "Trichoderma viride foliar spray",
+          "Pseudomonas fluorescens application"
+        ],
+        "cultural_practices": [
+          "Proper plant spacing for air circulation",
+          "Avoid overhead irrigation",
+          "Use drip irrigation where possible",
+          "Mulching to reduce soil moisture evaporation"
+        ]
+      },
+      "prevention": {
+        "seed_treatment": "Metalaxyl 6 g/kg seed",
+        "field_management": "Ensure good drainage and avoid waterlogging",
+        "resistant_varieties": "Use resistant cultivars where available"
+      }
+    }
+  },
+  "integrated_pest_management": {
+    "principles": [
+      "Prevention is better than cure",
+      "Use of resistant varieties as first line of defense",
+      "Regular monitoring and early detection",
+      "Biological control as preferred option",
+      "Judicious use of chemicals as last resort",
+      "Crop rotation and cultural practices"
+    ],
+    "monitoring_tools": [
+      "Pheromone traps for insect pests",
+      "Yellow sticky traps for flying insects",
+      "Light traps for nocturnal insects",
+      "Regular field scouting",
+      "Weather-based disease forecasting"
+    ],
+    "biological_agents": {
+      "predators": [
+        "Chrysoperla carnea (lacewing)",
+        "Coccinellids (ladybird beetles)",
+        "Spiders and predatory mites",
+        "Predatory bugs (Geocoris, Orius)"
+      ],
+      "parasitoids": [
+        "Trichogramma spp. (egg parasitoids)",
+        "Braconid and Ichneumonid wasps",
+        "Tachinid flies"
+      ],
+      "pathogens": [
+        "Bacillus thuringiensis (Bt)",
+        "Nuclear Polyhedrosis Virus (NPV)",
+        "Beauveria bassiana (entomopathogenic fungus)",
+        "Metarhizium anisopliae"
+      ]
+    }
+  },
+  "emergency_protocols": {
+    "disease_outbreak": [
+      "Immediate isolation of affected area",
+      "Rapid diagnosis and confirmation",
+      "Emergency chemical treatment if needed",
+      "Notification to agricultural authorities",
+      "Implementation of quarantine measures"
+    ],
+    "pest_outbreak": [
+      "Mass trapping using pheromone traps",
+      "Release of biological control agents",
+      "Community-wide synchronized treatment",
+      "Destruction of alternate hosts",
+      "Area-wide monitoring and surveillance"
+    ]
+  }
+}
