@@ -5,10 +5,11 @@ Supports both SQLite (local dev) and PostgreSQL (Supabase production).
 Uses SQLAlchemy 2.0 patterns with the new DeclarativeBase.
 """
 
-from sqlalchemy import create_engine, event
-from sqlalchemy.orm import DeclarativeBase, sessionmaker, Session
-from app.config import settings
 import structlog
+from sqlalchemy import create_engine, event
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
+
+from app.config import settings
 
 logger = structlog.get_logger()
 
@@ -21,6 +22,10 @@ class Base(DeclarativeBase):
 def _get_engine():
     """Create the SQLAlchemy engine based on DATABASE_URL."""
     url = settings.database_url
+    
+    # SQLAlchemy 2.0+ requires postgresql:// instead of postgres://
+    if url.startswith("postgres://"):
+        url = url.replace("postgres://", "postgresql://", 1)
 
     if url.startswith("sqlite"):
         # SQLite — enable WAL mode for better concurrency
