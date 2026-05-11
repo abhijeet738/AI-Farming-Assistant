@@ -1,3 +1,13 @@
+---
+title: AI Farming Assistant
+emoji: 🌱
+colorFrom: green
+colorTo: yellow
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # 🌱 AI Farming Assistant Backend
 
 An enterprise-grade, ML-powered smart farming API built with FastAPI, LangGraph, and Supabase. This system provides real-time crop recommendations, disease detection (via PyTorch), market price forecasting, and a conversational Agronomy Agent.
