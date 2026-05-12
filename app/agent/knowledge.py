@@ -176,6 +176,6 @@ async def seed_knowledge_base(store) -> int:
             count += 1
         except Exception as e:
             logger.warning(f"Failed to seed knowledge doc {key}", error=str(e))
-    
+
     logger.info(f"Knowledge base seeded with {count} documents")
     return count

@@ -5,10 +5,11 @@ Uses LangGraph's InMemoryStore to persist farmer preferences,
 crop history, and location across conversation sessions.
 """
 
+
 import structlog
-from datetime import datetime
-from app.db.database import SessionLocal
+
 from app.db import crud
+from app.db.database import SessionLocal
 
 logger = structlog.get_logger()
 
@@ -22,21 +23,21 @@ async def load_farmer_profile(store, user_id: str) -> str:
     if user_id == "default":
         # Skip for unauthenticated test users
         return ""
-        
+
     try:
         db = SessionLocal()
         memories = crud.get_memories(db, user_id=user_id, namespace="profile")
         db.close()
-        
+
         if not memories:
             return ""
-        
+
         parts = []
         for mem in memories:
             data = mem.value.get("data", "")
             if data:
                 parts.append(data)
-        
+
         return "\n".join(parts)
     except Exception as e:
         logger.warning("Failed to load farmer profile from DB", user_id=user_id, error=str(e))
@@ -54,7 +55,7 @@ async def save_farmer_detail(store, user_id: str, key: str, detail: str) -> None
     """
     if user_id == "default":
         return
-        
+
     try:
         db = SessionLocal()
         crud.save_memory(db, user_id=user_id, namespace="profile", key=key, value={"data": detail})
@@ -79,7 +80,7 @@ async def search_knowledge(store, query: str, limit: int = 3) -> str:
         results = store.search(("knowledge",), query=query, limit=limit)
         if not results:
             return ""
-        
+
         return "\n\n---\n\n".join([r.value.get("text", "") for r in results])
     except Exception as e:
         # If semantic search fails (e.g., no embeddings configured),

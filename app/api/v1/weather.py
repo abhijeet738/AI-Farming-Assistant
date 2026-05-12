@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
+
+from app.dependencies import get_weather_service
 from app.models.weather import WeatherResponse
 from app.services.weather_service import WeatherService
-from app.dependencies import get_weather_service
 
 router = APIRouter()
 

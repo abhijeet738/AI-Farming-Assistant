@@ -5,9 +5,9 @@ Provides a singleton Supabase client for auth operations.
 Database access goes through SQLAlchemy (db/database.py), NOT this client.
 """
 
-from typing import Optional
-from app.config import settings
 import structlog
+
+from app.config import settings
 
 logger = structlog.get_logger()
 

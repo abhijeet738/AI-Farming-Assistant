@@ -11,10 +11,16 @@ Tables:
 
 import uuid
 from datetime import datetime, timezone
-from typing import Optional, List
 
 from sqlalchemy import (
-    String, Float, Text, Boolean, DateTime, ForeignKey, JSON, Index,
+    JSON,
+    Boolean,
+    DateTime,
+    Float,
+    ForeignKey,
+    Index,
+    String,
+    Text,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -37,15 +43,15 @@ class FarmProfile(Base):
 
     id: Mapped[str] = mapped_column(String, primary_key=True, default=_generate_uuid)
     user_id: Mapped[str] = mapped_column(String, nullable=False)
-    farm_name: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
-    state: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
-    district: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
-    area_hectares: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    soil_type: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
-    irrigation_type: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
-    crops: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)  # ["Rice", "Wheat"]
-    latitude: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
-    longitude: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    farm_name: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    state: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    district: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    area_hectares: Mapped[float | None] = mapped_column(Float, nullable=True)
+    soil_type: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    irrigation_type: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    crops: Mapped[dict | None] = mapped_column(JSON, nullable=True)  # ["Rice", "Wheat"]
+    latitude: Mapped[float | None] = mapped_column(Float, nullable=True)
+    longitude: Mapped[float | None] = mapped_column(Float, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
 
@@ -66,13 +72,13 @@ class ChatSession(Base):
     id: Mapped[str] = mapped_column(String, primary_key=True, default=_generate_uuid)
     thread_id: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     user_id: Mapped[str] = mapped_column(String, nullable=False)
-    title: Mapped[Optional[str]] = mapped_column(String(300), nullable=True)
+    title: Mapped[str | None] = mapped_column(String(300), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
     last_active_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, onupdate=_utcnow)
 
     # Relationship
-    messages: Mapped[List["ChatMessage"]] = relationship(
+    messages: Mapped[list["ChatMessage"]] = relationship(
         "ChatMessage", back_populates="session", cascade="all, delete-orphan"
     )
 
@@ -90,8 +96,8 @@ class ChatMessage(Base):
     session_id: Mapped[str] = mapped_column(String, ForeignKey("chat_sessions.id"), nullable=False, index=True)
     role: Mapped[str] = mapped_column(String(20), nullable=False)  # user / assistant / tool
     content: Mapped[str] = mapped_column(Text, nullable=False)
-    tool_calls: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-    tool_results: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
+    tool_calls: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    tool_results: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow)
 
     # Relationship
@@ -108,11 +114,11 @@ class PredictionLog(Base):
     __tablename__ = "prediction_logs"
 
     id: Mapped[str] = mapped_column(String, primary_key=True, default=_generate_uuid)
-    user_id: Mapped[Optional[str]] = mapped_column(String, index=True, nullable=True)
+    user_id: Mapped[str | None] = mapped_column(String, index=True, nullable=True)
     service_type: Mapped[str] = mapped_column(String(50), nullable=False, index=True)
-    request_data: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-    response_data: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-    latency_ms: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    request_data: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    response_data: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    latency_ms: Mapped[float | None] = mapped_column(Float, nullable=True)
     success: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_utcnow, index=True)
 

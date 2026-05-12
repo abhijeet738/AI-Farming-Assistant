@@ -1,5 +1,6 @@
 import pytest
 
+
 def test_get_supported_crops_market(client):
     """Test the list of supported crops for market prices"""
     response = client.get("/api/v1/market/")
@@ -16,7 +17,7 @@ async def test_get_market_price_valid(client):
     response = client.get("/api/v1/market/Rice?state=Maharashtra")
     assert response.status_code == 200
     data = response.json()
-    
+
     assert "success" in data
     assert data["crop"].lower() == "rice"
     assert "current_price_per_quintal" in data

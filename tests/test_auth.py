@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.asyncio
 async def test_protected_route_without_token(client):
     """Test accessing a protected route without auth token"""

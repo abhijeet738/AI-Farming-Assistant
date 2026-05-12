@@ -1,12 +1,13 @@
 import time
+
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.orm import Session
 
+from app.core.rate_limit import limiter
+from app.db import crud
+from app.db.database import get_db
 from app.models.market_price import MarketPriceResponse
 from app.services.market_service import MarketService
-from app.core.rate_limit import limiter
-from app.db.database import get_db
-from app.db import crud
 
 router = APIRouter()
 
@@ -53,16 +54,16 @@ async def get_market_price(
 async def get_supported_crops(request: Request):
     """Get list of crops with market price data."""
     market_service = MarketService()
-    
+
     crops = []
     if market_service.encoders and "label_encoder_crop" in market_service.encoders:
         encoder = market_service.encoders["label_encoder_crop"]
         if hasattr(encoder, "classes_"):
             crops = list(encoder.classes_)
-            
+
     if not crops:
         crops = ["Rice", "Wheat", "Maize", "Cotton"]
-        
+
     return {
         "supported_crops": crops,
         "total_count": len(crops),

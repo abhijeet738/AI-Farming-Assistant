@@ -9,17 +9,20 @@ Initializes the app with:
 """
 
 from contextlib import asynccontextmanager
+
+import structlog
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+
 # pyrefly: ignore [missing-import]
 from slowapi.errors import RateLimitExceeded
+
+from app.api.v1.router import api_router
 from app.config import settings
-from app.core.middleware import setup_middleware
 from app.core.exceptions import setup_exception_handlers
 from app.core.logging import setup_logging
+from app.core.middleware import setup_middleware
 from app.core.rate_limit import limiter
-from app.api.v1.router import api_router
-import structlog
 
 # Setup logging first
 setup_logging()

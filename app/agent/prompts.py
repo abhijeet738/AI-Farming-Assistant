@@ -5,7 +5,7 @@ System prompts for Krishi Mitra — the farming assistant persona.
 
 def build_system_prompt(farmer_context: str = "", knowledge_context: str = "") -> str:
     """Build the system prompt with dynamic farmer and knowledge context."""
-    
+
     base_prompt = """You are **Krishi Mitra** (कृषि मित्र), an expert AI farming assistant \
 for Indian agriculture. You provide actionable, evidence-based agricultural advice.
 

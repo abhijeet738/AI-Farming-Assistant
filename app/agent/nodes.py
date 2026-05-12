@@ -7,16 +7,16 @@ Nodes:
     3. safety_review — Human-in-the-loop interrupt for critical actions
 """
 
-import structlog
 from typing import Literal
 
+import structlog
 from langchain_core.messages import ToolMessage
-from langchain_core.messages.utils import trim_messages, count_tokens_approximately
+from langchain_core.messages.utils import count_tokens_approximately, trim_messages
 from langgraph.types import interrupt
 
-from app.agent.state import FarmerAgentState
-from app.agent.prompts import build_system_prompt
 from app.agent.memory import load_farmer_profile, search_knowledge
+from app.agent.prompts import build_system_prompt
+from app.agent.state import FarmerAgentState
 from app.agent.tools import TOOLS_BY_NAME
 
 logger = structlog.get_logger()
@@ -54,12 +54,12 @@ async def agent_node(state: FarmerAgentState, store):
     4. Calls the LLM with all tools bound
     """
     from app.agent.graph import model_with_tools
-    
+
     user_id = state.get("user_id", "default")
-    
+
     # 1. Load long-term farmer profile
     farmer_context = await load_farmer_profile(store, user_id)
-    
+
     # 2. RAG: Semantic search for relevant knowledge
     last_human_msg = ""
     for msg in reversed(state["messages"]):
@@ -69,12 +69,12 @@ async def agent_node(state: FarmerAgentState, store):
         elif isinstance(msg, dict) and msg.get("role") == "human":
             last_human_msg = msg.get("content", "")
             break
-    
+
     knowledge_context = await search_knowledge(store, last_human_msg) if last_human_msg else ""
-    
+
     # 3. Build system prompt with dynamic context
     system_prompt = build_system_prompt(farmer_context, knowledge_context)
-    
+
     # 4. Trim messages to prevent context overflow (keep last ~4000 tokens)
     trimmed = trim_messages(
         state["messages"],
@@ -84,18 +84,18 @@ async def agent_node(state: FarmerAgentState, store):
         start_on="human",
         allow_partial=False,
     )
-    
+
     messages = [{"role": "system", "content": system_prompt}] + trimmed
-    
+
     # 5. Call the LLM
     response = await model_with_tools.ainvoke(messages)
-    
+
     logger.info(
         "Agent response generated",
         has_tool_calls=bool(response.tool_calls),
         num_tool_calls=len(response.tool_calls) if response.tool_calls else 0,
     )
-    
+
     return {"messages": [response]}
 
 
@@ -110,13 +110,13 @@ async def tool_executor(state: FarmerAgentState):
     """
     last_message = state["messages"][-1]
     results = []
-    
+
     for tool_call in last_message.tool_calls:
         tool_name = tool_call["name"]
         tool_args = tool_call["args"]
-        
+
         logger.info("Executing tool", tool=tool_name, args=tool_args)
-        
+
         tool = TOOLS_BY_NAME.get(tool_name)
         if tool is None:
             results.append(ToolMessage(
@@ -124,7 +124,7 @@ async def tool_executor(state: FarmerAgentState):
                 tool_call_id=tool_call["id"],
             ))
             continue
-        
+
         try:
             observation = await tool.ainvoke(tool_args)
             results.append(ToolMessage(
@@ -137,7 +137,7 @@ async def tool_executor(state: FarmerAgentState):
                 content=f"Error executing {tool_name}: {str(e)}",
                 tool_call_id=tool_call["id"],
             ))
-    
+
     return {"messages": results}
 
 
@@ -152,10 +152,10 @@ async def safety_review_node(state: FarmerAgentState):
     """
     last_message = state["messages"][-1]
     content = last_message.content if hasattr(last_message, "content") else ""
-    
+
     if contains_critical_action(content):
         logger.info("Critical action detected, requesting human approval")
-        
+
         # This pauses the graph and returns the interrupt payload to the caller
         decision = interrupt({
             "type": "safety_review",
@@ -163,7 +163,7 @@ async def safety_review_node(state: FarmerAgentState):
                         "Do you approve this advice?",
             "preview": content[:500],  # First 500 chars as preview
         })
-        
+
         # When resumed with Command(resume=False), cancel the recommendation
         if decision is False:
             from langchain_core.messages import AIMessage
@@ -171,7 +171,7 @@ async def safety_review_node(state: FarmerAgentState):
                 content="I've cancelled that chemical recommendation. "
                         "Would you like me to suggest organic alternatives instead?"
             )]}
-    
+
     # No critical action or approved — pass through
     return state
 
@@ -182,8 +182,8 @@ async def safety_review_node(state: FarmerAgentState):
 def should_continue(state: FarmerAgentState) -> Literal["tools", "safety_review"]:
     """Route to tool executor if the LLM made tool calls, otherwise to safety review."""
     last_message = state["messages"][-1]
-    
+
     if hasattr(last_message, "tool_calls") and last_message.tool_calls:
         return "tools"
-    
+
     return "safety_review"

@@ -4,16 +4,16 @@ Authentication and User Profile endpoints.
 Uses Supabase Auth for registration/login and SQLAlchemy for farm profile data.
 """
 
-from typing import Optional, List
+
+import structlog
 from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
-from app.core.security import get_current_user, CurrentUser
+from app.core.security import CurrentUser, get_current_user
 from app.core.supabase_client import get_supabase_client
-from app.db.database import get_db
 from app.db import crud
-import structlog
+from app.db.database import get_db
 
 logger = structlog.get_logger()
 router = APIRouter()
@@ -24,7 +24,7 @@ router = APIRouter()
 class RegisterRequest(BaseModel):
     email: str = Field(..., description="User email address")
     password: str = Field(..., min_length=6, description="Password (min 6 chars)")
-    name: Optional[str] = Field(None, description="Full name")
+    name: str | None = Field(None, description="Full name")
 
 class LoginRequest(BaseModel):
     email: str = Field(..., description="User email address")
@@ -38,29 +38,29 @@ class AuthResponse(BaseModel):
 
 class UserProfile(BaseModel):
     id: str
-    email: Optional[str] = None
+    email: str | None = None
     role: str = "user"
 
 class FarmProfileCreate(BaseModel):
-    farm_name: Optional[str] = None
-    state: Optional[str] = None
-    district: Optional[str] = None
-    area_hectares: Optional[float] = Field(None, gt=0)
-    soil_type: Optional[str] = None
-    irrigation_type: Optional[str] = None
-    crops: Optional[list] = None
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
+    farm_name: str | None = None
+    state: str | None = None
+    district: str | None = None
+    area_hectares: float | None = Field(None, gt=0)
+    soil_type: str | None = None
+    irrigation_type: str | None = None
+    crops: list | None = None
+    latitude: float | None = None
+    longitude: float | None = None
 
 class FarmProfileResponse(BaseModel):
     id: str
-    farm_name: Optional[str] = None
-    state: Optional[str] = None
-    district: Optional[str] = None
-    area_hectares: Optional[float] = None
-    soil_type: Optional[str] = None
-    irrigation_type: Optional[str] = None
-    crops: Optional[list] = None
+    farm_name: str | None = None
+    state: str | None = None
+    district: str | None = None
+    area_hectares: float | None = None
+    soil_type: str | None = None
+    irrigation_type: str | None = None
+    crops: list | None = None
 
     class Config:
         from_attributes = True
@@ -183,7 +183,7 @@ async def create_farm(
     return profile
 
 
-@router.get("/farm-profiles", response_model=List[FarmProfileResponse])
+@router.get("/farm-profiles", response_model=list[FarmProfileResponse])
 async def list_farms(
     user: CurrentUser = Depends(get_current_user),
     db: Session = Depends(get_db),

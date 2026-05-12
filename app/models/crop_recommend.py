@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field
-from typing import List, Optional
 from enum import Enum
+
+from pydantic import BaseModel, Field
+
 
 class SoilType(str, Enum):
     BLACK = "Black"
@@ -17,9 +18,9 @@ class CropRecommendRequest(BaseModel):
     humidity: float = Field(..., ge=0, le=100, description="Humidity (%)")
     ph: float = Field(..., ge=0, le=14, description="Soil pH")
     rainfall: float = Field(..., ge=0, le=5000, description="Rainfall (mm)")
-    soil_type: Optional[SoilType] = None
-    latitude: Optional[float] = None
-    longitude: Optional[float] = None
+    soil_type: SoilType | None = None
+    latitude: float | None = None
+    longitude: float | None = None
 
 class CropPrediction(BaseModel):
     crop_name: str
@@ -32,8 +33,8 @@ class SHAPExplanation(BaseModel):
     value: float
 
 class CropRecommendResponse(BaseModel):
-    predictions: List[CropPrediction]
-    shap_explanation: Optional[List[SHAPExplanation]] = None
-    recommendations: List[str]
+    predictions: list[CropPrediction]
+    shap_explanation: list[SHAPExplanation] | None = None
+    recommendations: list[str]
     success: bool = True
     message: str = "Crop recommendation generated successfully"

@@ -1,5 +1,6 @@
+
 from pydantic import BaseModel, Field
-from typing import List, Optional
+
 
 class FertilizerRequest(BaseModel):
     crop: str = Field(..., description="Crop name")
@@ -7,7 +8,7 @@ class FertilizerRequest(BaseModel):
     phosphorus: float = Field(..., ge=0, le=200, description="Current soil phosphorus (kg/ha)")
     potassium: float = Field(..., ge=0, le=300, description="Current soil potassium (kg/ha)")
     ph: float = Field(..., ge=0, le=14, description="Soil pH")
-    organic_carbon: Optional[float] = Field(None, ge=0, le=10, description="Organic carbon %")
+    organic_carbon: float | None = Field(None, ge=0, le=10, description="Organic carbon %")
     area_hectares: float = Field(..., gt=0, description="Area in hectares")
 
 class NPKDeficit(BaseModel):
@@ -27,17 +28,17 @@ class FertilizerProduct(BaseModel):
 class ApplicationSchedule(BaseModel):
     stage: str  # basal, top_dressing_1, top_dressing_2
     timing: str
-    products: List[str]
+    products: list[str]
     quantity_per_hectare: float
 
 class FertilizerResponse(BaseModel):
     crop: str
     area_hectares: float
     npk_analysis: NPKDeficit
-    recommended_products: List[FertilizerProduct]
-    application_schedule: List[ApplicationSchedule]
+    recommended_products: list[FertilizerProduct]
+    application_schedule: list[ApplicationSchedule]
     total_cost_estimate: float
-    organic_alternatives: List[str]
-    recommendations: List[str]
+    organic_alternatives: list[str]
+    recommendations: list[str]
     success: bool = True
     message: str = "Fertilizer recommendation generated successfully"

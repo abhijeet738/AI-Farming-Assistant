@@ -6,6 +6,7 @@ with a clear description so the agent knows when to call it.
 """
 
 import json
+
 import structlog
 from langchain_core.tools import tool
 
@@ -60,9 +61,9 @@ async def recommend_crop(
         rainfall: Annual rainfall in mm
     """
     try:
-        from app.services.crop_service import CropService
         from app.models.crop_recommend import CropRecommendRequest
-        
+        from app.services.crop_service import CropService
+
         service = CropService()
         request = CropRecommendRequest(
             nitrogen=nitrogen, phosphorus=phosphorus, potassium=potassium,
@@ -96,9 +97,9 @@ async def predict_crop_yield(
         area_hectares: Area of land in hectares
     """
     try:
-        from app.services.yield_service import YieldService
         from app.models.yield_predict import YieldPredictRequest
-        
+        from app.services.yield_service import YieldService
+
         service = YieldService()
         request = YieldPredictRequest(
             crop=crop, state=state, district=district,
@@ -124,7 +125,7 @@ async def get_market_prices(crop: str, state: str = "Maharashtra") -> str:
     """
     try:
         from app.services.market_service import MarketService
-        
+
         service = MarketService()
         result = await service.get_market_price(crop, state)
         return result.model_dump_json()
@@ -157,9 +158,9 @@ async def get_fertilizer_plan(
         area_hectares: Area in hectares
     """
     try:
-        from app.services.fertilizer_service import FertilizerService
         from app.models.fertilizer import FertilizerRequest
-        
+        from app.services.fertilizer_service import FertilizerService
+
         service = FertilizerService()
         request = FertilizerRequest(
             crop=crop, nitrogen=nitrogen, phosphorus=phosphorus,
@@ -192,9 +193,9 @@ async def assess_pest_risk(
         district: Optional district name for more precise assessment
     """
     try:
-        from app.services.pest_service import PestService
         from app.models.pest_risk import PestRiskRequest
-        
+        from app.services.pest_service import PestService
+
         service = PestService()
         request = PestRiskRequest(
             crop=crop, state=state, growth_stage=growth_stage, district=district,

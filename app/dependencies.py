@@ -6,11 +6,9 @@ authentication, and configuration.
 """
 
 from sqlalchemy.orm import Session
-from fastapi import Depends
 
-from app.db.database import get_db
 from app.config import settings
-from app.core.security import get_current_user, get_optional_user, CurrentUser
+from app.db.database import get_db
 
 
 # Database dependency

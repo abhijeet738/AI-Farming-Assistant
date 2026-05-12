@@ -11,11 +11,11 @@ Endpoints:
 
 import json
 import uuid
+
 import structlog
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
-from typing import Optional
 
 logger = structlog.get_logger()
 router = APIRouter()
@@ -27,7 +27,7 @@ router = APIRouter()
 class ChatMessageRequest(BaseModel):
     message: str = Field(..., description="The farmer's message")
     user_id: str = Field(default="default", description="Unique farmer identifier")
-    thread_id: Optional[str] = Field(
+    thread_id: str | None = Field(
         default=None,
         description="Conversation thread ID. Auto-generated if not provided."
     )
@@ -40,7 +40,7 @@ class ChatResponse(BaseModel):
     response: str
     thread_id: str
     interrupted: bool = False
-    interrupt_payload: Optional[dict] = None
+    interrupt_payload: dict | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -53,14 +53,14 @@ async def chat_invoke(request: ChatMessageRequest):
     This is the simpler, non-streaming endpoint. Use /chat/message for
     streaming responses.
     """
-    from app.agent.graph import graph, ensure_knowledge_seeded
-    
+    from app.agent.graph import ensure_knowledge_seeded, graph
+
     # Seed knowledge base on first call
     await ensure_knowledge_seeded()
-    
+
     thread_id = request.thread_id or str(uuid.uuid4())
     config = {"configurable": {"thread_id": thread_id}}
-    
+
     try:
         result = await graph.ainvoke(
             {
@@ -69,7 +69,7 @@ async def chat_invoke(request: ChatMessageRequest):
             },
             config=config,
         )
-        
+
         # Check if the graph was interrupted (HITL)
         state = graph.get_state(config)
         if state.next:
@@ -80,26 +80,26 @@ async def chat_invoke(request: ChatMessageRequest):
                     if hasattr(task, "interrupts") and task.interrupts:
                         interrupt_data = task.interrupts[0].value
                         break
-            
+
             return ChatResponse(
                 response="⏸️ Awaiting your approval (see interrupt details).",
                 thread_id=thread_id,
                 interrupted=True,
                 interrupt_payload=interrupt_data,
             )
-        
+
         # Extract the final AI message
         last_ai_msg = ""
         for msg in reversed(result["messages"]):
             if hasattr(msg, "type") and msg.type == "ai" and msg.content:
                 last_ai_msg = msg.content
                 break
-        
+
         return ChatResponse(
             response=last_ai_msg or "I processed your request but have no additional response.",
             thread_id=thread_id,
         )
-        
+
     except Exception as e:
         logger.error("Chat invoke failed", error=str(e), thread_id=thread_id)
         raise HTTPException(status_code=500, detail=f"Agent error: {str(e)}")
@@ -114,17 +114,17 @@ async def chat_message_stream(request: ChatMessageRequest):
     
     Tokens appear word-by-word as the LLM generates them.
     """
-    from app.agent.graph import graph, ensure_knowledge_seeded
-    
+    from app.agent.graph import ensure_knowledge_seeded, graph
+
     await ensure_knowledge_seeded()
-    
+
     thread_id = request.thread_id or str(uuid.uuid4())
     config = {"configurable": {"thread_id": thread_id}}
-    
+
     async def event_stream():
         # Send thread_id first so the client knows it
         yield f"event: thread_id\ndata: {thread_id}\n\n"
-        
+
         try:
             async for msg, metadata in graph.astream(
                 {
@@ -141,12 +141,12 @@ async def chat_message_stream(request: ChatMessageRequest):
                     and not getattr(msg, "tool_calls", None)
                 ):
                     yield f"data: {msg.content}\n\n"
-                
+
                 # Stream tool execution status updates
                 if metadata.get("langgraph_node") == "tools":
                     if hasattr(msg, "name"):
                         yield f"event: tool_status\ndata: {json.dumps({'tool': msg.name, 'status': 'completed'})}\n\n"
-            
+
             # Check for interrupt
             state = graph.get_state(config)
             if state.next:
@@ -157,13 +157,13 @@ async def chat_message_stream(request: ChatMessageRequest):
                             interrupt_data = task.interrupts[0].value
                             break
                 yield f"event: interrupt\ndata: {json.dumps(interrupt_data)}\n\n"
-            
+
             yield "event: done\ndata: {}\n\n"
-            
+
         except Exception as e:
             logger.error("Streaming failed", error=str(e))
             yield f"event: error\ndata: {json.dumps({'error': str(e)})}\n\n"
-    
+
     return StreamingResponse(
         event_stream(),
         media_type="text/event-stream",
@@ -184,11 +184,12 @@ async def chat_resume(request: ChatResumeRequest):
     
     Used after the agent pauses for safety review of chemical recommendations.
     """
-    from app.agent.graph import graph
     from langgraph.types import Command
-    
+
+    from app.agent.graph import graph
+
     config = {"configurable": {"thread_id": request.thread_id}}
-    
+
     try:
         # Check that the thread actually has a pending interrupt
         state = graph.get_state(config)
@@ -197,25 +198,25 @@ async def chat_resume(request: ChatResumeRequest):
                 status_code=400,
                 detail="No pending interrupt found for this thread."
             )
-        
+
         # Resume the graph with the farmer's decision
         result = await graph.ainvoke(
             Command(resume=request.approved),
             config=config,
         )
-        
+
         # Extract the final response
         last_ai_msg = ""
         for msg in reversed(result["messages"]):
             if hasattr(msg, "type") and msg.type == "ai" and msg.content:
                 last_ai_msg = msg.content
                 break
-        
+
         return ChatResponse(
             response=last_ai_msg or "Action processed.",
             thread_id=request.thread_id,
         )
-        
+
     except HTTPException:
         raise
     except Exception as e:
@@ -234,12 +235,12 @@ async def get_thread_history(thread_id: str):
     from a past checkpoint.
     """
     from app.agent.graph import graph
-    
+
     config = {"configurable": {"thread_id": thread_id}}
-    
+
     try:
         history = list(graph.get_state_history(config))
-        
+
         return {
             "thread_id": thread_id,
             "checkpoints": [
@@ -266,22 +267,22 @@ async def get_thread_state(thread_id: str):
     Shows the latest messages, pending interrupts, and user context.
     """
     from app.agent.graph import graph
-    
+
     config = {"configurable": {"thread_id": thread_id}}
-    
+
     try:
         state = graph.get_state(config)
-        
+
         if not state.values:
             raise HTTPException(status_code=404, detail="Thread not found")
-        
+
         messages = []
         for msg in state.values.get("messages", []):
             messages.append({
                 "type": getattr(msg, "type", "unknown"),
                 "content": getattr(msg, "content", ""),
             })
-        
+
         return {
             "thread_id": thread_id,
             "messages": messages[-10:],  # Last 10 messages

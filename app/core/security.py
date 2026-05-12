@@ -6,13 +6,14 @@ Supports two modes:
   2. Dev mode (no Supabase) — allows unauthenticated access with a default user
 """
 
-from typing import Optional
-from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from jose import jwt, JWTError
-from pydantic import BaseModel
-from app.config import settings
+
 import structlog
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from jose import JWTError, jwt
+from pydantic import BaseModel
+
+from app.config import settings
 
 logger = structlog.get_logger()
 
@@ -23,7 +24,7 @@ security = HTTPBearer(auto_error=False)
 class CurrentUser(BaseModel):
     """Represents the authenticated user extracted from the JWT."""
     id: str
-    email: Optional[str] = None
+    email: str | None = None
     role: str = "user"
 
 
@@ -37,7 +38,7 @@ def _verify_supabase_jwt(token: str) -> dict:
       - exp: expiration timestamp
     """
     jwt_secret = settings.supabase_jwt_secret or settings.secret_key
-    
+
     try:
         payload = jwt.decode(
             token,
@@ -56,7 +57,7 @@ def _verify_supabase_jwt(token: str) -> dict:
 
 
 async def get_current_user(
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+    credentials: HTTPAuthorizationCredentials | None = Depends(security),
 ) -> CurrentUser:
     """FastAPI dependency that extracts and verifies the current user.
     
@@ -68,7 +69,7 @@ async def get_current_user(
     # Dev mode: no Supabase configured → return a default dev user
     if not settings.supabase_url or not settings.supabase_key:
         return CurrentUser(id="dev-user", email="dev@example.com", role="dev")
-    
+
     # Production: require a valid Bearer token
     if not credentials:
         raise HTTPException(
@@ -76,16 +77,16 @@ async def get_current_user(
             detail="Authentication required",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
+
     payload = _verify_supabase_jwt(credentials.credentials)
-    
+
     user_id = payload.get("sub")
     if not user_id:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token: no user ID",
         )
-    
+
     return CurrentUser(
         id=user_id,
         email=payload.get("email"),
@@ -94,8 +95,8 @@ async def get_current_user(
 
 
 async def get_optional_user(
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
-) -> Optional[CurrentUser]:
+    credentials: HTTPAuthorizationCredentials | None = Depends(security),
+) -> CurrentUser | None:
     """Like get_current_user but returns None instead of 401 for unauthenticated requests.
     
     Useful for endpoints that work both with and without authentication
@@ -105,7 +106,7 @@ async def get_optional_user(
         if not settings.supabase_url:
             return CurrentUser(id="dev-user", email="dev@example.com", role="dev")
         return None
-    
+
     try:
         return await get_current_user(credentials)
     except HTTPException:

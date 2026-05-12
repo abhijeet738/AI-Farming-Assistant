@@ -15,16 +15,17 @@ Features enabled:
 """
 
 import os
+
 import structlog
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.graph import END, START, StateGraph
 from langgraph.store.memory import InMemoryStore
 from langgraph.types import RetryPolicy
 
+from app.agent.nodes import agent_node, safety_review_node, should_continue, tool_executor
 from app.agent.state import FarmerAgentState
 from app.agent.tools import ALL_TOOLS
-from app.agent.nodes import agent_node, tool_executor, safety_review_node, should_continue
 
 logger = structlog.get_logger()
 
@@ -61,12 +62,12 @@ checkpointer = InMemorySaver()
 # Try to create store with semantic search; fall back to plain store
 try:
     from langchain_google_genai import GoogleGenerativeAIEmbeddings
-    
+
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/text-embedding-004",
         api_key=GEMINI_API_KEY,
     )
-    
+
     store = InMemoryStore(
         index={
             "embed": embeddings,

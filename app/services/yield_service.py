@@ -1,7 +1,8 @@
-from app.models.yield_predict import YieldPredictRequest, YieldPredictResponse, YieldBenchmark
-from app.ml.model_registry import registry
 import numpy as np
 import structlog
+
+from app.ml.model_registry import registry
+from app.models.yield_predict import YieldBenchmark, YieldPredictRequest, YieldPredictResponse
 
 logger = structlog.get_logger()
 

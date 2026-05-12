@@ -1,5 +1,6 @@
 import pytest
 
+
 def test_get_supported_crops_pest(client):
     """Test the list of supported crops for pest risk"""
     response = client.get("/api/v1/pest/crops")
@@ -20,11 +21,11 @@ async def test_assess_pest_risk_valid(client):
         "latitude": 18.5,
         "longitude": 73.8
     }
-    
+
     response = client.post("/api/v1/pest/assess", json=payload)
     assert response.status_code == 200
     data = response.json()
-    
+
     assert "success" in data
     assert "pest_risks" in data
     assert "risk_timeline_7_days" in data
@@ -37,6 +38,6 @@ async def test_assess_pest_risk_invalid(client):
         "crop": "Cotton"
         # missing state and growth_stage
     }
-    
+
     response = client.post("/api/v1/pest/assess", json=payload)
     assert response.status_code == 422

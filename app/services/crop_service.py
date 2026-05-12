@@ -1,11 +1,14 @@
-from app.models.crop_recommend import (
-    CropRecommendRequest, CropRecommendResponse,
-    CropPrediction, SHAPExplanation
-)
-from app.ml.model_registry import registry
 import numpy as np
 import pandas as pd
 import structlog
+
+from app.ml.model_registry import registry
+from app.models.crop_recommend import (
+    CropPrediction,
+    CropRecommendRequest,
+    CropRecommendResponse,
+    SHAPExplanation,
+)
 
 logger = structlog.get_logger()
 

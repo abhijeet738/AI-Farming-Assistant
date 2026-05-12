@@ -1,7 +1,7 @@
-from fastapi import APIRouter
 from datetime import datetime
+
 import psutil
-import os
+from fastapi import APIRouter
 
 router = APIRouter()
 
@@ -15,29 +15,29 @@ async def health_check():
         cpu_percent = psutil.cpu_percent(interval=1)
         memory = psutil.virtual_memory()
         disk = psutil.disk_usage('/')
-        
+
         # Mock model status - replace with actual model registry checks
         model_status = {
             "crop_recommendation": "loaded",
             "disease_detection": "not_loaded",
-            "yield_prediction": "loaded", 
+            "yield_prediction": "loaded",
             "market_price": "not_loaded",
             "fertilizer": "loaded",
             "pest_risk": "not_loaded"
         }
-        
+
         # Calculate overall health
         loaded_models = sum(1 for status in model_status.values() if status == "loaded")
         total_models = len(model_status)
         model_health_percentage = (loaded_models / total_models) * 100
-        
+
         # Determine overall status
         overall_status = "healthy"
         if cpu_percent > 90 or memory.percent > 90:
             overall_status = "degraded"
         if cpu_percent > 95 or memory.percent > 95:
             overall_status = "unhealthy"
-            
+
         return {
             "status": overall_status,
             "timestamp": datetime.now().isoformat(),
@@ -83,14 +83,14 @@ async def model_health():
                 "accuracy": 0.991
             },
             "yield_prediction": {
-                "status": "loaded", 
+                "status": "loaded",
                 "last_prediction": "2024-04-29T09:15:00Z",
                 "avg_response_time_ms": 120,
                 "r2_score": 0.92
             },
             "fertilizer": {
                 "status": "loaded",
-                "last_prediction": "2024-04-29T11:00:00Z", 
+                "last_prediction": "2024-04-29T11:00:00Z",
                 "avg_response_time_ms": 30
             }
         },

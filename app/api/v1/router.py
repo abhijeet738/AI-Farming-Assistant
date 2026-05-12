@@ -1,5 +1,17 @@
 from fastapi import APIRouter
-from app.api.v1 import crop_recommend, weather, yield_predict, market_price, fertilizer, health, pest_risk, disease_detect, chat, auth
+
+from app.api.v1 import (
+    auth,
+    chat,
+    crop_recommend,
+    disease_detect,
+    fertilizer,
+    health,
+    market_price,
+    pest_risk,
+    weather,
+    yield_predict,
+)
 
 api_router = APIRouter()
 
@@ -12,14 +24,14 @@ api_router.include_router(
 
 # Include all endpoint routers
 api_router.include_router(
-    crop_recommend.router, 
-    prefix="/crop", 
+    crop_recommend.router,
+    prefix="/crop",
     tags=["Crop Recommendation"]
 )
 
 api_router.include_router(
-    weather.router, 
-    prefix="/weather", 
+    weather.router,
+    prefix="/weather",
     tags=["Weather Intelligence"]
 )
 
@@ -37,13 +49,13 @@ api_router.include_router(
 
 api_router.include_router(
     fertilizer.router,
-    prefix="/fertilizer", 
+    prefix="/fertilizer",
     tags=["Fertilizer Recommendations"]
 )
 
 api_router.include_router(
-    health.router, 
-    prefix="/health", 
+    health.router,
+    prefix="/health",
     tags=["Health Check"]
 )
 

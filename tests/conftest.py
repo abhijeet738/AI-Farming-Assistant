@@ -1,14 +1,14 @@
-import pytest
 import os
-from typing import Generator
+from collections.abc import Generator
+
+import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from unittest.mock import MagicMock, patch
 
+from app.core.security import CurrentUser, get_current_user
+from app.db.database import Base, get_db
 from app.main import app
-from app.db.database import get_db, Base
-from app.core.security import get_current_user, CurrentUser
 
 # Setup isolated test database
 TEST_DB_URL = "sqlite:///./test_farming_assistant.db"

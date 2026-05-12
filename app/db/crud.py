@@ -5,16 +5,17 @@ Each function takes a SQLAlchemy Session and performs
 create/read/update/delete operations on the database.
 """
 
-import time
-from typing import Optional, List
+import structlog
+from sqlalchemy import and_, select
 from sqlalchemy.orm import Session
-from sqlalchemy import select, and_
 
 from app.db.models import (
-    FarmProfile, ChatSession, ChatMessage,
-    PredictionLog, FarmerMemory,
+    ChatMessage,
+    ChatSession,
+    FarmerMemory,
+    FarmProfile,
+    PredictionLog,
 )
-import structlog
 
 logger = structlog.get_logger()
 
@@ -33,13 +34,13 @@ def create_farm_profile(db: Session, user_id: str, **kwargs) -> FarmProfile:
     return profile
 
 
-def get_farm_profiles(db: Session, user_id: str) -> List[FarmProfile]:
+def get_farm_profiles(db: Session, user_id: str) -> list[FarmProfile]:
     """Get all farm profiles for a user."""
     stmt = select(FarmProfile).where(FarmProfile.user_id == user_id)
     return list(db.scalars(stmt).all())
 
 
-def get_farm_profile(db: Session, profile_id: str, user_id: str) -> Optional[FarmProfile]:
+def get_farm_profile(db: Session, profile_id: str, user_id: str) -> FarmProfile | None:
     """Get a specific farm profile (with ownership check)."""
     stmt = select(FarmProfile).where(
         and_(FarmProfile.id == profile_id, FarmProfile.user_id == user_id)
@@ -47,7 +48,7 @@ def get_farm_profile(db: Session, profile_id: str, user_id: str) -> Optional[Far
     return db.scalars(stmt).first()
 
 
-def update_farm_profile(db: Session, profile_id: str, user_id: str, **kwargs) -> Optional[FarmProfile]:
+def update_farm_profile(db: Session, profile_id: str, user_id: str, **kwargs) -> FarmProfile | None:
     """Update a farm profile."""
     profile = get_farm_profile(db, profile_id, user_id)
     if not profile:
@@ -83,7 +84,7 @@ def create_chat_session(db: Session, thread_id: str, user_id: str, title: str = 
     return session
 
 
-def get_chat_sessions(db: Session, user_id: str, limit: int = 20) -> List[ChatSession]:
+def get_chat_sessions(db: Session, user_id: str, limit: int = 20) -> list[ChatSession]:
     """Get recent chat sessions for a user, ordered by last activity."""
     stmt = (
         select(ChatSession)
@@ -94,7 +95,7 @@ def get_chat_sessions(db: Session, user_id: str, limit: int = 20) -> List[ChatSe
     return list(db.scalars(stmt).all())
 
 
-def get_chat_session_by_thread(db: Session, thread_id: str) -> Optional[ChatSession]:
+def get_chat_session_by_thread(db: Session, thread_id: str) -> ChatSession | None:
     """Get a chat session by thread_id."""
     stmt = select(ChatSession).where(ChatSession.thread_id == thread_id)
     return db.scalars(stmt).first()
@@ -135,7 +136,7 @@ def add_chat_message(
     return message
 
 
-def get_chat_messages(db: Session, session_id: str, limit: int = 50) -> List[ChatMessage]:
+def get_chat_messages(db: Session, session_id: str, limit: int = 50) -> list[ChatMessage]:
     """Get messages for a chat session, ordered chronologically."""
     stmt = (
         select(ChatMessage)
@@ -228,7 +229,7 @@ def save_memory(db: Session, user_id: str, namespace: str, key: str, value: dict
         return memory
 
 
-def get_memories(db: Session, user_id: str, namespace: str = None) -> List[FarmerMemory]:
+def get_memories(db: Session, user_id: str, namespace: str = None) -> list[FarmerMemory]:
     """Get all memories for a user, optionally filtered by namespace."""
     stmt = select(FarmerMemory).where(FarmerMemory.user_id == user_id)
     if namespace:
@@ -236,7 +237,7 @@ def get_memories(db: Session, user_id: str, namespace: str = None) -> List[Farme
     return list(db.scalars(stmt).all())
 
 
-def get_memory(db: Session, user_id: str, namespace: str, key: str) -> Optional[FarmerMemory]:
+def get_memory(db: Session, user_id: str, namespace: str, key: str) -> FarmerMemory | None:
     """Get a specific memory entry."""
     stmt = select(FarmerMemory).where(
         and_(

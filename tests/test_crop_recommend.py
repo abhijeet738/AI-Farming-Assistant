@@ -1,5 +1,6 @@
 import pytest
 
+
 def test_get_supported_crops(client):
     """Test the list of supported crops"""
     response = client.get("/api/v1/crop/list")
@@ -26,11 +27,11 @@ async def test_recommend_crops_valid(client):
         "latitude": 19.0,
         "longitude": 73.0
     }
-    
+
     response = client.post("/api/v1/crop/recommend", json=payload)
     assert response.status_code == 200
     data = response.json()
-    
+
     assert "success" in data
     assert "recommendations" in data
     assert len(data["recommendations"]) > 0
@@ -48,6 +49,6 @@ async def test_recommend_crops_invalid_data(client):
         "rainfall": 202.9,
         "soil_type": "loamy"
     }
-    
+
     response = client.post("/api/v1/crop/recommend", json=payload)
     assert response.status_code == 422  # FastAPI validation error

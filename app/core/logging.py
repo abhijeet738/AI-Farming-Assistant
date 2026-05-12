@@ -1,7 +1,10 @@
-import structlog
 import logging
 import sys
+
+import structlog
+
 from app.config import settings
+
 
 def setup_logging():
     logging.basicConfig(
@@ -9,7 +12,7 @@ def setup_logging():
         stream=sys.stdout,
         level=logging.INFO if not settings.debug else logging.DEBUG,
     )
-    
+
     structlog.configure(
         processors=[
             structlog.stdlib.filter_by_level,

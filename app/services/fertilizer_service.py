@@ -1,11 +1,15 @@
-from app.models.fertilizer import (
-    FertilizerRequest, FertilizerResponse,
-    NPKDeficit, FertilizerProduct, ApplicationSchedule
-)
-from app.ml.model_registry import registry
+
 import numpy as np
-import json
 import structlog
+
+from app.ml.model_registry import registry
+from app.models.fertilizer import (
+    ApplicationSchedule,
+    FertilizerProduct,
+    FertilizerRequest,
+    FertilizerResponse,
+    NPKDeficit,
+)
 
 logger = structlog.get_logger()
 

@@ -1,12 +1,13 @@
 import time
+
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 
+from app.core.rate_limit import limiter
+from app.db import crud
+from app.db.database import get_db
 from app.models.yield_predict import YieldPredictRequest, YieldPredictResponse
 from app.services.yield_service import YieldService
-from app.core.rate_limit import limiter
-from app.db.database import get_db
-from app.db import crud
 
 router = APIRouter()
 
@@ -56,17 +57,17 @@ async def predict_yield(
 async def get_supported_crops_for_yield(request: Request):
     """Get list of crops supported for yield prediction."""
     yield_service = YieldService()
-    
+
     crops = []
     if yield_service.encoders and "label_encoder_crop" in yield_service.encoders:
         encoder = yield_service.encoders["label_encoder_crop"]
         if hasattr(encoder, "classes_"):
             crops = list(encoder.classes_)
-            
+
     if not crops:
         # Fallback if model not loaded
         crops = ["Rice", "Wheat", "Maize", "Cotton", "Sugarcane"]
-        
+
     return {
         "supported_crops": crops,
         "total_count": len(crops),

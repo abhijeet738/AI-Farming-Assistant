@@ -1,9 +1,10 @@
-from app.models.market_price import MarketPriceResponse, PriceForecast, BestSellWindow, MarketTrend
-from app.ml.model_registry import registry
-import numpy as np
-import pandas as pd
 from datetime import datetime, timedelta
+
+import numpy as np
 import structlog
+
+from app.ml.model_registry import registry
+from app.models.market_price import BestSellWindow, MarketPriceResponse, MarketTrend, PriceForecast
 
 logger = structlog.get_logger()
 
@@ -43,20 +44,20 @@ class MarketService:
             state = state or "Maharashtra"
             commodity_enc = self._safe_encode("commodity_encoded", crop)
             state_enc = self._safe_encode("state_encoded", state)
-            
-            base_price = 2000.0 + (len(crop) * 100.0) 
+
+            base_price = 2000.0 + (len(crop) * 100.0)
             history = self._generate_synthetic_history(base_price, 90)
 
             forecast_7_days = []
             forecast_30_days = []
             forecast_90_days = []
-            
+
             current_date = datetime.now()
-            
+
             # Predict next 90 days
             for i in range(90):
                 target_date = current_date + timedelta(days=i)
-                
+
                 day_of_week = target_date.weekday()
                 day_of_month = target_date.day
                 month = target_date.month
@@ -65,7 +66,7 @@ class MarketService:
                 year = target_date.year
                 is_month_start = 1 if day_of_month == 1 else 0
                 is_month_end = 1 if day_of_month >= 28 and target_date.month != (target_date + timedelta(days=1)).month else 0
-                
+
                 sin_annual = np.sin(2 * np.pi * target_date.timetuple().tm_yday / 365.25)
                 cos_annual = np.cos(2 * np.pi * target_date.timetuple().tm_yday / 365.25)
                 sin_semiannual = np.sin(4 * np.pi * target_date.timetuple().tm_yday / 365.25)
@@ -127,7 +128,7 @@ class MarketService:
 
                 predicted_price = float(self.model.predict(features)[0])
                 predicted_price = max(100.0, predicted_price)
-                
+
                 margin = predicted_price * 0.05
                 forecast = PriceForecast(
                     date=target_date.strftime("%Y-%m-%d"),
@@ -141,11 +142,11 @@ class MarketService:
                 if i < 30:
                     forecast_30_days.append(forecast)
                 forecast_90_days.append(forecast)
-                
+
                 history = np.append(history, predicted_price)
 
             current_price = forecast_7_days[0].predicted_price
-            
+
             best_day = max(forecast_30_days, key=lambda x: x.predicted_price)
             sell_window = BestSellWindow(
                 start_date=best_day.date,
@@ -156,7 +157,7 @@ class MarketService:
 
             trend_dir = "rising" if forecast_30_days[-1].predicted_price > current_price else "falling"
             pct_change = abs((forecast_30_days[-1].predicted_price - current_price) / current_price) * 100
-            
+
             market_trend = MarketTrend(
                 trend_direction=trend_dir,
                 trend_strength="strong" if pct_change > 10 else "moderate",

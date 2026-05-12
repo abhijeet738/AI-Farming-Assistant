@@ -1,11 +1,12 @@
-from pydantic import BaseModel, Field
-from typing import List, Optional
 from datetime import datetime
+
+from pydantic import BaseModel, Field
+
 
 class MarketPriceRequest(BaseModel):
     crop: str = Field(..., description="Crop name")
-    state: Optional[str] = Field(None, description="State name for regional prices")
-    district: Optional[str] = Field(None, description="District name for local prices")
+    state: str | None = Field(None, description="State name for regional prices")
+    district: str | None = Field(None, description="District name for local prices")
 
 class PriceForecast(BaseModel):
     date: str
@@ -30,11 +31,11 @@ class MarketPriceResponse(BaseModel):
     current_price_per_quintal: float
     currency: str = "INR"
     last_updated: datetime
-    forecast_7_days: List[PriceForecast]
-    forecast_30_days: List[PriceForecast]
-    forecast_90_days: List[PriceForecast]
+    forecast_7_days: list[PriceForecast]
+    forecast_30_days: list[PriceForecast]
+    forecast_90_days: list[PriceForecast]
     market_trend: MarketTrend
     best_sell_window: BestSellWindow
-    price_alerts: List[str]
+    price_alerts: list[str]
     success: bool = True
     message: str = "Market price data retrieved successfully"

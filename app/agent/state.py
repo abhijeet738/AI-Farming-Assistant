@@ -5,8 +5,8 @@ Uses LangGraph's MessagesState (which provides the `messages` key with
 the `add_messages` reducer) extended with farming-specific context fields.
 """
 
+
 from langgraph.graph import MessagesState
-from typing import Optional
 
 
 class FarmerAgentState(MessagesState):
@@ -22,6 +22,6 @@ class FarmerAgentState(MessagesState):
         summary: Running conversation summary for context compression.
     """
     user_id: str = "default"
-    farmer_location: Optional[str] = None
-    farmer_crops: Optional[list[str]] = None
+    farmer_location: str | None = None
+    farmer_crops: list[str] | None = None
     summary: str = ""

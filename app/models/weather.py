@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field
-from typing import List, Optional
 from datetime import datetime
+
+from pydantic import BaseModel
+
 
 class WeatherAlert(BaseModel):
     type: str
@@ -8,7 +9,7 @@ class WeatherAlert(BaseModel):
     message: str
     valid_from: datetime
     valid_until: datetime
-    crop_impact: Optional[str] = None
+    crop_impact: str | None = None
 
 class WeatherForecast(BaseModel):
     date: str
@@ -20,28 +21,28 @@ class WeatherForecast(BaseModel):
     conditions: str
 
 class AgriculturalParams(BaseModel):
-    gdd_today: Optional[float] = None
-    gdd_cumulative: Optional[float] = None
-    evapotranspiration: Optional[float] = None
-    soil_temperature_0_10cm: Optional[float] = None
-    soil_moisture_0_10cm: Optional[float] = None
-    delta_t: Optional[float] = None
-    spray_suitability: Optional[str] = None
+    gdd_today: float | None = None
+    gdd_cumulative: float | None = None
+    evapotranspiration: float | None = None
+    soil_temperature_0_10cm: float | None = None
+    soil_moisture_0_10cm: float | None = None
+    delta_t: float | None = None
+    spray_suitability: str | None = None
 
 class WeatherRecommendation(BaseModel):
     category: str  # irrigation, spraying, harvesting, etc.
     priority: str  # low, medium, high
     message: str
-    timing: Optional[str] = None
+    timing: str | None = None
 
 class WeatherResponse(BaseModel):
     location: str
     current_temperature: float
     current_humidity: int
     current_conditions: str
-    forecast: List[WeatherForecast]
-    alerts: List[WeatherAlert]
-    agricultural_params: Optional[AgriculturalParams] = None
-    recommendations: List[WeatherRecommendation]
+    forecast: list[WeatherForecast]
+    alerts: list[WeatherAlert]
+    agricultural_params: AgriculturalParams | None = None
+    recommendations: list[WeatherRecommendation]
     success: bool = True
     message: str = "Weather data retrieved successfully"

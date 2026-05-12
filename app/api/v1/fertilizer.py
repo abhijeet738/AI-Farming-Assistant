@@ -1,12 +1,13 @@
 import time
+
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 
+from app.core.rate_limit import limiter
+from app.db import crud
+from app.db.database import get_db
 from app.models.fertilizer import FertilizerRequest, FertilizerResponse
 from app.services.fertilizer_service import FertilizerService
-from app.core.rate_limit import limiter
-from app.db.database import get_db
-from app.db import crud
 
 router = APIRouter()
 
