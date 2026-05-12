@@ -11,10 +11,10 @@ from langgraph.graph import MessagesState
 
 class FarmerAgentState(MessagesState):
     """Extended state for the farming assistant agent.
-    
+
     Inherits:
         messages: Annotated[list[AnyMessage], add_messages]
-    
+
     Custom fields:
         user_id: Unique identifier for the farmer (for long-term memory).
         farmer_location: Farmer's location (state/district), loaded from memory.

@@ -21,7 +21,7 @@ async def get_weather_intelligence(location: str) -> str:
     """Get current weather conditions, 7-day forecast, and agricultural
     alerts for a location in India. Use this for irrigation scheduling,
     spray timing, harvest decisions, and frost/heat warnings.
-    
+
     Args:
         location: City or district name (e.g., "Patna", "Nagpur", "Ludhiana")
     """
@@ -50,7 +50,7 @@ async def recommend_crop(
 ) -> str:
     """Recommend the best crops to grow based on soil nutrients and climate.
     Uses a trained ML model (XGBoost/LightGBM stacking ensemble).
-    
+
     Args:
         nitrogen: Soil nitrogen content in kg/ha (0-200)
         phosphorus: Soil phosphorus content in kg/ha (0-200)
@@ -88,7 +88,7 @@ async def predict_crop_yield(
     area_hectares: float,
 ) -> str:
     """Predict expected crop yield in tonnes/hectare using ML ensemble model.
-    
+
     Args:
         crop: Crop name (e.g., "Rice", "Wheat", "Maize", "Cotton")
         state: Indian state name (e.g., "Bihar", "Punjab", "Maharashtra")
@@ -118,7 +118,7 @@ async def predict_crop_yield(
 @tool("get_market_prices")
 async def get_market_prices(crop: str, state: str = "Maharashtra") -> str:
     """Get current market prices, price trends, and best sell timing for a crop.
-    
+
     Args:
         crop: Crop name (e.g., "Rice", "Wheat", "Tomato", "Onion")
         state: Indian state for regional pricing (default: Maharashtra)
@@ -148,7 +148,7 @@ async def get_fertilizer_plan(
 ) -> str:
     """Get fertilizer recommendations with NPK deficit analysis,
     product suggestions, application schedule, and cost estimates.
-    
+
     Args:
         crop: Crop name (e.g., "Rice", "Wheat")
         nitrogen: Current soil nitrogen in kg/ha (0-200)
@@ -185,7 +185,7 @@ async def assess_pest_risk(
 ) -> str:
     """Assess pest and disease risk for a crop based on location,
     growth stage, and current weather conditions.
-    
+
     Args:
         crop: Crop name (e.g., "Rice", "Tomato", "Cotton")
         state: Indian state name
@@ -216,7 +216,7 @@ def search_farming_knowledge(query: str) -> str:
     management, disease treatment, government schemes, organic farming,
     and best practices. Use this when the farmer asks 'how to' questions
     or needs specific agricultural guidance.
-    
+
     Args:
         query: Natural language search query (e.g., "how to treat late blight in tomato")
     """

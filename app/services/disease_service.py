@@ -105,7 +105,7 @@ class DiseaseService:
         crop_name = disease_label.split("___")[0].strip() if "___" in disease_label else ""
 
         # Search KB
-        for key, rule in self.disease_kb.items():
+        for _key, rule in self.disease_kb.items():
             if rule.get("disease", "").lower() == clean_name.lower():
                 # Check if it's the right crop
                 if crop_name and rule.get("crop", "").lower() != crop_name.lower():

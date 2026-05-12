@@ -16,7 +16,7 @@ logger = structlog.get_logger()
 
 async def load_farmer_profile(store, user_id: str) -> str:
     """Load a farmer's stored profile from the SQL database.
-    
+
     Returns:
         A formatted string of known farmer details, or empty string.
     """
@@ -46,7 +46,7 @@ async def load_farmer_profile(store, user_id: str) -> str:
 
 async def save_farmer_detail(store, user_id: str, key: str, detail: str) -> None:
     """Save a specific detail about a farmer to the SQL database.
-    
+
     Args:
         store: The LangGraph memory store (ignored, using DB).
         user_id: Unique identifier for the farmer.
@@ -67,12 +67,12 @@ async def save_farmer_detail(store, user_id: str, key: str, detail: str) -> None
 
 async def search_knowledge(store, query: str, limit: int = 3) -> str:
     """Semantic search across the farming knowledge base.
-    
+
     Args:
         store: The LangGraph memory store (with embeddings index).
         query: Natural language query from the farmer.
         limit: Max number of documents to retrieve.
-    
+
     Returns:
         Concatenated text of the most relevant knowledge documents.
     """

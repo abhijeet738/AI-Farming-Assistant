@@ -158,7 +158,7 @@ class WeatherCache:
             locations = []
             current_time = datetime.now()
 
-            for key, cached_data in self._cache.items():
+            for _key, cached_data in self._cache.items():
                 try:
                     cached_time = datetime.fromisoformat(cached_data["cached_at"])
                     age_minutes = (current_time - cached_time).total_seconds() / 60

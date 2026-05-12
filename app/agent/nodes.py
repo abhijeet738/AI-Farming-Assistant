@@ -3,7 +3,7 @@ Graph Nodes — the core logic units of the farming agent.
 
 Nodes:
     1. agent_node    — Calls the LLM with tools, memory, and RAG context
-    2. tool_executor — Executes tool calls returned by the LLM  
+    2. tool_executor — Executes tool calls returned by the LLM
     3. safety_review — Human-in-the-loop interrupt for critical actions
 """
 
@@ -46,7 +46,7 @@ def contains_critical_action(content: str) -> bool:
 # ---------------------------------------------------------------------------
 async def agent_node(state: FarmerAgentState, store):
     """Main reasoning node — calls the LLM with tools, memory, and RAG.
-    
+
     This node:
     1. Loads the farmer's long-term profile from the store
     2. Performs semantic search for relevant farming knowledge (RAG)
@@ -104,7 +104,7 @@ async def agent_node(state: FarmerAgentState, store):
 # ---------------------------------------------------------------------------
 async def tool_executor(state: FarmerAgentState):
     """Execute tool calls from the LLM response.
-    
+
     Iterates through all tool_calls in the last message and invokes
     the corresponding tool function. Returns ToolMessage results.
     """
@@ -146,7 +146,7 @@ async def tool_executor(state: FarmerAgentState):
 # ---------------------------------------------------------------------------
 async def safety_review_node(state: FarmerAgentState):
     """Check if the agent's response contains critical chemical recommendations.
-    
+
     If it does, pause execution using LangGraph's interrupt() primitive
     and wait for human approval before finalizing the response.
     """

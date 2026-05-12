@@ -116,7 +116,7 @@ class CropService:
                              "temperature", "humidity", "ph", "rainfall"]
             feature_values = [request.nitrogen, request.phosphorus, request.potassium,
                               request.temperature, request.humidity, request.ph, request.rainfall]
-            for name, val in zip(feature_names, feature_values):
+            for name, val in zip(feature_names, feature_values, strict=False):
                 shap_explanation.append(SHAPExplanation(
                     feature_name=name, importance=0.0, value=val
                 ))

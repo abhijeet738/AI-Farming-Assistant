@@ -82,7 +82,7 @@ class PestService:
     def _get_matching_diseases(self, crop, temp, humidity):
         """Find diseases from knowledge base that match current conditions."""
         matches = []
-        for key, rule in self.disease_kb.items():
+        for _key, rule in self.disease_kb.items():
             if rule.get("crop", "").lower() != crop.lower():
                 continue
             t_min = rule.get("weather_triggers", {}).get("temp_min", 0)

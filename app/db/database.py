@@ -22,12 +22,12 @@ class Base(DeclarativeBase):
 def _get_engine():
     """Create the SQLAlchemy engine based on DATABASE_URL."""
     url = settings.database_url
-    
+
     # Handle empty or None DATABASE_URL (fallback to SQLite for HF Spaces)
     if not url or url.strip() == "":
         logger.warning("DATABASE_URL is empty, falling back to SQLite")
         url = "sqlite:///./farming_assistant.db"
-    
+
     # SQLAlchemy 2.0+ requires postgresql:// instead of postgres://
     if url.startswith("postgres://"):
         url = url.replace("postgres://", "postgresql://", 1)

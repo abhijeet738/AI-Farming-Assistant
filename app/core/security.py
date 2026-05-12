@@ -30,7 +30,7 @@ class CurrentUser(BaseModel):
 
 def _verify_supabase_jwt(token: str) -> dict:
     """Verify a Supabase JWT and return the decoded payload.
-    
+
     Supabase JWTs use the project's JWT secret (HS256) and contain:
       - sub: user UUID
       - email: user email
@@ -60,7 +60,7 @@ async def get_current_user(
     credentials: HTTPAuthorizationCredentials | None = Depends(security),
 ) -> CurrentUser:
     """FastAPI dependency that extracts and verifies the current user.
-    
+
     Usage:
         @router.get("/protected")
         async def protected_route(user: CurrentUser = Depends(get_current_user)):
@@ -98,7 +98,7 @@ async def get_optional_user(
     credentials: HTTPAuthorizationCredentials | None = Depends(security),
 ) -> CurrentUser | None:
     """Like get_current_user but returns None instead of 401 for unauthenticated requests.
-    
+
     Useful for endpoints that work both with and without authentication
     (e.g., chat works for anonymous users but saves history for authenticated ones).
     """

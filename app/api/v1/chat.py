@@ -49,7 +49,7 @@ class ChatResponse(BaseModel):
 @router.post("/invoke", response_model=ChatResponse)
 async def chat_invoke(request: ChatMessageRequest):
     """Send a message to the farming agent and get a complete response.
-    
+
     This is the simpler, non-streaming endpoint. Use /chat/message for
     streaming responses.
     """
@@ -111,7 +111,7 @@ async def chat_invoke(request: ChatMessageRequest):
 @router.post("/message")
 async def chat_message_stream(request: ChatMessageRequest):
     """Send a message and receive a streaming Server-Sent Events response.
-    
+
     Tokens appear word-by-word as the LLM generates them.
     """
     from app.agent.graph import ensure_knowledge_seeded, graph
@@ -181,7 +181,7 @@ async def chat_message_stream(request: ChatMessageRequest):
 @router.post("/resume", response_model=ChatResponse)
 async def chat_resume(request: ChatResumeRequest):
     """Resume a conversation that was interrupted for human approval.
-    
+
     Used after the agent pauses for safety review of chemical recommendations.
     """
     from langgraph.types import Command
@@ -230,7 +230,7 @@ async def chat_resume(request: ChatResumeRequest):
 @router.get("/history/{thread_id}")
 async def get_thread_history(thread_id: str):
     """Get the checkpoint history for a conversation thread.
-    
+
     Useful for debugging and time travel — replaying or forking
     from a past checkpoint.
     """
@@ -263,7 +263,7 @@ async def get_thread_history(thread_id: str):
 @router.get("/state/{thread_id}")
 async def get_thread_state(thread_id: str):
     """Get the current state of a conversation thread.
-    
+
     Shows the latest messages, pending interrupts, and user context.
     """
     from app.agent.graph import graph

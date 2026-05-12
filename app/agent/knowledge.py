@@ -165,7 +165,7 @@ KNOWLEDGE_DOCUMENTS = [
 
 async def seed_knowledge_base(store) -> int:
     """Load all farming knowledge documents into the memory store.
-    
+
     Returns:
         Number of documents loaded.
     """

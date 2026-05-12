@@ -130,7 +130,7 @@ class PredictionLog(Base):
 
 class FarmerMemory(Base):
     """Long-term memory store for the LangGraph agent (per user).
-    
+
     Replaces InMemoryStore for persistent user profiles and preferences.
     """
     __tablename__ = "farmer_memories"

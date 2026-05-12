@@ -16,7 +16,7 @@ _supabase_client = None
 
 def get_supabase_client():
     """Get or create the Supabase client singleton.
-    
+
     Returns None if Supabase is not configured (local dev mode).
     """
     global _supabase_client
@@ -44,7 +44,7 @@ def get_supabase_client():
 
 def get_supabase_admin_client():
     """Get a Supabase client with service_role key for admin operations.
-    
+
     Used for server-side operations like deleting users, bypassing RLS, etc.
     """
     if not settings.supabase_url or not settings.supabase_service_key:

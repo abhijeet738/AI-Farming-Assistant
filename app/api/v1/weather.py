@@ -14,7 +14,7 @@ async def get_weather_intelligence(
 ):
     """
     Get weather intelligence for agricultural planning
-    
+
     Provides current weather, 7-day forecast, agricultural alerts, and recommendations.
     Supports location formats: city names, state names, or coordinates (lat,lon).
     """
@@ -54,7 +54,7 @@ async def get_weather_for_ml(
 ):
     """
     Get weather data formatted for ML model input
-    
+
     Returns weather parameters optimized for machine learning models
     """
     try:
