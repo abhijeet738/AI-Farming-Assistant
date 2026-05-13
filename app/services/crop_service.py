@@ -22,7 +22,10 @@ class CropService:
         self.scaler = registry.get_scaler("crop")
         self.label_encoder = registry.get_encoders("crop")
         self.metadata = registry.get_metadata("crop")
-        self.crops = list(self.label_encoder.classes_) if self.label_encoder else []
+        if self.label_encoder:
+            self.crops = list(self.label_encoder.classes_)
+        else:
+            self.crops = ["Rice", "Wheat", "Maize", "Cotton", "Tomato", "Potato", "Onion"]
 
     def _engineer_features(self, N, P, K, temperature, humidity, ph, rainfall, soil_type=None):
         """Replicate the feature engineering from training."""
