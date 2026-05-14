@@ -53,3 +53,9 @@ langchain-google-genai>=2.1.0
 # Utilities
 psutil>=5.9.6
 slowapi>=0.1.9
+
+# Voice Interface (STT + TTS)
+faster-whisper>=1.0.0
+edge-tts>=6.1.0
+pydub>=0.25.1
+aiofiles>=23.0
