@@ -117,7 +117,7 @@ async def transcribe_audio(
                 text_parts.append(segment.text.strip())
             return " ".join(text_parts), info
 
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         transcript, info = await loop.run_in_executor(None, _transcribe)
 
         detected_language = info.language if info.language else (language or "en")
