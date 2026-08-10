@@ -192,7 +192,7 @@ async def voice_chat(
         if not agent_response:
             agent_response = "I'm sorry, I couldn't process your request. Please try again."
 
-    except Exception as e:
+    except Exception:
         # If agent fails, still return the transcript with an error response
         agent_response = (
             "I'm having trouble connecting to the farming knowledge base right now. "
