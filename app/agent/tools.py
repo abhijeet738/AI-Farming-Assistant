@@ -258,11 +258,11 @@ async def search_web_live(query: str) -> str:
             return json.dumps({"error": "Web search not configured (TAVILY_API_KEY missing)"})
 
         search = TavilySearch(
+            tavily_api_key=api_key,
             max_results=3,
             search_depth="advanced",
             include_answer=True,
         )
-
         results = await search.ainvoke({"query": f"India agriculture {query}"})
 
         # Format results for the LLM
