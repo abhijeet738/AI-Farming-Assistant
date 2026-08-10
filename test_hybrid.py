@@ -1,8 +1,10 @@
+"""Manual async smoke test for hybrid intelligence (not collected by pytest)."""
+
+__test__ = False  # pytest: ignore this module
+
 import asyncio
 import os
-import json
 from dotenv import load_dotenv
-
 # Load env variables
 load_dotenv()
 
