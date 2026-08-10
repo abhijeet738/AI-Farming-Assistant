@@ -29,6 +29,8 @@ def get_supabase_client() -> Client:
 
 async def embed_text(text: str) -> list[float]:
     key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
+    if not key:
+        raise ValueError("Missing GOOGLE_API_KEY or GEMINI_API_KEY in .env")
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2:embedContent?key={key}"
     data = {
         "model": "models/gemini-embedding-2",
