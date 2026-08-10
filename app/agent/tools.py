@@ -229,6 +229,61 @@ def search_farming_knowledge(query: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# 8. Live Web Search Tool (Tavily)
+# ---------------------------------------------------------------------------
+@tool("search_web_live")
+async def search_web_live(query: str) -> str:
+    """Search the live internet for real-time agricultural information.
+
+    USE THIS TOOL WHEN:
+    - The farmer asks about CURRENT events (outbreaks, weather disasters, policy changes)
+    - The farmer asks about a crop or technique NOT in the knowledge base
+    - You need to verify or update information you're unsure about
+    - The farmer asks about very recent government scheme updates
+
+    DO NOT USE THIS TOOL WHEN:
+    - You already have verified information from the knowledge base
+    - The farmer asks about standard pesticide dosages (use knowledge base instead)
+    - The question is about basic crop cultivation that you already know
+
+    Args:
+        query: Search query in English (e.g., "latest tomato blight outbreak Maharashtra 2026")
+    """
+    try:
+        import os
+        from langchain_tavily import TavilySearch
+
+        api_key = os.getenv("TAVILY_API_KEY")
+        if not api_key:
+            return json.dumps({"error": "Web search not configured (TAVILY_API_KEY missing)"})
+
+        search = TavilySearch(
+            max_results=3,
+            search_depth="advanced",
+            include_answer=True,
+        )
+
+        results = await search.ainvoke({"query": f"India agriculture {query}"})
+
+        # Format results for the LLM
+        if isinstance(results, list):
+            formatted = []
+            for r in results[:3]:
+                formatted.append({
+                    "title": r.get("title", ""),
+                    "content": r.get("content", "")[:500],
+                    "url": r.get("url", ""),
+                })
+            return json.dumps({"results": formatted, "source": "live_web_search"})
+
+        return json.dumps({"results": str(results)[:1500], "source": "live_web_search"})
+
+    except Exception as e:
+        logger.error("Web search failed", error=str(e))
+        return json.dumps({"error": f"Web search unavailable: {str(e)}"})
+
+
+# ---------------------------------------------------------------------------
 # Collect all tools for binding to the LLM
 # ---------------------------------------------------------------------------
 ALL_TOOLS = [
@@ -239,6 +294,7 @@ ALL_TOOLS = [
     get_fertilizer_plan,
     assess_pest_risk,
     search_farming_knowledge,
+    search_web_live,
 ]
 
 TOOLS_BY_NAME = {t.name: t for t in ALL_TOOLS}

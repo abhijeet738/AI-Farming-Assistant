@@ -28,6 +28,7 @@ class Settings(BaseSettings):
     openweather_api_key: str = Field("", description="OpenWeatherMap API key")
     google_api_key: str | None = Field(None, description="Google Gemini API key for LangGraph agent")
     imd_api_key: str | None = None
+    tavily_api_key: str | None = Field(None, description="Tavily API key for live web search")
 
     # ── Weather Configuration ───────────────────────────────────────────
     weather_cache_ttl_hours: int = Field(1, description="Weather cache TTL in hours")
