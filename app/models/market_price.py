@@ -31,11 +31,15 @@ class MarketPriceResponse(BaseModel):
     current_price_per_quintal: float
     currency: str = "INR"
     last_updated: datetime
+    data_source: str = "estimated"
+    source_url: str = ""
+    forecast_label: str = ""
+    suggestions: list[str] = []
     forecast_7_days: list[PriceForecast]
     forecast_30_days: list[PriceForecast]
     forecast_90_days: list[PriceForecast]
     market_trend: MarketTrend
-    best_sell_window: BestSellWindow
+    best_sell_window: BestSellWindow | None = None
     price_alerts: list[str]
     success: bool = True
     message: str = "Market price data retrieved successfully"

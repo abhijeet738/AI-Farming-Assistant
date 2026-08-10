@@ -118,6 +118,12 @@ async def predict_crop_yield(
 @tool("get_market_prices")
 async def get_market_prices(crop: str, state: str = "Maharashtra") -> str:
     """Get current market prices, price trends, and best sell timing for a crop.
+    
+    IMPORTANT: The response includes a 'data_source' field.
+    - If "govt_mandi", tell the farmer this is official verified data from data.gov.in.
+    - If "live_search", tell the farmer this was fetched from the live web.
+    - If "estimated", clearly warn the farmer that this is a model estimate and they should check their local mandi.
+    - If success=False, provide the farmer with the suggested next steps returned in the 'suggestions' field.
 
     Args:
         crop: Crop name (e.g., "Rice", "Wheat", "Tomato", "Onion")
