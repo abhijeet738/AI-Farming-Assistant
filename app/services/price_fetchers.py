@@ -101,9 +101,7 @@ class TavilyPriceFetcher(PriceFetcherStrategy):
                 search_depth="advanced",
                 include_answer=True,
             )
-
-            query = f"current mandi price {crop} {state} India per quintal today 2026"
-            results = await search.ainvoke({"query": query})
+            query = f"current mandi price {crop} {state} India per quintal today {datetime.now().year}"
 
             if isinstance(results, list) and len(results) > 0:
                 content = results[0].get("content", "")
