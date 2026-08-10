@@ -17,7 +17,8 @@ Features enabled:
 import os
 
 import structlog
-from langchain_google_genai import ChatGoogleGenerativeAI
+from app.agent.llm_providers import get_llm
+
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import END, START, StateGraph
 from langgraph.store.memory import InMemoryStore
@@ -30,23 +31,9 @@ from app.agent.tools import ALL_TOOLS
 logger = structlog.get_logger()
 
 # ---------------------------------------------------------------------------
-# 1. Initialize the LLM (Gemini)
+# 1. Initialize the LLM (via provider factory — set LLM_PROVIDER in .env)
 # ---------------------------------------------------------------------------
-try:
-    from app.config import settings
-    GEMINI_API_KEY = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY") or getattr(settings, "google_api_key", None)
-except Exception:
-    GEMINI_API_KEY = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
-
-if not GEMINI_API_KEY:
-    logger.warning("GEMINI_API_KEY not found in environment or settings. Ensure it is set before invoking the agent.")
-
-llm = ChatGoogleGenerativeAI(
-    model="gemini-2.0-flash",
-    api_key=GEMINI_API_KEY or "dummy-key-for-testing",
-    temperature=0.3,
-    convert_system_message_to_human=False,
-)
+llm = get_llm(temperature=0.3)
 
 # Bind all farming tools to the LLM
 model_with_tools = llm.bind_tools(ALL_TOOLS)
@@ -57,32 +44,12 @@ model_with_tools = llm.bind_tools(ALL_TOOLS)
 checkpointer = InMemorySaver()
 
 # ---------------------------------------------------------------------------
-# 3. Long-Term Memory + RAG Store
+# 3. Long-Term Memory (Farmer Profiles)
 # ---------------------------------------------------------------------------
-# Try to create store with semantic search; fall back to plain store
-try:
-    from langchain_google_genai import GoogleGenerativeAIEmbeddings
-
-    embeddings = GoogleGenerativeAIEmbeddings(
-        model="models/text-embedding-004",
-        api_key=GEMINI_API_KEY,
-    )
-
-    store = InMemoryStore(
-        index={
-            "embed": embeddings,
-            "dims": 768,
-            "fields": ["text"],
-        }
-    )
-    logger.info("Memory store initialized with semantic search (embeddings enabled)")
-
-except Exception as e:
-    logger.warning(
-        "Embeddings unavailable, using plain memory store (no RAG semantic search)",
-        error=str(e),
-    )
-    store = InMemoryStore()
+# Knowledge base search now happens via Supabase pgvector (see memory.py).
+# InMemoryStore is purely used for tracking farmer session variables.
+store = InMemoryStore()
+logger.info("Memory store initialized (user memory only — KB search uses pgvector)")
 
 # ---------------------------------------------------------------------------
 # 4. Build the StateGraph

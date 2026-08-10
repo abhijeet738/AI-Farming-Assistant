@@ -9,6 +9,7 @@ from app.api.v1 import (
     health,
     market_price,
     pest_risk,
+    voice,
     weather,
     yield_predict,
 )
@@ -69,6 +70,12 @@ api_router.include_router(
     disease_detect.router,
     prefix="/disease",
     tags=["Computer Vision Disease Detection"]
+)
+
+api_router.include_router(
+    voice.router,
+    prefix="/voice",
+    tags=["🎙️ Voice Interface (STT + TTS)"]
 )
 
 api_router.include_router(

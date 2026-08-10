@@ -67,15 +67,20 @@ async def save_farmer_detail(store, user_id: str, key: str, detail: str) -> None
 
 async def search_knowledge(store, query: str, limit: int = 3) -> str:
     """Semantic search across the farming knowledge base.
-
-    Args:
-        store: The LangGraph memory store (with embeddings index).
-        query: Natural language query from the farmer.
-        limit: Max number of documents to retrieve.
-
-    Returns:
-        Concatenated text of the most relevant knowledge documents.
+    
+    1. First tries to search using persistent Supabase pgvector.
+    2. Falls back to ephemeral InMemoryStore if pgvector is unavailable.
     """
+    try:
+        from app.agent.vector_store import search_knowledge_pgvector
+        pg_results = await search_knowledge_pgvector(query, limit)
+        if pg_results:
+            logger.info("RAG search successful via pgvector")
+            return pg_results
+    except Exception as e:
+        logger.warning("pgvector search failed, falling back to InMemoryStore", error=str(e))
+
+    # Fallback to InMemoryStore
     try:
         results = store.search(("knowledge",), query=query, limit=limit)
         if not results:
@@ -83,7 +88,5 @@ async def search_knowledge(store, query: str, limit: int = 3) -> str:
 
         return "\n\n---\n\n".join([r.value.get("text", "") for r in results])
     except Exception as e:
-        # If semantic search fails (e.g., no embeddings configured),
-        # fall back gracefully with no knowledge context
-        logger.warning("Knowledge search failed, continuing without RAG", error=str(e))
+        logger.warning("Knowledge search fallback failed, continuing without RAG", error=str(e))
         return ""
