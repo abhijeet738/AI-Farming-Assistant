@@ -1,10 +1,11 @@
-from logging.config import fileConfig
 import os
 import sys
+from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config, pool
-from alembic import context
 from dotenv import load_dotenv
+from sqlalchemy import engine_from_config, pool
+
+from alembic import context
 
 # ── Make sure app package is importable ───────────────────────────────────────
 # Add the backend root to the Python path
@@ -23,8 +24,8 @@ if config.config_file_name is not None:
 # ── Import your app's Base and all models ─────────────────────────────────────
 # This is the critical line — it tells Alembic about your ORM tables
 # so it can auto-generate migration scripts when you change your models.
-from app.db.database import Base
 import app.db.models  # noqa: F401 — ensures all models are registered on Base
+from app.db.database import Base
 
 target_metadata = Base.metadata
 

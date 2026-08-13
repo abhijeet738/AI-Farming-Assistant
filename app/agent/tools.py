@@ -118,7 +118,7 @@ async def predict_crop_yield(
 @tool("get_market_prices")
 async def get_market_prices(crop: str, state: str = "Maharashtra") -> str:
     """Get current market prices, price trends, and best sell timing for a crop.
-    
+
     IMPORTANT: The response includes a 'data_source' field.
     - If "govt_mandi", tell the farmer this is official verified data from data.gov.in.
     - If "live_search", tell the farmer this was fetched from the live web.
@@ -257,6 +257,7 @@ async def search_web_live(query: str) -> str:
     """
     try:
         import os
+
         from langchain_tavily import TavilySearch
 
         api_key = os.getenv("TAVILY_API_KEY")

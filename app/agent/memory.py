@@ -67,7 +67,7 @@ async def save_farmer_detail(store, user_id: str, key: str, detail: str) -> None
 
 async def search_knowledge(store, query: str, limit: int = 3) -> str:
     """Semantic search across the farming knowledge base.
-    
+
     1. First tries to search using persistent Supabase pgvector.
     2. Falls back to ephemeral InMemoryStore if pgvector is unavailable.
     """

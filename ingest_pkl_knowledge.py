@@ -42,7 +42,7 @@ SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_KEY") or os.environ.get("SUPABASE_ANON_KEY")
 
 if not SUPABASE_URL or not SUPABASE_KEY:
-    raise EnvironmentError(
+    raise OSError(
         "❌ SUPABASE_URL and SUPABASE_SERVICE_KEY must be set in your .env file."
     )
 
@@ -138,12 +138,12 @@ async def main():
                 upsert_chunk(doc_key, chunk, embedding)
                 print("✅")
                 success += 1
-                
+
                 # 🛑 Stay within the Gemini Free Tier limit (15 Requests Per Minute)
-                # 60 seconds / 15 requests = 4 seconds per request. 
+                # 60 seconds / 15 requests = 4 seconds per request.
                 # We sleep 4.2s to be safe.
                 await asyncio.sleep(4.2)
-                
+
                 break  # Success, break out of retry loop
 
             except httpx.HTTPStatusError as e:

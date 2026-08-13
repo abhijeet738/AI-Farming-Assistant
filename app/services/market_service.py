@@ -38,17 +38,17 @@ class MarketService:
 
     async def get_market_price(self, crop: str, state: str = None) -> MarketPriceResponse:
         state = state or "Maharashtra"
-        
+
         # 1. Fetch current price using the strategy chain
         from app.services.price_fetchers import PriceFetcherFactory
-        
+
         chain = PriceFetcherFactory.get_chain()
         price_result = None
         for fetcher in chain:
             price_result = await fetcher.fetch_price(crop, state)
             if price_result is not None:
                 break
-                
+
         # 2. Complete Data Miss (Scenario 5 & 6)
         if price_result is None:
             return MarketPriceResponse(
@@ -77,7 +77,7 @@ class MarketService:
         try:
             commodity_enc = self._safe_encode("commodity_encoded", crop)
             state_enc = self._safe_encode("state_encoded", state)
-            
+
             # Scenario 2: Crop not in ML training set
             # We assume it's unsupported if it falls back to 0 (unless it's actually the 0-indexed crop)
             # but for simplicity in this demo, we'll try to predict anyway, and if it fails we catch it.
@@ -200,7 +200,7 @@ class MarketService:
                 trend_strength="strong" if pct_change > 10 else "moderate",
                 percentage_change=round(pct_change, 1)
             )
-            
+
             alerts = ["Consider selling during the upcoming peak window."]
             if price_result.source_name == "estimated":
                 alerts.append("⚠️ This is a model estimate. Check agmarknet.gov.in for live prices.")
@@ -232,7 +232,7 @@ class MarketService:
         alerts = [reason]
         if price_result.source_name == "estimated":
             alerts.append("⚠️ This is a model estimate. Check agmarknet.gov.in for live prices.")
-            
+
         return MarketPriceResponse(
             crop=crop,
             location=state,

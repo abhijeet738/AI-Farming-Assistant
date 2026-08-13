@@ -9,6 +9,7 @@ Initializes the app with:
 """
 
 from dotenv import load_dotenv
+
 load_dotenv(override=True)  # Load environment variables from .env (override existing)
 
 from contextlib import asynccontextmanager
