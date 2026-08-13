@@ -58,8 +58,8 @@ class DiseaseService:
         img = Image.open(io.BytesIO(image_bytes)).convert('RGB')
         
         # Resize to 384x384 (EfficientNetV2-S target size)
-        img = img.resize((384, 384), Image.BILINEAR)
-        
+        resample = getattr(Image, "Resampling", Image).BILINEAR
+        img = img.resize((384, 384), resample)
         # Convert to numpy array and scale to [0, 1]
         img_array = np.array(img, dtype=np.float32) / 255.0
         
