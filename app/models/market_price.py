@@ -34,7 +34,7 @@ class MarketPriceResponse(BaseModel):
     data_source: str = "estimated"
     source_url: str = ""
     forecast_label: str = ""
-    suggestions: list[str] = []
+    suggestions: list[str] = Field(default_factory=list)
     forecast_7_days: list[PriceForecast]
     forecast_30_days: list[PriceForecast]
     forecast_90_days: list[PriceForecast]
