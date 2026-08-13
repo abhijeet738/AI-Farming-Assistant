@@ -1,6 +1,7 @@
 import asyncio
-import httpx
 import os
+
+import httpx
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -21,20 +22,20 @@ async def test_tier():
         return
 
     print("Testing API key tier by sending 25 rapid requests...")
-    
+
     async with httpx.AsyncClient(timeout=30.0) as client:
         tasks = [embed_dummy_text(client, key, i) for i in range(25)]
         results = await asyncio.gather(*tasks, return_exceptions=True)
-        
+
         status_codes = []
         for r in results:
             if isinstance(r, int):
                 status_codes.append(r)
             else:
                 status_codes.append("Error")
-                
+
         print(f"Results: {status_codes}")
-        
+
         if 429 in status_codes:
             print("\nResult: FREE TIER (Rate limited at 429 Too Many Requests)")
         elif all(code == 200 for code in status_codes):

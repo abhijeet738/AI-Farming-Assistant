@@ -1,6 +1,6 @@
 import io
-import time
 import json
+import time
 
 import numpy as np
 import onnxruntime as ort
@@ -17,11 +17,11 @@ class DiseaseService:
         # The registry returns the path to the model file
         self.model_path = registry.base_path / "disease_detection" / "best_model.onnx"
         self.mapping_path = registry.base_path / "disease_detection" / "class_mapping.json"
-        
+
         self.session = None
         self.idx_to_class = {}
         self.disease_kb = registry.get_kb("disease_rules") or {}
-        
+
         self._load_model()
 
     def _load_model(self):
@@ -31,16 +31,16 @@ class DiseaseService:
                 return
 
             logger.info("Loading ONNX disease detection model...")
-            
+
             # Load ONNX Runtime Session (CPU by default)
             self.session = ort.InferenceSession(
-                str(self.model_path), 
+                str(self.model_path),
                 providers=["CPUExecutionProvider"]
             )
-            
+
             # Load class mappings
             if self.mapping_path.exists():
-                with open(self.mapping_path, "r") as f:
+                with open(self.mapping_path) as f:
                     raw_mapping = json.load(f)
                     # JSON keys are always strings, convert back to int
                     self.idx_to_class = {int(k): v for k, v in raw_mapping.items()}
@@ -56,21 +56,21 @@ class DiseaseService:
         """Manually preprocess image to match PyTorch torchvision.transforms"""
         # Open and convert to RGB
         img = Image.open(io.BytesIO(image_bytes)).convert('RGB')
-        
+
         # Resize to 384x384 (EfficientNetV2-S target size)
         resample = getattr(Image, "Resampling", Image).BILINEAR
         img = img.resize((384, 384), resample)
         # Convert to numpy array and scale to [0, 1]
         img_array = np.array(img, dtype=np.float32) / 255.0
-        
+
         # Normalize with ImageNet mean and std
         mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
         std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
         img_array = (img_array - mean) / std
-        
+
         # PyTorch expects channels first (C, H, W) instead of (H, W, C)
         img_array = np.transpose(img_array, (2, 0, 1))
-        
+
         # Add batch dimension (1, C, H, W)
         return np.expand_dims(img_array, axis=0)
 
@@ -123,7 +123,7 @@ class DiseaseService:
             # ONNX Inference
             input_name = self.session.get_inputs()[0].name
             outputs = self.session.run(None, {input_name: tensor})
-            
+
             # Unpack outputs (disease_logits, binary_logits, features)
             disease_logits = outputs[0]
             binary_logits = outputs[1]

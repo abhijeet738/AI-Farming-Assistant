@@ -42,7 +42,7 @@ SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_KEY") or os.environ.get("SUPABASE_ANON_KEY")
 
 if not SUPABASE_URL or not SUPABASE_KEY:
-    raise EnvironmentError(
+    raise OSError(
         "❌ SUPABASE_URL and SUPABASE_SERVICE_KEY must be set in your .env file."
     )
 

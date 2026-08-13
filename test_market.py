@@ -3,11 +3,13 @@
 __test__ = False  # pytest: ignore this module
 
 import asyncio
+
 from app.services.market_service import MarketService
+
 
 async def main():
     service = MarketService()
-    
+
     print("\n--- Test 1: Wheat in Punjab (ML Supported) ---")
     res1 = await service.get_market_price("Wheat", "Punjab")
     print(f"Price: {res1.current_price_per_quintal}")
@@ -18,7 +20,7 @@ async def main():
         print("ML Forecast: YES")
     else:
         print("ML Forecast: NO")
-        
+
     print("\n--- Test 2: Dragon Fruit in Kerala (Live Only, No ML) ---")
     res2 = await service.get_market_price("Dragon Fruit", "Kerala")
     print(f"Price: {res2.current_price_per_quintal}")

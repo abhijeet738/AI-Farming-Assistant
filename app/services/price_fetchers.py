@@ -8,14 +8,14 @@ Patterns used:
   - Chain of Responsibility: MarketService tries fetchers in priority order
 """
 
-from abc import ABC, abstractmethod
-from dataclasses import dataclass
-from typing import Optional, List
-from datetime import datetime
 import os
 import re
-import structlog
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from datetime import datetime
+
 import httpx
+import structlog
 
 logger = structlog.get_logger()
 
@@ -34,22 +34,22 @@ class PriceFetcherStrategy(ABC):
     name: str = "base"
 
     @abstractmethod
-    async def fetch_price(self, crop: str, state: str) -> Optional[PriceResult]:
+    async def fetch_price(self, crop: str, state: str) -> PriceResult | None:
         pass
 
 
 class GovtMandiPriceFetcher(PriceFetcherStrategy):
     """Fetch from data.gov.in — the official government source."""
     name = "govt_mandi"
-    
-    async def fetch_price(self, crop: str, state: str) -> Optional[PriceResult]:
+
+    async def fetch_price(self, crop: str, state: str) -> PriceResult | None:
         api_key = os.getenv("DATA_GOV_API_KEY")
         if not api_key:
             return None
-            
+
         # The data.gov.in API for Agmarknet
         url = "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070"
-        
+
         params = {
             "api-key": api_key,
             "format": "json",
@@ -57,7 +57,7 @@ class GovtMandiPriceFetcher(PriceFetcherStrategy):
             "filters[State]": state.strip().title(),
             "limit": 1
         }
-        
+
         try:
             async with httpx.AsyncClient() as client:
                 resp = await client.get(url, params=params, timeout=5.0)
@@ -68,7 +68,7 @@ class GovtMandiPriceFetcher(PriceFetcherStrategy):
                         # Extract modal price (most traded price)
                         record = records[0]
                         modal_price = float(record.get("modal_price", 0))
-                        
+
                         if modal_price > 0:
                             return PriceResult(
                                 price=modal_price,
@@ -79,15 +79,15 @@ class GovtMandiPriceFetcher(PriceFetcherStrategy):
                             )
         except Exception as e:
             logger.warning("GovtMandiPriceFetcher failed", error=str(e))
-            
+
         return None
 
 
 class TavilyPriceFetcher(PriceFetcherStrategy):
     """Fetch via Tavily web search — covers niche crops."""
     name = "live_search"
-    
-    async def fetch_price(self, crop: str, state: str) -> Optional[PriceResult]:
+
+    async def fetch_price(self, crop: str, state: str) -> PriceResult | None:
         try:
             from langchain_tavily import TavilySearch
 
@@ -110,7 +110,7 @@ class TavilyPriceFetcher(PriceFetcherStrategy):
             if isinstance(results, list) and len(results) > 0:
                 content = results[0].get("content", "")
                 url = results[0].get("url", "")
-                
+
                 price = self._extract_price(content)
                 if price:
                     return PriceResult(
@@ -122,10 +122,10 @@ class TavilyPriceFetcher(PriceFetcherStrategy):
                     )
         except Exception as e:
             logger.warning("TavilyPriceFetcher failed", error=str(e))
-            
+
         return None
-        
-    def _extract_price(self, content: str) -> Optional[float]:
+
+    def _extract_price(self, content: str) -> float | None:
         """Try to extract a numeric price from Tavily search content."""
         patterns = [
             r'₹\s*([\d,]+)',
@@ -149,21 +149,21 @@ class TavilyPriceFetcher(PriceFetcherStrategy):
 class SyntheticPriceFetcher(PriceFetcherStrategy):
     """Last-resort fallback — generates an estimate based on ML training baseline."""
     name = "estimated"
-    
+
     # We only return synthetic if it's a known major crop.
     # We refuse to guess for random words (prevents "iPhone" getting a price).
     KNOWN_CROPS = ["Rice", "Wheat", "Maize", "Cotton", "Tomato", "Onion", "Potato", "Soybean", "Sugarcane"]
-    
-    async def fetch_price(self, crop: str, state: str) -> Optional[PriceResult]:
+
+    async def fetch_price(self, crop: str, state: str) -> PriceResult | None:
         # Simple heuristic to normalize names
         crop_clean = crop.capitalize()
-        
+
         if crop_clean not in self.KNOWN_CROPS:
             # We don't know anything about this, return None to trigger NullObject fallback
             return None
-            
+
         base_price = 2000.0 + (len(crop) * 100.0)
-        
+
         return PriceResult(
             price=base_price,
             source_name="estimated",
@@ -189,19 +189,19 @@ class PriceFetcherFactory:
         return cls._instances[name]
 
     @classmethod
-    def get_chain(cls) -> List[PriceFetcherStrategy]:
+    def get_chain(cls) -> list[PriceFetcherStrategy]:
         """Returns the cascading chain in priority order."""
         chain = []
-        
+
         # Tier 1: Govt API (if key exists)
         if os.getenv("DATA_GOV_API_KEY"):
             chain.append(cls.get_fetcher("govt_mandi"))
-            
+
         # Tier 2: Tavily (if key exists)
         if os.getenv("TAVILY_API_KEY"):
             chain.append(cls.get_fetcher("tavily"))
-            
+
         # Tier 3: Always available
         chain.append(cls.get_fetcher("synthetic"))
-        
+
         return chain
