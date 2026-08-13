@@ -74,9 +74,10 @@ class DiseaseService:
         # Add batch dimension (1, C, H, W)
         return np.expand_dims(img_array, axis=0)
 
-    def _softmax(self, x):
-        """Compute softmax values for each sets of scores in x."""
-        e_x = np.exp(x - np.max(x))
+    def _softmax(self, x: np.ndarray) -> np.ndarray:
+        """Compute softmax values for each set of scores in x."""
+        x = x - np.max(x, axis=1, keepdims=True)
+        e_x = np.exp(x)
         return e_x / e_x.sum(axis=1, keepdims=True)
 
     def _sigmoid(self, x):
