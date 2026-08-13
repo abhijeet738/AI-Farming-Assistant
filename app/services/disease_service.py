@@ -1,102 +1,87 @@
 import io
 import time
+import json
 
+import numpy as np
+import onnxruntime as ort
 import structlog
-import timm
-import torch
-import torch.nn as nn
 from PIL import Image
-from torchvision import transforms
 
 from app.ml.model_registry import registry
 from app.models.disease_detect import DiseaseDetectResponse, DiseasePrediction
 
 logger = structlog.get_logger()
 
-# Define the exact architecture used in training
-class PlantDiseaseModel(nn.Module):
-    def __init__(self, num_classes, pretrained=False):
-        super().__init__()
-
-        self.backbone = timm.create_model(
-            'tf_efficientnetv2_s',
-            pretrained=pretrained,
-            num_classes=0
-        )
-
-        self.feature_dim = self.backbone.num_features
-
-        self.shared_fc = nn.Sequential(
-            nn.Linear(self.feature_dim, 512),
-            nn.LayerNorm(512),
-            nn.ReLU(),
-            nn.Dropout(0.3),
-        )
-
-        self.disease_head = nn.Sequential(
-            nn.Linear(512, 256),
-            nn.ReLU(),
-            nn.Dropout(0.2),
-            nn.Linear(256, num_classes)
-        )
-
-        self.binary_head = nn.Sequential(
-            nn.Linear(512, 64),
-            nn.ReLU(),
-            nn.Dropout(0.2),
-            nn.Linear(64, 1)
-        )
-
-    def forward(self, x):
-        features = self.backbone(x)
-        shared = self.shared_fc(features)
-        disease_logits = self.disease_head(shared)
-        binary_logits = self.binary_head(shared)
-        return disease_logits, binary_logits, features
-
-
 class DiseaseService:
     def __init__(self):
-        # The registry returns the path to the model file for PyTorch
-        self.model_path = registry.base_path / "disease_detection" / "best_model.pth"
-        self.model = None
+        # The registry returns the path to the model file
+        self.model_path = registry.base_path / "disease_detection" / "best_model.onnx"
+        self.mapping_path = registry.base_path / "disease_detection" / "class_mapping.json"
+        
+        self.session = None
         self.idx_to_class = {}
         self.disease_kb = registry.get_kb("disease_rules") or {}
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
-
-        self.transform = transforms.Compose([
-            transforms.Resize((384, 384)),
-            transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-        ])
-
+        
         self._load_model()
 
     def _load_model(self):
         try:
             if not self.model_path.exists():
-                logger.error("Disease vision model file not found", path=str(self.model_path))
+                logger.error("Disease ONNX model file not found", path=str(self.model_path))
                 return
 
-            logger.info("Loading PyTorch disease detection model...", device=str(self.device))
-            checkpoint = torch.load(self.model_path, map_location=self.device, weights_only=False)
-
-            num_classes = checkpoint.get("num_classes", 117)
-            self.idx_to_class = checkpoint.get("idx_to_class", {})
-
-            # If idx_to_class missing, try to reverse class_to_idx
-            if not self.idx_to_class and "class_to_idx" in checkpoint:
-                self.idx_to_class = {v: k for k, v in checkpoint["class_to_idx"].items()}
-
-            self.model = PlantDiseaseModel(num_classes=num_classes, pretrained=False)
-            self.model.load_state_dict(checkpoint["model_state_dict"])
-            self.model.to(self.device)
-            self.model.eval()
-            logger.info("PyTorch model loaded successfully", num_classes=num_classes)
+            logger.info("Loading ONNX disease detection model...")
+            
+            # Load ONNX Runtime Session (CPU by default)
+            self.session = ort.InferenceSession(
+                str(self.model_path), 
+                providers=["CPUExecutionProvider"]
+            )
+            
+            # Load class mappings
+            if self.mapping_path.exists():
+                with open(self.mapping_path, "r") as f:
+                    raw_mapping = json.load(f)
+                    # JSON keys are always strings, convert back to int
+                    self.idx_to_class = {int(k): v for k, v in raw_mapping.items()}
+                logger.info("ONNX model and class mapping loaded successfully", num_classes=len(self.idx_to_class))
+            else:
+                logger.warning("class_mapping.json not found. Disease labels will be unknown.")
 
         except Exception as e:
-            logger.error("Failed to load disease model", error=str(e))
-            self.model = None
+            logger.error("Failed to load disease ONNX model", error=str(e))
+            self.session = None
+
+    def _preprocess_image(self, image_bytes: bytes) -> np.ndarray:
+        """Manually preprocess image to match PyTorch torchvision.transforms"""
+        # Open and convert to RGB
+        img = Image.open(io.BytesIO(image_bytes)).convert('RGB')
+        
+        # Resize to 384x384 (EfficientNetV2-S target size)
+        img = img.resize((384, 384), Image.BILINEAR)
+        
+        # Convert to numpy array and scale to [0, 1]
+        img_array = np.array(img, dtype=np.float32) / 255.0
+        
+        # Normalize with ImageNet mean and std
+        mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
+        std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
+        img_array = (img_array - mean) / std
+        
+        # PyTorch expects channels first (C, H, W) instead of (H, W, C)
+        img_array = np.transpose(img_array, (2, 0, 1))
+        
+        # Add batch dimension (1, C, H, W)
+        return np.expand_dims(img_array, axis=0)
+
+    def _softmax(self, x):
+        """Compute softmax values for each sets of scores in x."""
+        e_x = np.exp(x - np.max(x))
+        return e_x / e_x.sum(axis=1, keepdims=True)
+
+    def _sigmoid(self, x):
+        """Compute sigmoid."""
+        return 1 / (1 + np.exp(-x))
 
     def _get_disease_info(self, disease_label: str):
         """Fetch treatments and symptoms from knowledge base"""
@@ -127,30 +112,33 @@ class DiseaseService:
     async def detect_disease(self, image_bytes: bytes) -> DiseaseDetectResponse:
         start_time = time.time()
 
-        if self.model is None:
+        if self.session is None:
             return self._fallback_response()
 
         try:
             # Preprocess Image
-            image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
-            tensor = self.transform(image).unsqueeze(0).to(self.device)
+            tensor = self._preprocess_image(image_bytes)
 
-            # Inference
-            with torch.no_grad():
-                disease_logits, binary_logits, _ = self.model(tensor)
+            # ONNX Inference
+            input_name = self.session.get_inputs()[0].name
+            outputs = self.session.run(None, {input_name: tensor})
+            
+            # Unpack outputs (disease_logits, binary_logits, features)
+            disease_logits = outputs[0]
+            binary_logits = outputs[1]
 
-                disease_probs = torch.softmax(disease_logits, dim=1)[0]
-                binary_prob = torch.sigmoid(binary_logits)[0].item()
+            # Convert logits to probabilities
+            disease_probs = self._softmax(disease_logits)[0]
+            binary_prob = self._sigmoid(binary_logits)[0][0]
 
-                # Get Top 3 predictions
-                top_probs, top_indices = torch.topk(disease_probs, 3)
+            # Get Top 3 predictions
+            top_indices = np.argsort(disease_probs)[-3:][::-1]
 
             predictions = []
             primary_crop = "Unknown"
 
-            for i in range(3):
-                idx = top_indices[i].item()
-                prob = top_probs[i].item()
+            for i, idx in enumerate(top_indices):
+                prob = disease_probs[idx]
 
                 # Filter out low confidence
                 if prob < 0.05 and i > 0:
@@ -166,14 +154,14 @@ class DiseaseService:
 
                 predictions.append(DiseasePrediction(
                     disease_name=class_name.replace("___", " ").replace("_", " "),
-                    confidence=round(prob * 100, 1),
+                    confidence=round(float(prob) * 100, 1),
                     is_healthy=is_healthy_class,
                     symptoms=[] if is_healthy_class else kb_info["symptoms"],
                     treatment_recommendations=["No treatment needed"] if is_healthy_class else kb_info["treatments"]
                 ))
 
             # Binary model confidence (0 = healthy, 1 = diseased)
-            overall_health = 100.0 - (binary_prob * 100.0)
+            overall_health = 100.0 - (float(binary_prob) * 100.0)
 
             analysis_time = (time.time() - start_time) * 1000
 
@@ -203,5 +191,5 @@ class DiseaseService:
             overall_health_score=0.0,
             analysis_time_ms=0.0,
             success=False,
-            message="PyTorch Vision model not loaded."
+            message="ONNX Vision model not loaded."
         )

@@ -33,11 +33,24 @@ CRITICAL_KEYWORDS = [
 ]
 
 
-def contains_critical_action(content: str) -> bool:
+def contains_critical_action(content: str | list) -> bool:
     """Check if a response contains chemical/pesticide recommendations."""
     if not content:
         return False
-    content_lower = content.lower()
+        
+    text = ""
+    if isinstance(content, list):
+        text = "".join(
+            block.get("text", "") 
+            for block in content 
+            if isinstance(block, dict) and block.get("type") == "text"
+        )
+    elif isinstance(content, str):
+        text = content
+    else:
+        text = str(content)
+        
+    content_lower = text.lower()
     return any(kw in content_lower for kw in CRITICAL_KEYWORDS)
 
 
@@ -156,12 +169,22 @@ async def safety_review_node(state: FarmerAgentState):
     if contains_critical_action(content):
         logger.info("Critical action detected, requesting human approval")
 
+        text_preview = ""
+        if isinstance(content, list):
+            text_preview = "".join(
+                b.get("text", "") for b in content if isinstance(b, dict) and b.get("type") == "text"
+            )
+        elif isinstance(content, str):
+            text_preview = content
+        else:
+            text_preview = str(content)
+
         # This pauses the graph and returns the interrupt payload to the caller
         decision = interrupt({
             "type": "safety_review",
             "question": "⚠️ This recommendation involves chemical/pesticide application. "
                         "Do you approve this advice?",
-            "preview": content[:500],  # First 500 chars as preview
+            "preview": text_preview[:500],  # First 500 chars as preview
         })
 
         # When resumed with Command(resume=False), cancel the recommendation

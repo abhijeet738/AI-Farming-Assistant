@@ -9,6 +9,7 @@ Endpoints:
     GET  /chat/state        — Get current state of a thread (for time travel)
 """
 
+import asyncio
 import json
 import uuid
 
@@ -17,8 +18,15 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
+# Pre-import at module level so the graph compiles ONCE when uvicorn starts,
+# not on the first incoming request. This eliminates the cold-start delay.
+from app.agent.graph import ensure_knowledge_seeded, graph
+
 logger = structlog.get_logger()
 router = APIRouter()
+
+# Lock to prevent concurrent seeding on simultaneous first requests
+_seed_lock = asyncio.Lock()
 
 
 # ---------------------------------------------------------------------------
@@ -48,15 +56,10 @@ class ChatResponse(BaseModel):
 # ---------------------------------------------------------------------------
 @router.post("/invoke", response_model=ChatResponse)
 async def chat_invoke(request: ChatMessageRequest):
-    """Send a message to the farming agent and get a complete response.
-
-    This is the simpler, non-streaming endpoint. Use /chat/message for
-    streaming responses.
-    """
-    from app.agent.graph import ensure_knowledge_seeded, graph
-
-    # Seed knowledge base on first call
-    await ensure_knowledge_seeded()
+    """Send a message to the farming agent and get a complete response."""
+    # Seed knowledge base on first call (safe for concurrent requests via lock)
+    async with _seed_lock:
+        await ensure_knowledge_seeded()
 
     thread_id = request.thread_id or str(uuid.uuid4())
     config = {"configurable": {"thread_id": thread_id}}
@@ -110,19 +113,15 @@ async def chat_invoke(request: ChatMessageRequest):
 # ---------------------------------------------------------------------------
 @router.post("/message")
 async def chat_message_stream(request: ChatMessageRequest):
-    """Send a message and receive a streaming Server-Sent Events response.
-
-    Tokens appear word-by-word as the LLM generates them.
-    """
-    from app.agent.graph import ensure_knowledge_seeded, graph
-
-    await ensure_knowledge_seeded()
+    """Send a message and receive a streaming Server-Sent Events response."""
+    async with _seed_lock:
+        await ensure_knowledge_seeded()
 
     thread_id = request.thread_id or str(uuid.uuid4())
     config = {"configurable": {"thread_id": thread_id}}
 
     async def event_stream():
-        # Send thread_id first so the client knows it
+        # Send thread_id first (named event — frontend should ignore its data for display)
         yield f"event: thread_id\ndata: {thread_id}\n\n"
 
         try:
@@ -134,15 +133,31 @@ async def chat_message_stream(request: ChatMessageRequest):
                 config=config,
                 stream_mode="messages",
             ):
-                # Only stream content from the agent node (not tool calls)
+                # Only stream text from the agent node (not tool calls)
                 if (
                     msg.content
                     and metadata.get("langgraph_node") == "agent"
                     and not getattr(msg, "tool_calls", None)
                 ):
-                    yield f"data: {msg.content}\n\n"
+                    # Anthropic streams content as a LIST of content blocks:
+                    # [{'type': 'text', 'text': 'Hello', 'index': 0}, ...]
+                    # We must extract only the text; raw list repr must NOT be sent.
+                    content = msg.content
+                    if isinstance(content, list):
+                        text = "".join(
+                            block.get("text", "")
+                            for block in content
+                            if isinstance(block, dict) and block.get("type") == "text"
+                        )
+                    elif isinstance(content, str):
+                        text = content
+                    else:
+                        text = str(content)
 
-                # Stream tool execution status updates
+                    if text:
+                        yield f"data: {json.dumps(text)}\n\n"
+
+                # Stream tool status updates (named events — frontend ignores)
                 if metadata.get("langgraph_node") == "tools":
                     if hasattr(msg, "name"):
                         yield f"event: tool_status\ndata: {json.dumps({'tool': msg.name, 'status': 'completed'})}\n\n"
@@ -180,13 +195,8 @@ async def chat_message_stream(request: ChatMessageRequest):
 # ---------------------------------------------------------------------------
 @router.post("/resume", response_model=ChatResponse)
 async def chat_resume(request: ChatResumeRequest):
-    """Resume a conversation that was interrupted for human approval.
-
-    Used after the agent pauses for safety review of chemical recommendations.
-    """
+    """Resume a conversation that was interrupted for human approval."""
     from langgraph.types import Command
-
-    from app.agent.graph import graph
 
     config = {"configurable": {"thread_id": request.thread_id}}
 

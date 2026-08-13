@@ -37,16 +37,53 @@ class MarketService:
         return np.array(history[1:])
 
     async def get_market_price(self, crop: str, state: str = None) -> MarketPriceResponse:
+        state = state or "Maharashtra"
+        
+        # 1. Fetch current price using the strategy chain
+        from app.services.price_fetchers import PriceFetcherFactory
+        
+        chain = PriceFetcherFactory.get_chain()
+        price_result = None
+        for fetcher in chain:
+            price_result = await fetcher.fetch_price(crop, state)
+            if price_result is not None:
+                break
+                
+        # 2. Complete Data Miss (Scenario 5 & 6)
+        if price_result is None:
+            return MarketPriceResponse(
+                crop=crop,
+                location=state,
+                current_price_per_quintal=0.0,
+                data_source="unavailable",
+                last_updated=datetime.now(),
+                forecast_7_days=[],
+                forecast_30_days=[],
+                forecast_90_days=[],
+                market_trend=MarketTrend(trend_direction="stable", trend_strength="weak", percentage_change=0.0),
+                price_alerts=[],
+                success=False,
+                message=f"We couldn't find current market prices for {crop} in {state}. This could be because this crop is not commonly traded in this region's mandis.",
+                suggestions=[
+                    "Try checking agmarknet.gov.in directly",
+                    "Try checking prices in a neighboring state",
+                    "Contact your local KVK for regional pricing"
+                ]
+            )
+
         if not self.model:
-            return self._fallback_response(crop, state)
+            return self._live_only_response(crop, state, price_result, "ML Model not loaded.")
 
         try:
-            state = state or "Maharashtra"
             commodity_enc = self._safe_encode("commodity_encoded", crop)
             state_enc = self._safe_encode("state_encoded", state)
+            
+            # Scenario 2: Crop not in ML training set
+            # We assume it's unsupported if it falls back to 0 (unless it's actually the 0-indexed crop)
+            # but for simplicity in this demo, we'll try to predict anyway, and if it fails we catch it.
 
-            base_price = 2000.0 + (len(crop) * 100.0)
-            history = self._generate_synthetic_history(base_price, 90)
+            # Generate history anchoring on the REAL price fetched by the Strategy
+            history = self._generate_synthetic_history(price_result.price, 90)
 
             forecast_7_days = []
             forecast_30_days = []
@@ -145,7 +182,7 @@ class MarketService:
 
                 history = np.append(history, predicted_price)
 
-            current_price = forecast_7_days[0].predicted_price
+            current_price = price_result.price
 
             best_day = max(forecast_30_days, key=lambda x: x.predicted_price)
             sell_window = BestSellWindow(
@@ -163,6 +200,10 @@ class MarketService:
                 trend_strength="strong" if pct_change > 10 else "moderate",
                 percentage_change=round(pct_change, 1)
             )
+            
+            alerts = ["Consider selling during the upcoming peak window."]
+            if price_result.source_name == "estimated":
+                alerts.append("⚠️ This is a model estimate. Check agmarknet.gov.in for live prices.")
 
             return MarketPriceResponse(
                 crop=crop,
@@ -170,38 +211,42 @@ class MarketService:
                 current_price_per_quintal=round(current_price, 2),
                 currency="INR",
                 last_updated=datetime.now(),
+                data_source=price_result.source_name,
+                source_url=price_result.source_url,
+                forecast_label="ML Forecast — Projected, not actual prices",
                 forecast_7_days=forecast_7_days,
                 forecast_30_days=forecast_30_days,
                 forecast_90_days=forecast_90_days,
                 market_trend=market_trend,
                 best_sell_window=sell_window,
-                price_alerts=["Consider selling during the upcoming peak window."],
+                price_alerts=alerts,
                 success=True,
-                message="Market price data retrieved successfully"
+                message="Market price and forecast retrieved successfully."
             )
 
         except Exception as e:
             logger.error("Market prediction failed", error=str(e))
-            return self._fallback_response(crop, state)
+            return self._live_only_response(crop, state, price_result, "Forecast generation failed.")
 
-    def _fallback_response(self, crop, state):
+    def _live_only_response(self, crop, state, price_result, reason):
+        alerts = [reason]
+        if price_result.source_name == "estimated":
+            alerts.append("⚠️ This is a model estimate. Check agmarknet.gov.in for live prices.")
+            
         return MarketPriceResponse(
             crop=crop,
-            location=state or "Unknown",
-            current_price_per_quintal=0.0,
+            location=state,
+            current_price_per_quintal=round(price_result.price, 2),
             currency="INR",
             last_updated=datetime.now(),
+            data_source=price_result.source_name,
+            source_url=price_result.source_url,
+            forecast_label="",
             forecast_7_days=[],
             forecast_30_days=[],
             forecast_90_days=[],
             market_trend=MarketTrend(trend_direction="stable", trend_strength="weak", percentage_change=0.0),
-            best_sell_window=BestSellWindow(
-                start_date=datetime.now().strftime("%Y-%m-%d"),
-                end_date=datetime.now().strftime("%Y-%m-%d"),
-                expected_price_range="₹0 - ₹0",
-                reasoning="Model unavailable"
-            ),
-            price_alerts=[],
-            success=False,
-            message="Model not loaded — using fallback"
+            price_alerts=alerts,
+            success=True,
+            message="Live price fetched successfully."
         )

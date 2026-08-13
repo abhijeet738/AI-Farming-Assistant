@@ -28,7 +28,7 @@ async def get_weather_intelligence(location: str) -> str:
     try:
         from app.services.weather_service import WeatherService
         service = WeatherService()
-        result = await service.get_weather(location)
+        result = await service.get_weather_intelligence(location)
         return result.model_dump_json()
     except Exception as e:
         logger.error("Weather tool failed", error=str(e))
@@ -69,7 +69,7 @@ async def recommend_crop(
             nitrogen=nitrogen, phosphorus=phosphorus, potassium=potassium,
             temperature=temperature, humidity=humidity, ph=ph, rainfall=rainfall,
         )
-        result = await service.predict(request)
+        result = await service.recommend_crops(request)
         return result.model_dump_json()
     except Exception as e:
         logger.error("Crop recommendation failed", error=str(e))
@@ -118,6 +118,12 @@ async def predict_crop_yield(
 @tool("get_market_prices")
 async def get_market_prices(crop: str, state: str = "Maharashtra") -> str:
     """Get current market prices, price trends, and best sell timing for a crop.
+    
+    IMPORTANT: The response includes a 'data_source' field.
+    - If "govt_mandi", tell the farmer this is official verified data from data.gov.in.
+    - If "live_search", tell the farmer this was fetched from the live web.
+    - If "estimated", clearly warn the farmer that this is a model estimate and they should check their local mandi.
+    - If success=False, provide the farmer with the suggested next steps returned in the 'suggestions' field.
 
     Args:
         crop: Crop name (e.g., "Rice", "Wheat", "Tomato", "Onion")

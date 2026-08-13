@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     google_api_key: str | None = Field(None, description="Google Gemini API key for LangGraph agent")
     imd_api_key: str | None = None
     tavily_api_key: str | None = Field(None, description="Tavily API key for live web search")
+    data_gov_api_key: str | None = Field(None, description="Data.gov.in API key for Govt Mandi prices")
 
     # ── Weather Configuration ───────────────────────────────────────────
     weather_cache_ttl_hours: int = Field(1, description="Weather cache TTL in hours")
