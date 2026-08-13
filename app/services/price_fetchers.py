@@ -53,8 +53,8 @@ class GovtMandiPriceFetcher(PriceFetcherStrategy):
         params = {
             "api-key": api_key,
             "format": "json",
-            "filters[Commodity]": crop.capitalize(),
-            "filters[State]": state.capitalize(),
+            "filters[Commodity]": crop.strip().title(),
+            "filters[State]": state.strip().title(),
             "limit": 1
         }
         
