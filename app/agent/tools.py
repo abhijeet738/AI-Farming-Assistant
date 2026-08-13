@@ -28,7 +28,7 @@ async def get_weather_intelligence(location: str) -> str:
     try:
         from app.services.weather_service import WeatherService
         service = WeatherService()
-        result = await service.get_weather(location)
+        result = await service.get_weather_intelligence(location)
         return result.model_dump_json()
     except Exception as e:
         logger.error("Weather tool failed", error=str(e))
@@ -69,7 +69,7 @@ async def recommend_crop(
             nitrogen=nitrogen, phosphorus=phosphorus, potassium=potassium,
             temperature=temperature, humidity=humidity, ph=ph, rainfall=rainfall,
         )
-        result = await service.predict(request)
+        result = await service.recommend_crops(request)
         return result.model_dump_json()
     except Exception as e:
         logger.error("Crop recommendation failed", error=str(e))

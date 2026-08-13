@@ -138,12 +138,18 @@ async def main():
                 upsert_chunk(doc_key, chunk, embedding)
                 print("✅")
                 success += 1
+                
+                # 🛑 Stay within the Gemini Free Tier limit (15 Requests Per Minute)
+                # 60 seconds / 15 requests = 4 seconds per request. 
+                # We sleep 4.2s to be safe.
+                await asyncio.sleep(4.2)
+                
                 break  # Success, break out of retry loop
 
             except httpx.HTTPStatusError as e:
                 if e.response.status_code == 429:
-                    wait_time = 15 * (2 ** attempt)  # 15s, 30s, 60s, etc.
-                    print(f"⚠️ 429 Rate Limit hit! Sleeping for {wait_time}s...")
+                    wait_time = 65 # Force wait a full minute for Gemini quota to reset
+                    print(f"⚠️ 429 Rate Limit hit! Sleeping for {wait_time}s to reset quota...")
                     await asyncio.sleep(wait_time)
                 else:
                     print(f"❌ FAILED: {e}")

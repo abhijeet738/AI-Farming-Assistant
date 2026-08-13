@@ -8,6 +8,9 @@ Initializes the app with:
   - Middleware and exception handlers
 """
 
+from dotenv import load_dotenv
+load_dotenv(override=True)  # Load environment variables from .env (override existing)
+
 from contextlib import asynccontextmanager
 
 import structlog

@@ -5,7 +5,7 @@ Run: python inspect_pkl.py
 import pickle
 import sys
 
-PKL_PATH = "/Users/abhijeetraj/Downloads/merged_document.pkl"
+PKL_PATH = sys.argv[1] if len(sys.argv) > 1 else "merged_document.pkl"
 
 print(f"Loading: {PKL_PATH}\n")
 

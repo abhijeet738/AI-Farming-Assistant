@@ -4,9 +4,44 @@ import torch.onnx
 import structlog
 from pathlib import Path
 
-# Important: We must import the model definition from where it currently lives
-from app.services.disease_service import PlantDiseaseModel
+import torch.nn as nn
+import timm
 from app.ml.model_registry import registry
+
+class PlantDiseaseModel(nn.Module):
+    def __init__(self, num_classes, pretrained=False):
+        super().__init__()
+        self.backbone = timm.create_model(
+            'tf_efficientnetv2_s',
+            pretrained=pretrained,
+            num_classes=0
+        )
+        self.feature_dim = self.backbone.num_features
+        self.shared_fc = nn.Sequential(
+            nn.Linear(self.feature_dim, 512),
+            nn.LayerNorm(512),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+        )
+        self.disease_head = nn.Sequential(
+            nn.Linear(512, 256),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(256, num_classes)
+        )
+        self.binary_head = nn.Sequential(
+            nn.Linear(512, 64),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(64, 1)
+        )
+
+    def forward(self, x):
+        features = self.backbone(x)
+        shared = self.shared_fc(features)
+        disease_logits = self.disease_head(shared)
+        binary_logits = self.binary_head(shared)
+        return disease_logits, binary_logits, features
 
 logger = structlog.get_logger()
 
