@@ -1,3 +1,7 @@
+"""Manual async smoke test for market pricing (not collected by pytest)."""
+
+__test__ = False  # pytest: ignore this module
+
 import asyncio
 from app.services.market_service import MarketService
 
