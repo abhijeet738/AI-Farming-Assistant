@@ -33,9 +33,9 @@ from supabase import create_client
 load_dotenv(dotenv_path=Path(__file__).parent / ".env")
 logger = structlog.get_logger()
 
-PKL_PATH     = "/Users/abhijeetraj/Downloads/merged_document.pkl"
-CHUNK_SIZE   = 1000    # characters
-CHUNK_OVERLAP = 200    # characters
+PKL_PATH = os.getenv("PKL_PATH", "merged_document.pkl")
+CHUNK_SIZE = 1000  # characters
+CHUNK_OVERLAP = 200  # characters
 
 # ── Supabase client ───────────────────────────────────────────────────────────
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
