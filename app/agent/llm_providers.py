@@ -12,6 +12,7 @@ Add keys to .env:
 """
 
 import os
+
 import structlog
 
 logger = structlog.get_logger()

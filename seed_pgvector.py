@@ -2,23 +2,25 @@
 One-time script to seed the Supabase pgvector table with the knowledge base.
 """
 
+import asyncio
 import os
 import sys
-import asyncio
+
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
-from supabase import create_client, Client
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from supabase import Client, create_client
 
 # Import the raw knowledge documents
 # We need to add the backend dir to sys.path to import app modules
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+import httpx
+
 from app.agent.knowledge import KNOWLEDGE_DOCUMENTS
 
-import httpx
 
 def get_supabase_client() -> Client:
     supabase_url = os.environ.get("SUPABASE_URL")
@@ -37,7 +39,7 @@ async def embed_text(text: str) -> list[float]:
         "content": {"parts": [{"text": text}]},
         "outputDimensionality": 768
     }
-    
+
     async with httpx.AsyncClient() as client:
         resp = await client.post(url, json=data)
         resp.raise_for_status()
@@ -45,21 +47,21 @@ async def embed_text(text: str) -> list[float]:
 
 async def seed():
     print("🌱 Starting pgvector seed script...")
-    
+
     sb = get_supabase_client()
-    
+
     print(f"Found {len(KNOWLEDGE_DOCUMENTS)} documents in knowledge.py")
-    
+
     success_count = 0
     for namespace_tuple, doc_key, value in KNOWLEDGE_DOCUMENTS:
         try:
             content = value["text"]
             namespace_str = namespace_tuple[1] if len(namespace_tuple) > 1 else namespace_tuple[0]
-            
+
             print(f"Embedding {doc_key} ({namespace_str})...")
             # 1. Embed the document text
             vector = await embed_text(content)
-            
+
             # 2. Upsert to Supabase
             data = {
                 "namespace": namespace_str,
@@ -67,17 +69,17 @@ async def seed():
                 "content": content,
                 "embedding": vector,
             }
-            
+
             sb.table("knowledge_embeddings").upsert(
-                data, 
+                data,
                 on_conflict="doc_key"
             ).execute()
-            
+
             success_count += 1
-            
+
         except Exception as e:
             print(f"❌ Error inserting {doc_key}: {e}")
-            
+
     print(f"\n✅ Successfully seeded {success_count} documents to pgvector!")
 
 if __name__ == "__main__":

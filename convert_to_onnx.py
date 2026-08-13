@@ -1,12 +1,14 @@
 import os
-import torch
-import torch.onnx
-import structlog
 from pathlib import Path
 
-import torch.nn as nn
+import structlog
 import timm
+import torch
+import torch.nn as nn
+import torch.onnx
+
 from app.ml.model_registry import registry
+
 
 class PlantDiseaseModel(nn.Module):
     def __init__(self, num_classes, pretrained=False):
@@ -62,7 +64,7 @@ def convert_model():
     logger.info("Loading PyTorch checkpoint...", path=str(pth_path))
     checkpoint = torch.load(pth_path, map_location="cpu", weights_only=False)
     num_classes = checkpoint.get("num_classes", 117)
-    
+
     # Extract class mappings
     idx_to_class = checkpoint.get("idx_to_class", {})
     if not idx_to_class and "class_to_idx" in checkpoint:
@@ -99,12 +101,12 @@ def convert_model():
     )
 
     logger.info("✅ Model successfully exported to ONNX!")
-    
+
     # 6. Compare file sizes
     pth_size = os.path.getsize(pth_path) / (1024 * 1024)
     onnx_size = os.path.getsize(onnx_path) / (1024 * 1024)
-    logger.info(f"Size comparison:", PyTorch=f"{pth_size:.1f} MB", ONNX=f"{onnx_size:.1f} MB")
-    
+    logger.info("Size comparison:", PyTorch=f"{pth_size:.1f} MB", ONNX=f"{onnx_size:.1f} MB")
+
     # 7. Save the class mapping for the ONNX runtime to use later
     # We will save it alongside the ONNX file since we won't be using the .pth file anymore
     import json

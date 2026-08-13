@@ -8,8 +8,9 @@ Performance architecture:
 """
 
 import os
+
 import structlog
-from supabase import create_client, Client
+from supabase import Client, create_client
 
 logger = structlog.get_logger()
 
@@ -30,6 +31,7 @@ else:
 
 import httpx
 
+
 async def embed_text(text: str) -> list[float]:
     """Get the Google embedding vector."""
     key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
@@ -42,7 +44,7 @@ async def embed_text(text: str) -> list[float]:
         "content": {"parts": [{"text": text}]},
         "outputDimensionality": 768
     }
-    
+
     async with httpx.AsyncClient() as client:
         resp = await client.post(url, json=data)
         resp.raise_for_status()

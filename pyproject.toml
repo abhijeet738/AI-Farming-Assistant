@@ -59,6 +59,7 @@ ignore = [
     "F401", # imported but unused
     "F841", # local variable is assigned to but never used
     "E712", # comparison to true/false should be 'if cond is true'
+    "E402", # module level import not at top of file (caused by load_dotenv)
 ]
 
 [tool.mypy]

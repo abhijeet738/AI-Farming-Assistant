@@ -17,13 +17,12 @@ Features enabled:
 import os
 
 import structlog
-from app.agent.llm_providers import get_llm
-
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import END, START, StateGraph
 from langgraph.store.memory import InMemoryStore
 from langgraph.types import RetryPolicy
 
+from app.agent.llm_providers import get_llm
 from app.agent.nodes import agent_node, safety_review_node, should_continue, tool_executor
 from app.agent.state import FarmerAgentState
 from app.agent.tools import ALL_TOOLS

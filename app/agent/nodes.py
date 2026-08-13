@@ -37,19 +37,19 @@ def contains_critical_action(content: str | list) -> bool:
     """Check if a response contains chemical/pesticide recommendations."""
     if not content:
         return False
-        
+
     text = ""
     if isinstance(content, list):
         text = "".join(
-            block.get("text", "") 
-            for block in content 
+            block.get("text", "")
+            for block in content
             if isinstance(block, dict) and block.get("type") == "text"
         )
     elif isinstance(content, str):
         text = content
     else:
         text = str(content)
-        
+
     content_lower = text.lower()
     return any(kw in content_lower for kw in CRITICAL_KEYWORDS)
 
