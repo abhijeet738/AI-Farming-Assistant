@@ -110,6 +110,60 @@ class YieldService:
                 "Ensure adequate irrigation during critical growth periods"
             ]
 
+            # SHAP Explanation
+            import shap
+            from app.models.crop_recommend import SHAPExplanation
+            
+            def predict_base(X):
+                results = []
+                for row in X:
+                    area_val = row[0]
+                    rain_val = row[1]
+                    temp_val = row[2]
+                    
+                    area_log_val = np.log1p(area_val)
+                    rain_temp_val = rain_val / (temp_val + 1)
+                    aridity_val = temp_val / (rain_val + 1)
+                    
+                    f = np.array([[
+                        state_enc, district_enc, crop_enc, season_enc,
+                        area_val, area_log_val, crop_year, year_normalized,
+                        rain_val, temp_val, pesticide_tonnes,
+                        crop_avg_yield, state_avg_yield,
+                        is_kharif, is_rabi, is_whole_year,
+                        rain_temp_val, aridity_val, yield_trend
+                    ]])
+                    if self.scaler:
+                        f = self.scaler.transform(f)
+                    results.append(self.model.predict(f)[0])
+                return np.array(results)
+                
+            bg = np.array([
+                [1.0, 500.0, 20.0],
+                [5.0, 1000.0, 25.0],
+                [10.0, 1500.0, 30.0],
+                [20.0, 2000.0, 35.0]
+            ])
+            explainer = shap.KernelExplainer(predict_base, bg)
+            input_vals = np.array([area, avg_rainfall, avg_temp]).reshape(1, -1)
+            
+            import warnings
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                shap_vals = explainer.shap_values(input_vals, nsamples=30, silent=True)
+                
+            importances = shap_vals[0] if isinstance(shap_vals, list) else shap_vals[0]
+            
+            feature_names = ["area_hectares", "rainfall", "temperature"]
+            feature_values = [area, avg_rainfall, avg_temp]
+            
+            shap_explanation = []
+            for name, val, imp in zip(feature_names, feature_values, importances, strict=False):
+                shap_explanation.append(SHAPExplanation(
+                    feature_name=name, importance=float(imp), value=float(val)
+                ))
+            shap_explanation.sort(key=lambda x: abs(x.importance), reverse=True)
+
             return YieldPredictResponse(
                 predicted_yield_tonnes_per_hectare=round(predicted_yield, 2),
                 confidence_interval_lower=round(ci_lower, 2),
@@ -117,7 +171,8 @@ class YieldService:
                 total_production_tonnes=round(total_production, 1),
                 benchmark=benchmark,
                 factors_analysis=factors_analysis,
-                recommendations=recommendations
+                recommendations=recommendations,
+                shap_explanation=shap_explanation
             )
 
         except Exception as e:

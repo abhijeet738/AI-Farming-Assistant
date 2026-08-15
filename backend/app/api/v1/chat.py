@@ -14,13 +14,17 @@ import json
 import uuid
 
 import structlog
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from app.core.security import CurrentUser, get_current_user
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
 
 # Pre-import at module level so the graph compiles ONCE when uvicorn starts,
 # not on the first incoming request. This eliminates the cold-start delay.
 from app.agent.graph import ensure_knowledge_seeded, graph
+from app.db import crud
+from app.db.database import get_db
 
 logger = structlog.get_logger()
 router = APIRouter()
@@ -34,7 +38,6 @@ _seed_lock = asyncio.Lock()
 # ---------------------------------------------------------------------------
 class ChatMessageRequest(BaseModel):
     message: str = Field(..., description="The farmer's message")
-    user_id: str = Field(default="default", description="Unique farmer identifier")
     thread_id: str | None = Field(
         default=None,
         description="Conversation thread ID. Auto-generated if not provided."
@@ -112,7 +115,11 @@ async def chat_invoke(request: ChatMessageRequest):
 # POST /chat/message — Streaming SSE response
 # ---------------------------------------------------------------------------
 @router.post("/message")
-async def chat_message_stream(request: ChatMessageRequest):
+async def chat_message_stream(
+    request: ChatMessageRequest,
+    db: Session = Depends(get_db),
+    user: CurrentUser = Depends(get_current_user),
+):
     """Send a message and receive a streaming Server-Sent Events response."""
     async with _seed_lock:
         await ensure_knowledge_seeded()
@@ -120,15 +127,28 @@ async def chat_message_stream(request: ChatMessageRequest):
     thread_id = request.thread_id or str(uuid.uuid4())
     config = {"configurable": {"thread_id": thread_id}}
 
+    # Ensure ChatSession exists and add user message to DB
+    session = crud.get_chat_session_by_thread(db, thread_id)
+    if not session:
+        # Create a new session, derive a short title from the first message
+        title = request.message[:50] + "..." if len(request.message) > 50 else request.message
+        session = crud.create_chat_session(db, thread_id=thread_id, user_id=user.id, title=title)
+    else:
+        crud.touch_chat_session(db, thread_id)
+    
+    crud.add_chat_message(db, session_id=session.id, role="user", content=request.message)
+
     async def event_stream():
         # Send thread_id first (named event — frontend should ignore its data for display)
         yield f"event: thread_id\ndata: {thread_id}\n\n"
+        
+        final_ai_message = ""
 
         try:
             async for msg, metadata in graph.astream(
                 {
                     "messages": [{"role": "user", "content": request.message}],
-                    "user_id": request.user_id,
+                    "user_id": user.id,
                 },
                 config=config,
                 stream_mode="messages",
@@ -155,6 +175,7 @@ async def chat_message_stream(request: ChatMessageRequest):
                         text = str(content)
 
                     if text:
+                        final_ai_message += text
                         yield f"data: {json.dumps(text)}\n\n"
 
                 # Stream tool status updates (named events — frontend ignores)
@@ -172,6 +193,15 @@ async def chat_message_stream(request: ChatMessageRequest):
                             interrupt_data = task.interrupts[0].value
                             break
                 yield f"event: interrupt\ndata: {json.dumps(interrupt_data)}\n\n"
+            
+            # Save the final AI message to the DB
+            if final_ai_message:
+                # We need a new db session for the background task if the main one closed, but since event_stream is within the request scope, db might still be open. 
+                # Better to use a fresh session or assume it's open until the stream closes. FastAPI streaming allows this.
+                try:
+                    crud.add_chat_message(db, session_id=session.id, role="assistant", content=final_ai_message)
+                except Exception as db_err:
+                    logger.error("Failed to save AI message to DB", error=str(db_err))
 
             yield "event: done\ndata: {}\n\n"
 
@@ -232,6 +262,58 @@ async def chat_resume(request: ChatResumeRequest):
     except Exception as e:
         logger.error("Resume failed", error=str(e))
         raise HTTPException(status_code=500, detail=f"Resume error: {str(e)}")
+
+
+# ---------------------------------------------------------------------------
+# GET /chat/sessions — List sessions for sidebar
+# ---------------------------------------------------------------------------
+@router.get("/sessions")
+async def get_sessions(
+    db: Session = Depends(get_db),
+    user: CurrentUser = Depends(get_current_user),
+):
+    """Get all chat sessions for a user to display in the sidebar."""
+    try:
+        sessions = crud.get_chat_sessions(db, user_id=user.id, limit=50)
+        return [
+            {
+                "id": s.id,
+                "thread_id": s.thread_id,
+                "title": s.title,
+                "created_at": s.created_at,
+                "last_active_at": s.last_active_at,
+            }
+            for s in sessions
+        ]
+    except Exception as e:
+        logger.error("Failed to fetch sessions", error=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ---------------------------------------------------------------------------
+# GET /chat/sessions/{thread_id}/messages — Get chat history for UI
+# ---------------------------------------------------------------------------
+@router.get("/sessions/{thread_id}/messages")
+async def get_session_messages(thread_id: str, db: Session = Depends(get_db)):
+    """Get all messages for a specific session."""
+    try:
+        session = crud.get_chat_session_by_thread(db, thread_id)
+        if not session:
+            return []
+            
+        messages = crud.get_chat_messages(db, session_id=session.id, limit=100)
+        return [
+            {
+                "id": m.id,
+                "role": m.role,
+                "content": m.content,
+                "created_at": m.created_at,
+            }
+            for m in messages
+        ]
+    except Exception as e:
+        logger.error("Failed to fetch messages", error=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ---------------------------------------------------------------------------

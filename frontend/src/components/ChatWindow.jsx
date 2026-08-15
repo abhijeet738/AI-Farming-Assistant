@@ -3,6 +3,7 @@ import { Send, Mic, Paperclip, Sprout, Cloud, Loader, AlertTriangle, CheckCircle
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useAuth } from '../context/AuthContext';
 
 const API_BASE = "http://localhost:8000";
 
@@ -80,13 +81,13 @@ function Message({ msg }) {
   );
 }
 
-export default function ChatWindow({ onChipClick }) {
+export default function ChatWindow({ onChipClick, activeThreadId, setActiveThreadId }) {
+  const { authFetch } = useAuth();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [thinkingSteps, setThinkingSteps] = useState([]);
-  const [threadId, setThreadId] = useState(null);
   const [pendingContext, setPendingContext] = useState('');
   const [stagedImage, setStagedImage] = useState(null);
   const messagesEndRef = useRef(null);
@@ -99,6 +100,29 @@ export default function ChatWindow({ onChipClick }) {
   };
 
   useEffect(() => { scrollToBottom(); }, [messages, isLoading]);
+
+  // Load chat history when activeThreadId changes
+  useEffect(() => {
+    if (activeThreadId) {
+      setIsLoading(true);
+      fetch(`${API_BASE}/api/v1/chat/sessions/${activeThreadId}/messages`)
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) {
+            const history = data.map(m => ({
+              role: m.role,
+              content: m.content,
+              time: new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            }));
+            setMessages(history);
+          }
+        })
+        .catch(err => console.error("Failed to fetch messages:", err))
+        .finally(() => setIsLoading(false));
+    } else {
+      setMessages([]); // New chat
+    }
+  }, [activeThreadId]);
 
   const getTime = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
@@ -180,13 +204,11 @@ export default function ChatWindow({ onChipClick }) {
       const fullMessage = combinedContext ? `${combinedContext}\n\nUser Question: ${finalMessageText}` : finalMessageText;
       setPendingContext(''); // Clear it so it's only sent once
 
-      const res = await fetch(`${API_BASE}/api/v1/chat/message`, {
+      const res = await authFetch(`${API_BASE}/api/v1/chat/message`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: fullMessage,
-          user_id: "11111111-1111-1111-1111-111111111111",
-          thread_id: threadId,
+          thread_id: activeThreadId,
         }),
       });
 
@@ -224,7 +246,9 @@ export default function ChatWindow({ onChipClick }) {
             
             // Capture thread_id from the backend so we have conversation memory
             if (currentEventType === 'thread_id' && data) {
-              setThreadId(data);
+              if (activeThreadId !== data) {
+                setActiveThreadId(data);
+              }
             }
 
             if (currentEventType === 'error' && data) {

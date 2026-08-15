@@ -1,22 +1,57 @@
+import { useState, useEffect } from 'react';
 import { Leaf, MapPin, Wind, Droplets } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
-const weatherData = {
-  city: "Pune, Maharashtra",
-  temp: "26°C",
-  feelsLike: "24°C",
-  condition: "Partly Cloudy",
-  icon: "⛅",
-  humidity: "65%",
-  wind: "12 km/h",
-  forecast: [
-    { day: "Mon", icon: "⛅", high: "28°", low: "19°" },
-    { day: "Tue", icon: "🌧️", high: "25°", low: "18°" },
-    { day: "Wed", icon: "🌧️", high: "24°", low: "17°" },
-    { day: "Thu", icon: "🌤️", high: "29°", low: "20°" },
-  ],
+const conditionToIcon = (condition) => {
+  const lower = condition?.toLowerCase() || '';
+  if (lower.includes('rain') || lower.includes('shower')) return '🌧️';
+  if (lower.includes('cloud')) return '⛅';
+  if (lower.includes('clear') || lower.includes('sun')) return '☀️';
+  if (lower.includes('storm')) return '⛈️';
+  return '🌤️';
 };
 
-export default function WeatherWidget() {
+const getDayName = (dateStr) => {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-US', { weekday: 'short' });
+};
+
+export default function WeatherWidget({ location }) {
+  const { authFetch } = useAuth();
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!location) return;
+    setLoading(true);
+    authFetch(`http://localhost:8000/api/v1/weather/${encodeURIComponent(location)}`)
+      .then(res => res.json())
+      .then(json => {
+        if (json.success) setData(json);
+      })
+      .catch(err => console.error("Weather fetch failed:", err))
+      .finally(() => setLoading(false));
+  }, [location, authFetch]);
+
+  if (loading) {
+    return (
+      <div className="widget-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 250 }}>
+        <div style={{ color: 'var(--text-muted)' }}>Loading weather...</div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="widget-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 250 }}>
+        <div style={{ color: 'var(--text-muted)' }}>Failed to load weather</div>
+      </div>
+    );
+  }
+
+  const currentIcon = conditionToIcon(data.current_conditions);
+  const displayLocation = data.location.split(',').slice(0, 2).join(',');
+
   return (
     <div className="widget-card">
       <div className="widget-header">
@@ -29,15 +64,15 @@ export default function WeatherWidget() {
 
       <div className="weather-location">
         <MapPin size={11} />
-        {weatherData.city}
+        {displayLocation}
       </div>
 
       <div className="weather-main">
         <div>
-          <div className="weather-temp">{weatherData.temp}</div>
-          <div className="weather-desc">{weatherData.condition} · Feels {weatherData.feelsLike}</div>
+          <div className="weather-temp">{Math.round(data.current_temperature)}°C</div>
+          <div className="weather-desc">{data.current_conditions}</div>
         </div>
-        <div className="weather-icon-wrap">{weatherData.icon}</div>
+        <div className="weather-icon-wrap">{currentIcon}</div>
       </div>
 
       <div className="weather-stats">
@@ -46,23 +81,23 @@ export default function WeatherWidget() {
             <Droplets size={10} style={{ display: 'inline', marginRight: 4 }} />
             Humidity
           </div>
-          <div className="weather-stat-value">{weatherData.humidity}</div>
+          <div className="weather-stat-value">{data.current_humidity}%</div>
         </div>
         <div className="weather-stat">
           <div className="weather-stat-label">
             <Wind size={10} style={{ display: 'inline', marginRight: 4 }} />
             Wind
           </div>
-          <div className="weather-stat-value">{weatherData.wind}</div>
+          <div className="weather-stat-value">{Math.round(data.forecast[0]?.wind_speed || 0)} km/h</div>
         </div>
       </div>
 
       <div className="weather-forecast">
-        {weatherData.forecast.map((day) => (
-          <div className="forecast-day" key={day.day}>
-            <div className="forecast-day-name">{day.day}</div>
-            <div className="forecast-icon">{day.icon}</div>
-            <div className="forecast-temp">{day.high}</div>
+        {data.forecast.slice(1, 5).map((day) => (
+          <div className="forecast-day" key={day.date}>
+            <div className="forecast-day-name">{getDayName(day.date)}</div>
+            <div className="forecast-icon">{conditionToIcon(day.conditions)}</div>
+            <div className="forecast-temp">{Math.round(day.temp_max)}°</div>
           </div>
         ))}
       </div>

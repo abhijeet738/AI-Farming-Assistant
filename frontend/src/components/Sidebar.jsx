@@ -1,13 +1,17 @@
-import { Home, MessageSquare, Sprout, CloudSun, ShoppingCart, BarChart2, Settings, Plus, ChevronRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Home, MessageSquare, Sprout, CloudSun, ShoppingCart, BarChart2, Settings, Plus, ChevronRight, MessageCircle, LogOut } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+
+import { TrendingUp, Bug } from 'lucide-react';
 
 const navItems = [
   { icon: Home, label: "Dashboard", id: "dashboard" },
   { icon: MessageSquare, label: "Chat Assistant", id: "chat" },
   { icon: Sprout, label: "Crop Advisor", id: "crops" },
+  { icon: TrendingUp, label: "Yield Predictor", id: "yield" },
+  { icon: Bug, label: "Pest Risk", id: "pest" },
   { icon: CloudSun, label: "Weather", id: "weather" },
   { icon: ShoppingCart, label: "Market Prices", id: "market" },
-  { icon: BarChart2, label: "Analytics", id: "analytics" },
-  { icon: Settings, label: "Settings", id: "settings" },
 ];
 
 const chatHistory = [
@@ -16,7 +20,18 @@ const chatHistory = [
   "Best fertilizer for wheat?",
 ];
 
-export default function Sidebar({ activeTab, setActiveTab, onNewChat }) {
+export default function Sidebar({ activeTab, setActiveTab, onNewChat, activeThreadId, setActiveThreadId }) {
+  const { authFetch, user, logout } = useAuth();
+  const [sessions, setSessions] = useState([]);
+
+  // Fetch chat sessions when Sidebar mounts or when active thread changes
+  useEffect(() => {
+    authFetch('http://localhost:8000/api/v1/chat/sessions')
+      .then(res => res.json())
+      .then(data => Array.isArray(data) ? setSessions(data) : setSessions([]))
+      .catch(err => console.error("Failed to load chat sessions:", err));
+  }, [activeTab, activeThreadId, authFetch]);
+
   return (
     <aside className="sidebar">
       {/* Logo */}
@@ -52,19 +67,46 @@ export default function Sidebar({ activeTab, setActiveTab, onNewChat }) {
           New Chat
         </button>
         <div className="nav-label">Recent Chats</div>
-        {chatHistory.map((chat, i) => (
-          <div key={i} className="chat-history-item">{chat}</div>
+        {sessions.map((session) => (
+          <div 
+            key={session.id} 
+            className={`chat-history-item ${activeThreadId === session.thread_id ? 'active' : ''}`}
+            onClick={() => {
+              setActiveThreadId(session.thread_id);
+              setActiveTab('chat');
+            }}
+            title={session.title}
+          >
+            <MessageCircle size={14} style={{ minWidth: 14 }} />
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {session.title || "New Conversation"}
+            </span>
+          </div>
         ))}
+        {sessions.length === 0 && (
+          <div style={{ fontSize: 12, color: 'var(--text-muted)', padding: '0 12px' }}>
+            No recent chats
+          </div>
+        )}
       </div>
 
       {/* User Profile */}
       <div className="sidebar-footer">
-        <div className="user-avatar">RS</div>
-        <div className="user-info">
-          <div className="user-name">Raj Singh</div>
-          <div className="user-role">Farmer · Pune</div>
+        <div className="user-avatar">
+          {user?.email ? user.email.slice(0, 2).toUpperCase() : 'KM'}
         </div>
-        <ChevronRight size={14} style={{ color: 'var(--text-muted)', marginLeft: 'auto' }} />
+        <div className="user-info">
+          <div className="user-name">{user?.email?.split('@')[0] || 'Farmer'}</div>
+          <div className="user-role">{user?.email || 'Logged in'}</div>
+        </div>
+        <button
+          onClick={logout}
+          title="Logout"
+          style={{ background: 'none', border: 'none', cursor: 'pointer',
+            color: 'var(--text-muted)', marginLeft: 'auto', padding: 4 }}
+        >
+          <LogOut size={14} />
+        </button>
       </div>
     </aside>
   );

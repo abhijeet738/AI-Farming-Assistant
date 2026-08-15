@@ -48,12 +48,12 @@ class CropService:
         df["rainfall_temp_ratio"] = df["rainfall"] / (df["temperature"] + 1)
         df["aridity_index"] = df["temperature"] / (df["rainfall"] + 1)
         df["ph_deviation"] = abs(df["ph"] - 7.0)
-        df["ph_category"] = pd.cut(df["ph"], bins=[0, 5.5, 6.5, 7.5, 8.5, 14], labels=[0, 1, 2, 3, 4]).astype(int)
+        df["ph_category"] = pd.cut(df["ph"], bins=[-1, 5.5, 6.5, 7.5, 8.5, 15], labels=[0, 1, 2, 3, 4]).astype(int)
         df["rainfall_category"] = pd.cut(
-            df["rainfall"], bins=[0, 50, 100, 150, 200, 300, 500],
+            df["rainfall"], bins=[-1, 50, 100, 150, 200, 300, 10000],
             labels=[0, 1, 2, 3, 4, 5]
         ).astype(int)
-        df["temp_zone"] = pd.cut(df["temperature"], bins=[0, 15, 25, 35, 50], labels=[0, 1, 2, 3]).astype(int)
+        df["temp_zone"] = pd.cut(df["temperature"], bins=[-20, 15, 25, 35, 100], labels=[0, 1, 2, 3]).astype(int)
 
         # Tropical and nutrient scores (single-row normalization)
         t_norm = (temperature - 0) / (50 - 0 + 1e-8)
@@ -113,16 +113,49 @@ class CropService:
                     suitability_score=round(float(probas[idx]) * 100, 1)
                 ))
 
-            # SHAP explanations
+            # Real SHAP explanations using KernelExplainer
+            import shap
             shap_explanation = []
             feature_names = ["nitrogen", "phosphorus", "potassium",
                              "temperature", "humidity", "ph", "rainfall"]
             feature_values = [request.nitrogen, request.phosphorus, request.potassium,
                               request.temperature, request.humidity, request.ph, request.rainfall]
-            for name, val in zip(feature_names, feature_values, strict=False):
+            
+            top_idx = top_indices[0]
+            
+            def predict_base(X):
+                results = []
+                for row in X:
+                    d = self._engineer_features(row[0], row[1], row[2], row[3], row[4], row[5], row[6], request.soil_type)
+                    s = self.scaler.transform(d.values) if self.scaler else d.values
+                    results.append(self.model.predict_proba(s)[0][top_idx])
+                return np.array(results)
+                
+            # Use a varied set of background points that fit exactly within the training bins
+            bg = np.array([
+                [10, 10, 10, 10, 30, 5.0, 40],
+                [50, 50, 50, 25, 60, 6.5, 150],
+                [100, 100, 100, 30, 80, 7.0, 250],
+                [150, 150, 150, 35, 90, 7.5, 400],
+                [190, 190, 290, 45, 95, 8.0, 490]
+            ])
+            explainer = shap.KernelExplainer(predict_base, bg)
+            input_vals = np.array(feature_values).reshape(1, -1)
+            
+            import warnings
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                shap_vals = explainer.shap_values(input_vals, nsamples=30, silent=True)
+                
+            importances = shap_vals[0] if isinstance(shap_vals, list) else shap_vals[0]
+
+            for name, val, imp in zip(feature_names, feature_values, importances, strict=False):
                 shap_explanation.append(SHAPExplanation(
-                    feature_name=name, importance=0.0, value=val
+                    feature_name=name, importance=float(imp), value=val
                 ))
+            
+            # Sort by absolute importance
+            shap_explanation.sort(key=lambda x: abs(x.importance), reverse=True)
 
             # Recommendations
             top_crop = predictions[0].crop_name

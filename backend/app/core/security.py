@@ -29,26 +29,34 @@ class CurrentUser(BaseModel):
 
 
 def _verify_supabase_jwt(token: str) -> dict:
-    """Verify a Supabase JWT and return the decoded payload.
+    """Verify a Supabase JWT and return the payload by calling the Supabase API.
 
-    Supabase JWTs use the project's JWT secret (HS256) and contain:
-      - sub: user UUID
-      - email: user email
-      - role: 'authenticated'
-      - exp: expiration timestamp
+    This avoids issues with incorrect SUPABASE_JWT_SECRET environment variables
+    by having the Supabase server validate the token for us.
     """
-    jwt_secret = settings.supabase_jwt_secret or settings.secret_key
+    from app.core.supabase_client import get_supabase_client
+    
+    client = get_supabase_client()
+    if not client:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Supabase client not configured",
+        )
 
     try:
-        payload = jwt.decode(
-            token,
-            jwt_secret,
-            algorithms=[settings.algorithm],
-            options={"verify_aud": False},  # Supabase doesn't always set aud
-        )
-        return payload
-    except JWTError as e:
-        logger.warning("JWT verification failed", error=str(e))
+        # get_user validates the token remotely against Supabase
+        res = client.auth.get_user(token)
+        if not res or not res.user:
+            raise JWTError("User not found or token invalid")
+            
+        # Return a payload dictionary compatible with the rest of the app
+        return {
+            "sub": res.user.id,
+            "email": res.user.email,
+            "role": res.user.role or "authenticated"
+        }
+    except Exception as e:
+        logger.warning("JWT verification failed via Supabase API", error=str(e))
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired token",

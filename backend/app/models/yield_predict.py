@@ -1,5 +1,5 @@
-
 from pydantic import BaseModel, Field
+from app.models.crop_recommend import SHAPExplanation
 
 
 class YieldPredictRequest(BaseModel):
@@ -28,5 +28,6 @@ class YieldPredictResponse(BaseModel):
     benchmark: YieldBenchmark
     factors_analysis: list[str]
     recommendations: list[str]
+    shap_explanation: list[SHAPExplanation] | None = None
     success: bool = True
     message: str = "Yield prediction generated successfully"

@@ -28,8 +28,10 @@ class MarketService:
             logger.warning(f"Unknown value for {encoder_key}: {value}")
             return 0
 
-    def _generate_synthetic_history(self, base_price, days=90):
-        np.random.seed(42)
+    def _generate_synthetic_history(self, base_price, crop_seed_str, days=90):
+        # Use a stable but unique seed per crop/state combination to avoid identical sparklines
+        seed_val = hash(crop_seed_str) % (2**32 - 1)
+        np.random.seed(seed_val)
         noise = np.random.normal(0, base_price * 0.02, days)
         history = [base_price]
         for n in noise:
@@ -83,13 +85,29 @@ class MarketService:
             # but for simplicity in this demo, we'll try to predict anyway, and if it fails we catch it.
 
             # Generate history anchoring on the REAL price fetched by the Strategy
-            history = self._generate_synthetic_history(price_result.price, 90)
+            history = self._generate_synthetic_history(price_result.price, f"{crop}_{state}", 90)
+            
+            current_date = datetime.now()
+
+            historical_7_days = []
+            # history array is 90 days long, history[-1] is yesterday, history[-2] is day before yesterday, etc.
+            # We want to extract the last 7 days.
+            for i in range(1, 8):
+                past_date = current_date - timedelta(days=i)
+                price_val = history[-i]
+                margin = price_val * 0.05
+                historical_7_days.append(PriceForecast(
+                    date=past_date.strftime("%Y-%m-%d"),
+                    predicted_price=round(price_val, 2),
+                    confidence_lower=round(price_val - margin, 2),
+                    confidence_upper=round(price_val + margin, 2)
+                ))
+            # reverse to be in chronological order
+            historical_7_days.reverse()
 
             forecast_7_days = []
             forecast_30_days = []
             forecast_90_days = []
-
-            current_date = datetime.now()
 
             # Predict next 90 days
             for i in range(90):
@@ -193,6 +211,9 @@ class MarketService:
             )
 
             trend_dir = "rising" if forecast_30_days[-1].predicted_price > current_price else "falling"
+            if abs(forecast_30_days[-1].predicted_price - current_price) < current_price * 0.01:
+                trend_dir = "stable"
+
             pct_change = abs((forecast_30_days[-1].predicted_price - current_price) / current_price) * 100
 
             market_trend = MarketTrend(
@@ -201,7 +222,16 @@ class MarketService:
                 percentage_change=round(pct_change, 1)
             )
 
-            alerts = ["Consider selling during the upcoming peak window."]
+            # Generate dynamic AI insights
+            alerts = []
+            if trend_dir == "rising":
+                best_date = datetime.strptime(best_day.date, "%Y-%m-%d").strftime("%b %d")
+                alerts.append(f"Prices trending upward. Peak selling window expected around {best_date}.")
+            elif trend_dir == "falling":
+                alerts.append("Downward trend detected. Consider selling soon or hold long-term if storage permits.")
+            else:
+                alerts.append("Stable market conditions. Prices expected to remain steady in the near term.")
+
             if price_result.source_name == "estimated":
                 alerts.append("⚠️ This is a model estimate. Check agmarknet.gov.in for live prices.")
 
@@ -214,6 +244,7 @@ class MarketService:
                 data_source=price_result.source_name,
                 source_url=price_result.source_url,
                 forecast_label="ML Forecast — Projected, not actual prices",
+                historical_7_days=historical_7_days,
                 forecast_7_days=forecast_7_days,
                 forecast_30_days=forecast_30_days,
                 forecast_90_days=forecast_90_days,
@@ -242,6 +273,7 @@ class MarketService:
             data_source=price_result.source_name,
             source_url=price_result.source_url,
             forecast_label="",
+            historical_7_days=[],
             forecast_7_days=[],
             forecast_30_days=[],
             forecast_90_days=[],

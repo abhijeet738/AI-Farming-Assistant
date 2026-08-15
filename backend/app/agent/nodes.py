@@ -88,15 +88,19 @@ async def agent_node(state: FarmerAgentState, store):
     # 3. Build system prompt with dynamic context
     system_prompt = build_system_prompt(farmer_context, knowledge_context)
 
-    # 4. Trim messages to prevent context overflow (keep last ~4000 tokens)
+    # 4. Trim messages to prevent context overflow (keep last ~40000 tokens)
     trimmed = trim_messages(
         state["messages"],
         strategy="last",
         token_counter=count_tokens_approximately,
-        max_tokens=4000,
+        max_tokens=40000,
         start_on="human",
         allow_partial=False,
     )
+
+    if not trimmed:
+        from langchain_core.messages import HumanMessage
+        trimmed = [HumanMessage(content="Hello")]
 
     messages = [{"role": "system", "content": system_prompt}] + trimmed
 
