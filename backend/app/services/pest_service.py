@@ -112,9 +112,12 @@ class PestService:
             region = self._get_region(request.state)
             month = datetime.now().month
 
-            # Default weather (will be replaced when weather API is wired)
-            temp, humidity, rainfall, wind = 28.0, 80.0, 10.0, 8.0
-            wet_days = 2
+            # Use provided weather or default
+            temp = request.temperature if request.temperature is not None else 28.0
+            humidity = request.humidity if request.humidity is not None else 80.0
+            rainfall = request.rainfall if request.rainfall is not None else 10.0
+            wind = request.wind_speed if request.wind_speed is not None else 8.0
+            wet_days = request.wet_days if request.wet_days is not None else 2
 
             # Predict current risk
             features = self._build_features(
@@ -199,6 +202,46 @@ class PestService:
                 "Schedule field inspection within 48 hours" if risk_score > 50 else "Routine monitoring sufficient"
             ]
 
+            # SHAP Explanation
+            import shap
+            from app.models.crop_recommend import SHAPExplanation
+            
+            def predict_base(X):
+                results = []
+                for row in X:
+                    f = self._build_features(
+                        row[0], row[1], row[2], row[3], row[4],
+                        month, request.crop, request.growth_stage, region
+                    )
+                    results.append(self.clf.predict_proba(f)[0][risk_class])
+                return np.array(results)
+                
+            bg = np.array([
+                [10, 30, 0, 0, 0],
+                [25, 60, 50, 10, 2],
+                [35, 80, 150, 20, 5],
+                [45, 95, 300, 30, 10]
+            ])
+            explainer = shap.KernelExplainer(predict_base, bg)
+            input_vals = np.array([temp, humidity, rainfall, wind, wet_days]).reshape(1, -1)
+            
+            import warnings
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                shap_vals = explainer.shap_values(input_vals, nsamples=30, silent=True)
+                
+            importances = shap_vals[0] if isinstance(shap_vals, list) else shap_vals[0]
+            
+            feature_names = ["temperature", "humidity", "rainfall", "wind_speed", "wet_days"]
+            feature_values = [temp, humidity, rainfall, wind, wet_days]
+            
+            shap_explanation = []
+            for name, val, imp in zip(feature_names, feature_values, importances, strict=False):
+                shap_explanation.append(SHAPExplanation(
+                    feature_name=name, importance=float(imp), value=float(val)
+                ))
+            shap_explanation.sort(key=lambda x: abs(x.importance), reverse=True)
+
             return PestRiskResponse(
                 crop=request.crop,
                 location=f"{request.district or ''}, {request.state}".strip(", "),
@@ -208,7 +251,8 @@ class PestService:
                 risk_timeline_7_days=timeline,
                 preventive_measures=preventive_measures[:10],
                 weather_factors=weather_factors,
-                recommendations=recommendations
+                recommendations=recommendations,
+                shap_explanation=shap_explanation
             )
 
         except Exception as e:

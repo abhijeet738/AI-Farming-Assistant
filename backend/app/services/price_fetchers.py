@@ -106,9 +106,13 @@ class TavilyPriceFetcher(PriceFetcherStrategy):
             query = f"current mandi price {crop} {state} India per quintal today 2026"
             results = await search.ainvoke({"query": query})
 
-            if isinstance(results, list) and len(results) > 0:
-                content = results[0].get("content", "")
-                url = results[0].get("url", "")
+            # Tavily returns a dictionary with a 'results' list inside it
+            if isinstance(results, dict) and "results" in results and len(results["results"]) > 0:
+                # We can also check the 'answer' field if include_answer is True, 
+                # but we'll stick to extracting from the first search result's content
+                search_results = results["results"]
+                content = search_results[0].get("content", "")
+                url = search_results[0].get("url", "")
 
                 price = self._extract_price(content)
                 if price:
@@ -151,13 +155,23 @@ class SyntheticPriceFetcher(PriceFetcherStrategy):
 
     # We only return synthetic if it's a known major crop.
     # We refuse to guess for random words (prevents "iPhone" getting a price).
-    KNOWN_CROPS = ["Rice", "Wheat", "Maize", "Cotton", "Tomato", "Onion", "Potato", "Soybean", "Sugarcane"]
+    KNOWN_CROPS = [
+        "Apple", "Arhar (tur)", "Bajra", "Banana", "Barley", "Basmati rice", 
+        "Black gram", "Cabbage", "Capsicum", "Cardamom", "Carrot", "Castor seed", 
+        "Cauliflower", "Chana", "Chili", "Coriander", "Cotton", "Cumin", 
+        "Garlic", "Ginger", "Gram", "Green gram", "Groundnut", "Guava", 
+        "Jaggery", "Jowar", "Jute", "Lemon", "Lentil (masur)", "Maize", 
+        "Mango", "Mustard", "Onion", "Orange", "Paddy", "Papaya", 
+        "Peas", "Pomegranate", "Potato", "Ragi", "Red gram", "Rice", 
+        "Sesame", "Soybean", "Sugarcane", "Sunflower", "Tomato", "Turmeric", "Wheat"
+    ]
 
     async def fetch_price(self, crop: str, state: str) -> PriceResult | None:
         # Simple heuristic to normalize names
-        crop_clean = crop.capitalize()
+        crop_clean = crop.strip().lower()
+        known_lower = [c.lower() for c in self.KNOWN_CROPS]
 
-        if crop_clean not in self.KNOWN_CROPS:
+        if crop_clean not in known_lower:
             # We don't know anything about this, return None to trigger NullObject fallback
             return None
 

@@ -1,9 +1,17 @@
 import { useState } from 'react';
-import { Bell, Search, Sprout, MapPin, BarChart2, CloudSun, Home, MessageSquare } from 'lucide-react';
+import { Bell, Search, Sprout, MapPin, BarChart2, CloudSun, Home, MessageSquare, LogOut } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import ChatWindow from './components/ChatWindow';
 import WeatherWidget from './components/WeatherWidget';
 import MarketPricesWidget from './components/MarketPricesWidget';
+import DetailedMarketPage from './components/DetailedMarketPage';
+import DetailedWeatherPage from './components/DetailedWeatherPage';
+import DetailedCropPage from './components/DetailedCropPage';
+import DetailedYieldPage from './components/DetailedYieldPage';
+import DetailedPestPage from './components/DetailedPestPage';
+import DashboardPage from './components/DashboardPage';
+import LoginPage from './components/LoginPage';
+import { AuthProvider, useAuth } from './context/AuthContext';
 
 // ─── Placeholder views for non-chat tabs ─────────────────────────────────────
 function ComingSoonView({ icon: Icon, title, description }) {
@@ -32,44 +40,6 @@ function ComingSoonView({ icon: Icon, title, description }) {
     </div>
   );
 }
-
-// ─── Full Weather page ────────────────────────────────────────────────────────
-function WeatherPage() {
-  return (
-    <div style={{ flex: 1, overflow: 'auto', padding: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4 }}>
-        🌤️ Weather Intelligence
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
-        <WeatherWidget />
-        <div className="widget-card">
-          <div className="widget-header">
-            <div className="widget-title"><CloudSun size={12} />Farming Advisory</div>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {[
-              { icon: '💧', title: 'Irrigation Needed', desc: 'Low rainfall expected. Irrigate within 2 days.' },
-              { icon: '🌱', title: 'Good for Planting', desc: 'Soil moisture and temp optimal for sowing.' },
-              { icon: '⚠️', title: 'Frost Warning', desc: 'Protect crops Thu night — temp drops to 4°C.' },
-            ].map(item => (
-              <div key={item.title} style={{
-                background: 'var(--bg-input)', borderRadius: 'var(--radius-sm)',
-                padding: '10px 12px', display: 'flex', gap: 10, alignItems: 'flex-start'
-              }}>
-                <span style={{ fontSize: 18 }}>{item.icon}</span>
-                <div>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 2 }}>{item.title}</div>
-                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{item.desc}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // ─── Full Market Prices page ──────────────────────────────────────────────────
 function MarketPage() {
   return (
@@ -107,50 +77,6 @@ function MarketPage() {
   );
 }
 
-// ─── Dashboard Overview page ──────────────────────────────────────────────────
-function DashboardPage({ setActiveTab }) {
-  return (
-    <div style={{ flex: 1, overflow: 'auto', padding: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4 }}>
-        👋 Good Evening, Raj Singh
-      </div>
-
-      {/* Quick Action Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
-        {[
-          { icon: '💬', label: 'Ask AI Assistant', desc: 'Get crop advice', tab: 'chat', color: 'var(--accent-green)' },
-          { icon: '🌤️', label: 'Check Weather', desc: 'Today\'s forecast', tab: 'weather', color: 'var(--accent-blue)' },
-          { icon: '📊', label: 'Market Prices', desc: 'Live APMC rates', tab: 'market', color: '#f59e0b' },
-          { icon: '🌿', label: 'Crop Advisor', desc: 'Planting guide', tab: 'crops', color: '#a78bfa' },
-        ].map(card => (
-          <button
-            key={card.tab}
-            onClick={() => setActiveTab(card.tab)}
-            style={{
-              background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-              borderRadius: 'var(--radius-md)', padding: '16px',
-              cursor: 'pointer', textAlign: 'left', transition: 'var(--transition)',
-              display: 'flex', flexDirection: 'column', gap: 8,
-            }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = card.color; e.currentTarget.style.background = 'var(--bg-hover)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.background = 'var(--bg-card)'; }}
-          >
-            <span style={{ fontSize: 28 }}>{card.icon}</span>
-            <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>{card.label}</div>
-            <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{card.desc}</div>
-          </button>
-        ))}
-      </div>
-
-      {/* Widgets Row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-        <WeatherWidget />
-        <MarketPricesWidget />
-      </div>
-    </div>
-  );
-}
-
 // ─── Tab title map ────────────────────────────────────────────────────────────
 const tabConfig = {
   dashboard:  { label: 'Dashboard',      icon: Home },
@@ -162,13 +88,28 @@ const tabConfig = {
   settings:   { label: 'Settings',       icon: Sprout },
 };
 
-// ─── Main App ─────────────────────────────────────────────────────────────────
-export default function App() {
+const LOCATIONS = [
+  "Pune, Maharashtra",
+  "Ballia, Uttar Pradesh",
+  "Ludhiana, Punjab",
+  "Patna, Bihar",
+  "Nasik, Maharashtra",
+];
+
+// ─── Main App (inner — needs AuthContext) ────────────────────────────────────
+function AppInner() {
+  const { isAuthenticated, user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('chat');
+  const [activeThreadId, setActiveThreadId] = useState(null);
   const [chatKey, setChatKey] = useState(0);
+  const [selectedLocation, setSelectedLocation] = useState("Ballia, Uttar Pradesh");
+  const [locationInput, setLocationInput] = useState(selectedLocation);
+
+  if (!isAuthenticated) return <LoginPage />;
 
   const handleNewChat = () => {
     setActiveTab('chat');
+    setActiveThreadId(null);
     setChatKey(prev => prev + 1);
   };
 
@@ -177,18 +118,15 @@ export default function App() {
   // Decide which main view to render
   const renderMainView = () => {
     switch (activeTab) {
-      case 'dashboard': return <DashboardPage setActiveTab={setActiveTab} />;
-      case 'chat':      return <ChatWindow key={chatKey} />;
-      case 'weather':   return <WeatherPage />;
-      case 'market':    return <MarketPage />;
-      case 'crops':
-        return <ComingSoonView icon={Sprout} title="Crop Advisor" description="Get AI-powered crop recommendations based on your soil type, region, and season. Coming soon!" />;
-      case 'analytics':
-        return <ComingSoonView icon={BarChart2} title="Analytics" description="Track your farm yield, expenses, and AI conversation history over time. Coming soon!" />;
-      case 'settings':
-        return <ComingSoonView icon={Sprout} title="Settings" description="Configure your farm profile, language, location, and notification preferences. Coming soon!" />;
+      case 'dashboard': return <DashboardPage setActiveTab={setActiveTab} location={selectedLocation} />;
+      case 'chat':      return <ChatWindow key={chatKey} activeThreadId={activeThreadId} setActiveThreadId={setActiveThreadId} />;
+      case 'weather':   return <DetailedWeatherPage location={selectedLocation} />;
+      case 'market':    return <DetailedMarketPage location={selectedLocation} />;
+      case 'crops':     return <DetailedCropPage location={selectedLocation} />;
+      case 'yield':     return <DetailedYieldPage location={selectedLocation} />;
+      case 'pest':      return <DetailedPestPage location={selectedLocation} />;
       default:
-        return <ChatWindow key={chatKey} />;
+        return <ChatWindow key={chatKey} activeThreadId={activeThreadId} setActiveThreadId={setActiveThreadId} />;
     }
   };
 
@@ -197,7 +135,13 @@ export default function App() {
 
   return (
     <div className="app-layout">
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} onNewChat={handleNewChat} />
+      <Sidebar 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        onNewChat={handleNewChat}
+        activeThreadId={activeThreadId}
+        setActiveThreadId={setActiveThreadId}
+      />
 
       <div className="main-content">
         {/* Top Bar */}
@@ -218,10 +162,37 @@ export default function App() {
           <div className="topbar-actions">
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--text-muted)' }}>
               <MapPin size={12} />
-              Pune, MH
+              <input 
+                type="text"
+                value={locationInput}
+                onChange={e => setLocationInput(e.target.value)}
+                onBlur={() => setSelectedLocation(locationInput)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    setSelectedLocation(locationInput);
+                    e.target.blur();
+                  }
+                }}
+                style={{ background: 'transparent', border: 'none', color: 'inherit', outline: 'none', cursor: 'text', width: 140 }}
+                placeholder="City, State"
+              />
             </div>
+            {user?.email && (
+              <div style={{ fontSize: 12, color: 'var(--text-muted)', padding: '4px 10px',
+                background: 'var(--bg-input)', borderRadius: 'var(--radius-full)', border: '1px solid var(--border-subtle)' }}>
+                {user.email}
+              </div>
+            )}
             <button className="icon-btn" title="Search"><Search size={15} /></button>
             <button className="icon-btn" title="Notifications"><Bell size={15} /></button>
+            <button
+              className="icon-btn"
+              title="Logout"
+              onClick={logout}
+              style={{ color: 'var(--text-muted)' }}
+            >
+              <LogOut size={15} />
+            </button>
           </div>
         </header>
 
@@ -232,8 +203,8 @@ export default function App() {
           {/* Right panel — only shown on chat tab */}
           {showRightPanel && (
             <aside className="right-panel">
-              <WeatherWidget />
-              <MarketPricesWidget />
+              <WeatherWidget location={selectedLocation} />
+              <MarketPricesWidget location={selectedLocation} />
               <div className="widget-card">
                 <div className="widget-header">
                   <div className="widget-title"><Sprout size={12} />Farm Profile</div>
@@ -258,5 +229,14 @@ export default function App() {
         </div>
       </div>
     </div>
+  );
+}
+
+// ─── Root export wrapped in AuthProvider ─────────────────────────────────────
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppInner />
+    </AuthProvider>
   );
 }

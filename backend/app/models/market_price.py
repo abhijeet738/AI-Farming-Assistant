@@ -35,6 +35,7 @@ class MarketPriceResponse(BaseModel):
     source_url: str = ""
     forecast_label: str = ""
     suggestions: list[str] = []
+    historical_7_days: list[PriceForecast] = []
     forecast_7_days: list[PriceForecast]
     forecast_30_days: list[PriceForecast]
     forecast_90_days: list[PriceForecast]

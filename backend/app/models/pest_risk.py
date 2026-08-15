@@ -1,5 +1,5 @@
-
 from pydantic import BaseModel, Field
+from app.models.crop_recommend import SHAPExplanation
 
 
 class PestRiskRequest(BaseModel):
@@ -7,6 +7,11 @@ class PestRiskRequest(BaseModel):
     state: str = Field(..., description="State name")
     district: str | None = Field(None, description="District name")
     growth_stage: str = Field(..., description="Current growth stage")
+    temperature: float | None = None
+    humidity: float | None = None
+    rainfall: float | None = None
+    wind_speed: float | None = None
+    wet_days: int | None = None
     latitude: float | None = None
     longitude: float | None = None
 
@@ -38,5 +43,6 @@ class PestRiskResponse(BaseModel):
     preventive_measures: list[PreventiveMeasure]
     weather_factors: list[str]
     recommendations: list[str]
+    shap_explanation: list[SHAPExplanation] | None = None
     success: bool = True
     message: str = "Pest risk assessment completed successfully"

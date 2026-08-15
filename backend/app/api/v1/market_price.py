@@ -15,6 +15,38 @@ def get_market_service():
     return MarketService()
 
 
+@router.get("/dashboard")
+@limiter.limit("30/minute")
+async def get_market_dashboard(
+    request: Request,
+    state: str = Query("Maharashtra", description="State name for regional prices"),
+    crops: str = Query(None, description="Comma separated list of crops to fetch"),
+    market_service: MarketService = Depends(get_market_service),
+):
+    """Get market dashboard data for requested crops."""
+    import asyncio
+    
+    if crops:
+        crop_list = [c.strip() for c in crops.split(",") if c.strip()]
+    else:
+        # Default crops if none provided
+        crop_list = ["Wheat", "Tomato", "Maize", "Onion", "Soybean", "Rice"]
+    
+    # We use asyncio.gather to fetch all crops concurrently
+    tasks = [market_service.get_market_price(crop, state) for crop in crop_list]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    
+    valid_results = []
+    for result in results:
+        if isinstance(result, MarketPriceResponse):
+            valid_results.append(result)
+            
+    return {
+        "success": True,
+        "crops_data": valid_results
+    }
+
+
 @router.get("/{crop}", response_model=MarketPriceResponse)
 @limiter.limit("120/minute")
 async def get_market_price(
@@ -53,19 +85,21 @@ async def get_market_price(
 @limiter.limit("120/minute")
 async def get_supported_crops(request: Request):
     """Get list of crops with market price data."""
-    market_service = MarketService()
-
-    crops = []
-    if market_service.encoders and "label_encoder_crop" in market_service.encoders:
-        encoder = market_service.encoders["label_encoder_crop"]
-        if hasattr(encoder, "classes_"):
-            crops = list(encoder.classes_)
-
-    if not crops:
-        crops = ["Rice", "Wheat", "Maize", "Cotton"]
+    # Since we have live web search (Tavily), we can support almost any crop.
+    # We provide a comprehensive list of common Indian crops for the UI.
+    comprehensive_crops = [
+        "Apple", "Arhar (Tur)", "Bajra", "Banana", "Barley", "Basmati Rice", 
+        "Black Gram", "Cabbage", "Capsicum", "Cardamom", "Carrot", "Castor Seed", 
+        "Cauliflower", "Chana", "Chili", "Coriander", "Cotton", "Cumin", 
+        "Garlic", "Ginger", "Gram", "Green Gram", "Groundnut", "Guava", 
+        "Jaggery", "Jowar", "Jute", "Lemon", "Lentil (Masur)", "Maize", 
+        "Mango", "Mustard", "Onion", "Orange", "Paddy", "Papaya", 
+        "Peas", "Pomegranate", "Potato", "Ragi", "Red Gram", "Rice", 
+        "Sesame", "Soybean", "Sugarcane", "Sunflower", "Tomato", "Turmeric", "Wheat"
+    ]
 
     return {
-        "supported_crops": crops,
-        "total_count": len(crops),
+        "supported_crops": sorted(comprehensive_crops),
+        "total_count": len(comprehensive_crops),
         "success": True,
     }
